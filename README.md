@@ -2,9 +2,7 @@
 
 An add-on for maps and spatial data for p5.js
 
-# TODO
-
-## Elements
+# Possible Elements
 
   - Slippy Maps as canvas background (Leaflet support)
     - Drag
@@ -13,10 +11,21 @@ An add-on for maps and spatial data for p5.js
   - Static Maps support: leaflet, gmaps, mapbox
     - Different Projections
     - Multiple Maps
-  - Loading data: JSON, GEOJSON, KML
+  - Choropleth
+  - Toggling between map and sketch
+  - Loading data: TopoJSON, GEOJSON, KML
   - Geocoder Support
   - Creating maps in QGis and/or Mapbox Studio
+
+
+# TODO
+
+## Tests
+
+## Performance
 
 ## Documentation
 
 ## Examples
+
+## Tutorials

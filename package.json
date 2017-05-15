@@ -1,0 +1,44 @@
+{
+  "name": "p5.maps",
+  "version": "0.0.0",
+  "description": "add-on for maps and spatial data for p5.js",
+  "main": "index.js",
+  "scripts": {
+    "grunt": "grunt",
+    "build": "grunt build",
+    "test": "grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cvalenzuela/p5.maps.git"
+  },
+  "keywords": [
+    "p5",
+    "maps"
+  ],
+  "author": "Cristobal Valenzuela",
+  "license": "LGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/cvalenzuela/p5.maps/issues"
+  },
+  "homepage": "https://github.com/cvalenzuela/p5.maps#readme",
+  "devDependencies": {
+    "browserify": "^14.3.0",
+    "derequire": "^2.0.6",
+    "grunt": "^1.0.1",
+    "grunt-cli": "^1.2.0",
+    "grunt-contrib-connect": "^1.0.2",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-requirejs": "^1.0.0",
+    "grunt-contrib-uglify": "^3.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-jscs": "^3.0.1",
+    "grunt-mocha": "^1.0.4",
+    "grunt-newer": "^1.3.0",
+    "grunt-update-json": "^0.2.2",
+    "jscs-stylish": "^0.3.1"
+  },
+  "dependencies": {
+    "brfs": "^1.4.3"
+  }
+}
