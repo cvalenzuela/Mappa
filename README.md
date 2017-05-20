@@ -4,7 +4,7 @@ An add-on for maps and spatial data for p5.js
 
 # Possible Elements
 
-  - Tile Maps as canvas background: leaflet
+  - Tile Maps as canvas background: leaflet panes
     - Drag
     - Resize (canvas)
   - Static Maps: leaflet, gmaps, mapbox
