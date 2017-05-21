@@ -22,7 +22,7 @@ function setup() {
   canvas.parent(container);
   noStroke();
 
-  d3.csv('data/dots_shorter.csv', function (err, data) {
+  d3.csv('data/dots.csv', function (err, data) {
     function render() {
       clear();
       data.forEach(function (d) {
