@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mocha Tests</title>
+  <link rel="stylesheet" href="../node_modules/mocha/mocha.css">
+</head>
+<body>
+  <div id="mocha"></div>
+  <script src="../node_modules/mocha/mocha.js"></script>
+  <script src="../node_modules/chai/chai.js"></script>
+  
+  <script src="../../p5.js/lib/p5.js"></script>
+
+  <script>mocha.setup('bdd')</script>
+
+  <!-- p5maps-->
+  <script src="../lib/index.js"></script>
+
+  <!-- test Files -->
+  <script src="js/testtask.js"></script>
+
+  <script>
+    mocha.run();
+  </script>
+</body>
+</html>

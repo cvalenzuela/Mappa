@@ -27,11 +27,12 @@ function setup() {
       clear();
       data.forEach(function (d) {
         var p = project(d);
-        var size = map(mapa.getZoom(), 1, 9, 1, 30)
+        var size = map(mapa.getZoom(), 1, 9, 1, 30);
         fill(0, random(0, 255), random(0, 255));
         ellipse(p.x, p.y, size, size);
       });
     }
+
     // render for the first time
     render();
 

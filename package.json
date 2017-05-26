@@ -1,0 +1,75 @@
+{
+  "name": "p5.maps",
+  "version": "0.0.1",
+  "description": "An map library for p5",
+  "main": "dist/index.js",
+  "directories": {
+    "example": "examples",
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "commit": "git-cz",
+    "check-coverage": "nyc check-coverage --statements 100 --branch 100",
+    "report-coverage": "cat ./coverage/lcov.info | codecov",
+    "watch:test": "npm t -- -w",
+    "test": "mocha test/js/index.js --compilers js:babel-register",
+    "cover": "nyc npm t",
+    "prebuild": "rimraf dist",
+    "build:main": "babel --copy-files --out-dir dist --ignore *.test.js src",
+    "build": "webpack --output-filename p5maps.js",
+    "build:min": "webpack --output-filename p5maps.min.js -p",
+    "build:all": "npm-run-all --parallel build:*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cvalenzuela/p5.maps.git"
+  },
+  "keywords": [
+    "p5.js",
+    "maps"
+  ],
+  "author": "Cristobal Valenzuela <cvalenzuela@nyu.edu> (https://github.com/cvalenzuela)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cvalenzuela/p5.maps/issues"
+  },
+  "homepage": "https://github.com/cvalenzuela/p5.maps#readme",
+  "devDependencies": {
+    "babel-cli": "6.24.1",
+    "babel-loader": "7.0.0",
+    "babel-preset-es2015": "6.24.1",
+    "babel-preset-stage-2": "6.24.1",
+    "babel-register": "6.24.1",
+    "chai": "3.5.0",
+    "codecov": "2.2.0",
+    "commitizen": "2.9.6",
+    "cz-conventional-changelog": "2.0.0",
+    "ghooks": "2.0.0",
+    "istanbul": "0.4.5",
+    "json-loader": "0.5.4",
+    "mocha": "3.4.1",
+    "npm-run-all": "4.0.2",
+    "nyc": "10.3.2",
+    "rimraf": "2.6.1",
+    "webpack": "2.6.1"
+  },
+  "config": {
+    "ghooks": {
+      "pre-commit": "npm run cover && npm run check-coverage"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-2"
+    ]
+  },
+  "dependencies": {
+    "p5": "0.5.10"
+  }
+}

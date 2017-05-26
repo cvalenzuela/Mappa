@@ -1,5 +1,7 @@
 # P5Maps
 
+The goal of this library is to create a simple interface to use maps and spatial data with p5.
+While mixing other libraries (D3, leaflet, etc) with p5 is an option to achieve similar results, this add-on tries to simplify the workflow by managing only one common API. 
 An add-on for maps and spatial data for p5.js
 
 # Possible Elements
