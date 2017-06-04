@@ -7,8 +7,9 @@ export default {
   output: {
     path: join(__dirname, 'dist'),
     libraryTarget: 'umd',
-    library: 'p5maps',
+    library: 'Mappa',
   },
+  watch: true,
   module: {
     loaders: [
       { test: /\.js$/, loader: 'babel-loader', include },

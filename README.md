@@ -1,21 +1,21 @@
 # P5Maps
 
 The goal of this library is to create a simple interface to use maps and spatial data with p5.
-While mixing other libraries (D3, leaflet, etc) with p5 is an option to achieve similar results, this add-on tries to simplify the workflow by managing only one common API. 
+While mixing other libraries (D3, leaflet, etc) with p5 is an option to achieve similar results, this add-on tries to simplify the workflow by managing only one common API.
 An add-on for maps and spatial data for p5.js
 
 # Possible Elements
 
-  - Tile Maps as canvas background: leaflet panes
+  - Tile Maps as canvas background:
     - Drag
     - Resize (canvas)
-  - Static Maps: leaflet, gmaps, mapbox
-    - Different Projections:
-      - Azimuthal
-      - Conic
-      - Cylindrical (Tangent and Secant versions)
-        - Equivalant area projections: cylindrical equal area, sinusoidal projection, Goode's Homolosine Equal-Area
-        - Conformal projections: Mercator and Gnomic
+  - Static Maps: google maps, mapbox
+  - Different Projections:
+    - Azimuthal
+    - Conic
+    - Cylindrical (Tangent and Secant versions)
+      - Equivalant area projections: cylindrical equal area, sinusoidal projection, Goode's Homolosine Equal-Area
+      - Conformal projections: Mercator and Gnomic
   - Multiple Maps
   - Cartograms?
   - [Render Queue](http://bl.ocks.org/syntagmatic/raw/3341641/)

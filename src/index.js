@@ -1,65 +1,37 @@
+/*
+* Mappa: A simple library to work with maps and p5.js
+* https://github.com/cvalenzuela/p5.maps
+*
+* Cristóbal Valenzuela
+* Google Summer of Code 2017
+*/
+
 'use strict';
 
 console.log('%c p5.maps Loaded ', 'color:white; background:black;');
 
-import { baseCoordinates } from './baseCoordinates';
+import { addLibrary } from './mapProviders';
+import { staticMappa } from './staticMappa';
 
-p5.prototype.staticMap = function (vendor, token, lat, lng, zoom, width, height) {
-
-  map.lat = lat;
-  map.lng = lng;
-  map.zoom = zoom;
-  map.width = width;
-  map.height = height;
-
-  // Vendors
-  if(vendor === 'mapbox'){
-    vendor = 'https://api.mapbox.com/styles/v1/mapbox/dark-v9/static/'
-    return loadImage(vendor + map.lat + ',' + map.lng + ',' + map.zoom + '/' + width + 'x' + height + '?access_token=' + token )
+class Mappa {
+  constructor(provider, key) {
+    this.provider = provider || 'google';
+    this.key = key || null;
+    this.staticMaps = [];
+    this.init();
   }
-  else if (vendor === 'google'){
-    vendor = 'https://maps.googleapis.com/maps/api/staticmap?center='
-    return loadImage(vendor + map.lat + ',' + map.lng + '&zoom=' + map.zoom + '&scale=2' + '&size=' + width + 'x' + height + '&maptype=roadmap&format=png&visual_refresh=true')
+
+  init() {
+    addLibrary(this.provider, this.key);
   }
-  // Load a static image from disk
-};
 
-p5.prototype.drawMap = function (img){
-  translate(map.width/2, map.height/2);
-  imageMode(CENTER);
-  image(img, 0, 0);
-};
+  staticMap(...args) {
+    (typeof args[0] == 'object') ? args = args[0]: null;
+    let staticMap = staticMappa(this.provider, this.key, args)
+    this.staticMaps.push(staticMap);
+    return staticMap;
+  }
 
-p5.prototype.tileMap = function(lat, lng, zoom, width, height){
-  // Using leaflet
-  let canvas = window.getComputedStyle(document.querySelector("canvas"),null).getPropertyValue("height");
-  translate(map.width/2, map.height/2);
-  imageMode(CENTER);
-  let div = document.createElement('div');
-  document.body.appendChild(div)
-  div.setAttribute('style', 'position:absolute;height:'+ height + 'px;width:' + width + 'px;top:0;left:0;z-index:-99')
-  let leafletMap = L.map(div).setView([lat, lng], zoom);
-  L.tileLayer("https://{s}.tiles.mapbox.com/v4/mapbox.dark/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoiZ2xlYWZsZXQiLCJhIjoiY2lxdWxoODl0MDA0M2h4bTNlZ2I1Z3gycyJ9.vrEWCC2nwsGfAYKZ7c4HZA")
-  .addTo(leafletMap);
 }
 
-p5.prototype.latlngToPixels = function(lat, lng){
-  // define projection
-  return [mercatorLat(lat), mercatorLong(lng)];
-};
-
-p5.prototype.latToPixels = function(lat){
-  return mercatorLat(lat) - mercatorLat(map.lat);
-};
-
-p5.prototype.lngToPixels = function(lng){
-  return mercatorLong(lng) - mercatorLong(map.lng);
-};
-
-function mercatorLat(lat){
-  return ((256 / PI) * pow(2, map.zoom)) * (PI - log(tan(PI / 4 + radians(lat) / 2)));
-};
-
-function mercatorLong(lng){
-  return (256 / PI) * pow(2, map.zoom) * radians(lng) + PI;
-}
+module.exports = Mappa;

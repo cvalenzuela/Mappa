@@ -4,15 +4,13 @@ Switch between static maps and tiled maps with basic api
 
 var mapImg;
 var dots;
-
 var w = 1024;
 var h = 512;
-var zoom = 1;
 
 var token = 'pk.eyJ1IjoiY3ZhbGVuenVlbGEiLCJhIjoiY2l2ZzkweTQ3MDFuODJ5cDM2NmRnaG4wdyJ9.P_0JJXX6sD1oX2D0RQeWFA';
 
 function preload() {
-  mapImg = staticMap('mapbox', token, 0, 0, zoom, w, h);
+  mapImg = staticMap('mapbox', token, 0, 0, 1, w, h);
   dots = loadStrings('data/dots.csv');
 }
 
