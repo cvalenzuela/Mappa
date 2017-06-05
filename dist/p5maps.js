@@ -78,10 +78,81 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-throw new Error("Module build failed: SyntaxError: Unexpected token, expected , (40:4)\n\n\u001b[0m \u001b[90m 38 | \u001b[39m  mapbox\u001b[33m:\u001b[39m {\n \u001b[90m 39 | \u001b[39m    url\u001b[33m:\u001b[39m \u001b[32m'https://api.mapbox.com/v4/'\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 40 | \u001b[39m    options\u001b[33m:\u001b[39m \n \u001b[90m    | \u001b[39m    \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 41 | \u001b[39m  }\n \u001b[90m 42 | \u001b[39m}\n \u001b[90m 43 | \u001b[39m\u001b[0m\n");
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// Module to add maps providers libraries and store static URL's
+
+// Map Provider libraries
+var addLibrary = function addLibrary(provider, key) {
+  var vendor = void 0;
+  !key ? console.warn('Plase provide an API key for your map provider.') : null;
+
+  if (provider === 'google') {
+    vendor = 'https://maps.googleapis.com/maps/api/js';
+    key && (vendor += '?key=' + key);
+  } else if (provider === 'mapbox' && key != null) {
+    vendor = 'https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js';
+  } else if (provider === 'osm') {
+    vendor = null;
+  } else if (provider === 'mapzen') {
+    vendor = null;
+  } else {
+    vendor = null;
+  }
+
+  if (!document.getElementById(provider)) {
+    var s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.src = vendor;
+    s.id = provider;
+    document.head.appendChild(s);
+  }
+};
+
+// Static URL
+var staticProviders = {
+  google: {
+    options: ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'format', 'maptype', 'language', 'region', 'path', 'style', 'signature'],
+    parser: function parser(OPTIONS) {
+      var url = 'https://maps.googleapis.com/maps/api/staticmap?';
+      for (var option in OPTIONS) {
+        OPTIONS[option] != undefined && (url += '&' + option + '=' + OPTIONS[option]);
+      }return url;
+    }
+  },
+  mapbox: {
+    options: ['lat', 'lng', 'zoom', 'width', 'height', 'bearing', 'pitch', 'style', 'username', 'overlay', 'at', 'attribution', 'logo', 'before_layer', 'center', 'size'],
+    parser: function parser(OPTIONS) {
+      var url = 'https://api.mapbox.com/styles/v1/';
+      var center = OPTIONS.center.split(',');
+      OPTIONS.username != undefined ? url += OPTIONS.username + '/' : url += 'mapbox/';
+      OPTIONS.style != undefined ? url += OPTIONS.style + '/' : url += 'streets-v10/';
+      url += 'static/';
+      OPTIONS.overlay != undefined && (url += OPTIONS.overlay + '/');
+      url += center[1] + ',' + center[0] + ',';
+      OPTIONS.auto == false || OPTIONS.auto == undefined ? ['zoom', 'bearing', 'pitch'].forEach(function (e, i) {
+        OPTIONS[e] != undefined ? url += OPTIONS[e] : url += 0;
+        i < 2 && (url += ',');
+      }) : url += 'auto';
+      url += '/' + OPTIONS.size;
+      OPTIONS.scale != undefined && (url += '@' + OPTIONS.scale);
+      url += '?access_token=' + OPTIONS.key;
+      !OPTIONS.attribution && (url += '&attribution=false');
+      !OPTIONS.logo && (url += '&logo=false');
+      !OPTIONS.before_layer && (url += '&before_layer=' + OPTIONS.before_layer);
+      return url;
+    }
+  }
+};
+
+exports.addLibrary = addLibrary;
+exports.staticProviders = staticProviders;
 
 /***/ }),
 /* 1 */
@@ -99,7 +170,6 @@ var _mapProviders = __webpack_require__(0);
 
 var staticMappa = function staticMappa(provider, key, args) {
   var PROVIDER = _mapProviders.staticProviders[provider],
-      URL = PROVIDER.url,
       OPTIONS = {};
 
   if (Array.isArray(args)) {
@@ -110,25 +180,15 @@ var staticMappa = function staticMappa(provider, key, args) {
   } else {
     OPTIONS = args;
   }
+
   OPTIONS.key = key;
+  OPTIONS.size = OPTIONS.width + 'x' + OPTIONS.height;
+  OPTIONS.center = OPTIONS.lat + ',' + OPTIONS.lng;
+  ['width', 'height', 'lat', 'lng'].forEach(function (e) {
+    return delete OPTIONS[e];
+  });
 
-  for (var option in OPTIONS) {
-    if (option == 'width' || option == 'height') {
-      OPTIONS.size = OPTIONS.width + 'x' + OPTIONS.height;
-      delete OPTIONS.width;
-      delete OPTIONS.height;
-    } else if (option == 'lat' || option == 'lng') {
-      OPTIONS.center = OPTIONS.lat + ',' + OPTIONS.lng;
-      delete OPTIONS.lat;
-      delete OPTIONS.lng;
-    }
-  }
-
-  for (var _option in OPTIONS) {
-    OPTIONS[_option] != null ? URL += '&' + _option + '=' + OPTIONS[_option] : null;
-  }
-
-  return URL;
+  return PROVIDER.parser(OPTIONS);
 }; // Static Maps
 
 exports.staticMappa = staticMappa;
@@ -139,7 +199,7 @@ exports.staticMappa = staticMappa;
 
 "use strict";
 /*
-* Mappa: A simple library to work with maps and p5.js
+* Mappa: A library to work with maps and p5.js
 * https://github.com/cvalenzuela/p5.maps
 *
 * Cristóbal Valenzuela
@@ -165,7 +225,7 @@ var Mappa = function () {
     _classCallCheck(this, Mappa);
 
     this.provider = provider || 'google';
-    this.key = key || null;
+    this.key = key || undefined;
     this.staticMaps = [];
     this.init();
   }
@@ -182,11 +242,14 @@ var Mappa = function () {
         args[_key] = arguments[_key];
       }
 
-      _typeof(args[0]) == 'object' ? args = args[0] : null;
+      _typeof(args[0]) == 'object' && (args = args[0]);
       var staticMap = (0, _staticMappa.staticMappa)(this.provider, this.key, args);
       this.staticMaps.push(staticMap);
       return staticMap;
     }
+
+    // check amount of request ot prevent max amount of api's
+
   }]);
 
   return Mappa;

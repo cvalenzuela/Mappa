@@ -4,7 +4,7 @@ import { staticProviders } from './mapProviders';
 
 let staticMappa = (provider, key, args) => {
   let PROVIDER = staticProviders[provider],
-  URL = PROVIDER.url, OPTIONS = {};
+  OPTIONS = {};
 
   if (Array.isArray(args)) {
     args.map((el, i) => {
@@ -14,25 +14,13 @@ let staticMappa = (provider, key, args) => {
   } else {
     OPTIONS = args
   }
+
   OPTIONS.key = key;
-
-  for(let option in OPTIONS){
-    if(option == 'width' || option == 'height') {
-      OPTIONS.size = OPTIONS.width + 'x' + OPTIONS.height;
-      delete OPTIONS.width;
-      delete OPTIONS.height;
-    } else if (option == 'lat' || option == 'lng') {
-      OPTIONS.center = OPTIONS.lat + ',' + OPTIONS.lng;
-      delete OPTIONS.lat;
-      delete OPTIONS.lng;
-    }
-  }
-
-  for(let option in OPTIONS){
-    (OPTIONS[option] != null) ? URL += '&' + option + '=' + OPTIONS[option] : null;
-  }
-
-  return URL;
+  OPTIONS.size = OPTIONS.width + 'x' + OPTIONS.height;
+  OPTIONS.center = OPTIONS.lat + ',' + OPTIONS.lng;
+  ['width', 'height', 'lat', 'lng'].forEach (e => delete OPTIONS[e])
+  
+  return PROVIDER.parser(OPTIONS)
 }
 
 export { staticMappa };

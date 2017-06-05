@@ -1,5 +1,5 @@
 /*
-* Mappa: A simple library to work with maps and p5.js
+* Mappa: A library to work with maps and p5.js
 * https://github.com/cvalenzuela/p5.maps
 *
 * Cristóbal Valenzuela
@@ -16,7 +16,7 @@ import { staticMappa } from './staticMappa';
 class Mappa {
   constructor(provider, key) {
     this.provider = provider || 'google';
-    this.key = key || null;
+    this.key = key || undefined;
     this.staticMaps = [];
     this.init();
   }
@@ -26,11 +26,13 @@ class Mappa {
   }
 
   staticMap(...args) {
-    (typeof args[0] == 'object') ? args = args[0]: null;
+    typeof args[0] == 'object' && (args = args[0]);
     let staticMap = staticMappa(this.provider, this.key, args)
     this.staticMaps.push(staticMap);
     return staticMap;
   }
+
+  // check amount of request ot prevent max amount of api's
 
 }
 
