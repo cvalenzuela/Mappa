@@ -25,7 +25,6 @@ var mapboxOptions = {
   pitch: 0,
 }
 
-
 function preload() {
   mappa = new Mappa();
   mapOne = mappa.staticMap(gmapsOptions);
@@ -37,10 +36,10 @@ function setup() {
   createCanvas(600,600);
   background(100,100,100);
   fill(255,0,0);
-  image(img, 0, 0)
-  ellipse(100,100, 50,50);
+
 }
 
-// function draw() {
-//
-// }
+function draw() {
+  image(img, 0, 0)
+  ellipse(mouseX,mouseY, 50,50);
+}
