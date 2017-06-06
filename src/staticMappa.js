@@ -1,26 +1,35 @@
 // Static Maps
 
-import { staticProviders } from './mapProviders';
+import { warnings } from './consoleMessages';
+import { adjustSize, staticMapProviders } from './staticMapProviders';
 
-let staticMappa = (provider, key, args) => {
-  let PROVIDER = staticProviders[provider],
-  OPTIONS = {};
-
-  if (Array.isArray(args)) {
-    args.map((el, i) => {
-      let option = PROVIDER.options[i];
-      OPTIONS[option] = el;
-    })
-  } else {
-    OPTIONS = args
+class StaticMappa  {
+  constructor(PROVIDER, OPTIONS){
+    this.mapProvider = PROVIDER
+    this.mapConstructor = staticMapProviders[PROVIDER];
+    this.options = OPTIONS;
+    this.img = this.image();
   }
 
-  OPTIONS.key = key;
-  OPTIONS.size = OPTIONS.width + 'x' + OPTIONS.height;
-  OPTIONS.center = OPTIONS.lat + ',' + OPTIONS.lng;
-  ['width', 'height', 'lat', 'lng'].forEach (e => delete OPTIONS[e])
-  
-  return PROVIDER.parser(OPTIONS)
+  image() {
+    adjustSize(this.mapProvider, this.options);
+    return this.mapConstructor.urlParser(this.options);
+  }
+
+  latLng(lat, lng) {
+    return {
+      x: this.fromLngToPoint(lng) - this.fromLngToPoint(this.options.lng) + this.options.width/(2/this.options.scale),
+      y: this.fromLatToPoint(lat) - this.fromLatToPoint(this.options.lat) + this.options.height/(2/this.options.scale)
+    }
+  };
+
+  fromLatToPoint(l){
+    return (((this.options.pixels) / PI) * pow(2, this.options.zoom)) * (PI - log(tan(PI / 4 + radians(l) / 2)));
+  }
+
+  fromLngToPoint(l){
+    return (((this.options.pixels) / PI) * pow(2, this.options.zoom)) * (radians(l) + PI);
+  }
 }
 
-export { staticMappa };
+export { StaticMappa };

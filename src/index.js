@@ -10,15 +10,14 @@
 
 console.log('%c p5.maps Loaded ', 'color:white; background:black;');
 
-import { addLibrary } from './mapProviders';
-import { staticMappa } from './staticMappa';
+import { addLibrary } from './staticMapProviders';
+import { StaticMappa } from './StaticMappa';
 
 class Mappa {
   constructor(provider, key) {
-    this.provider = provider || 'google';
-    this.key = key || undefined;
-    this.staticMaps = [];
-    this.init();
+    this.provider = provider;
+    this.key = key;
+    this.provider && this.init();
   }
 
   init() {
@@ -26,12 +25,21 @@ class Mappa {
   }
 
   staticMap(...args) {
-    typeof args[0] == 'object' && (args = args[0]);
-    let staticMap = staticMappa(this.provider, this.key, args)
-    this.staticMaps.push(staticMap);
-    return staticMap;
-  }
+    let OPTIONS = {};
 
+    if(typeof args[0] == 'object'){
+      OPTIONS = Object.assign({}, args[0])
+    } else {
+      args.forEach((el, i) => {
+        let option = PROVIDER.options[i];
+        OPTIONS[option] = el;
+      })
+    };
+    OPTIONS.key = this.key;
+
+    return new StaticMappa(this.provider, OPTIONS);
+
+  }
   // check amount of request ot prevent max amount of api's
 
 }
