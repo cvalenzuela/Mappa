@@ -2,56 +2,19 @@
 
 import { warnings } from './consoleMessages';
 
-// Map Provider libraries
-let addLibrary = (provider, key) => {
-  let vendor;
-  (!key) ? warnings.noKey : null;
-
-  if(provider === 'google'){
-    vendor = 'https://maps.googleapis.com/maps/api/js';
-    key && (vendor += '?key=' + key)
-  }
-  else if (provider === 'mapbox' && key != null){
-    vendor = 'https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'
-  }
-  else if (provider === 'osm'){
-    vendor = null;
-  }
-  else if (provider === 'mapzen'){
-    vendor = null;
-  }
-  else if (provider === 'carto'){
-    vendor = null;
-  }
-  else if (provider === 'mapquest'){
-    vendor = null;
-  } else {
-    vendor = null;
-  }
-
-  // Add provider's library to DOM
-  if(!document.getElementById(provider)) {
-    let s = document.createElement('script');
-    s.type = 'text/javascript';
-    s.src = vendor;
-    s.id = provider;
-    document.head.appendChild(s)
-  }
-}
-
 // Static URL
 let staticMapProviders = {
   google: {
-    options: ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'format', 'maptype', 'language', 'region', 'path', 'style', 'signature'],
+    options: ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'format', 'maptype', 'language', 'region', 'path', 'style', 'signature', 'center'],
     urlParser: (OPTIONS) => {
       let url = 'https://maps.googleapis.com/maps/api/staticmap?';
       let _OPTIONS = Object.assign({}, OPTIONS);
       _OPTIONS.size = _OPTIONS.width + 'x' + _OPTIONS.height;
-      _OPTIONS.center = _OPTIONS.lat + ',' + _OPTIONS.lng;
+      !_OPTIONS.center && (_OPTIONS.center = _OPTIONS.lat + ',' + _OPTIONS.lng);
       !_OPTIONS.scale && (_OPTIONS.scale = 1);
       ['width', 'height', 'lat', 'lng'].forEach (e => delete _OPTIONS[e]);
       for(let option in _OPTIONS)
-      _OPTIONS[option] != undefined && (url += '&' + option + '=' + _OPTIONS[option])
+        _OPTIONS[option] != undefined && (url += '&' + option + '=' + _OPTIONS[option])
       return url
     }
   },
@@ -113,11 +76,7 @@ let adjustSize = (provider, options) => {
         options.height = 1024;
       }
     }
-
   }
-
-
-
 }
 
-export { addLibrary, staticMapProviders, adjustSize }
+export { staticMapProviders, adjustSize }
