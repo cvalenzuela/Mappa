@@ -1,19 +1,16 @@
 // Static Maps
 
-import { warnings } from './consoleMessages';
-import { adjustSize, staticMapProviders } from './staticMapProviders';
+import * as staticProviders from './providers/staticProviders';
 
-class StaticMappa  {
-  constructor(PROVIDER, OPTIONS){
-    this.mapProvider = PROVIDER
-    this.mapConstructor = staticMapProviders[PROVIDER];
-    this.options = OPTIONS;
+class StaticMap  {
+  constructor(provider, options){
+    this.provider = staticProviders[provider]
+    this.options = options;
     this.img = this.image();
   }
 
   image() {
-    adjustSize(this.mapProvider, this.options);
-    return this.mapConstructor.urlParser(this.options);
+    return this.provider.urlParser(this.options);
   }
 
   latLng(lat, lng) {
@@ -32,4 +29,4 @@ class StaticMappa  {
   }
 }
 
-export { StaticMappa };
+export { StaticMap };

@@ -10,10 +10,10 @@
 
 console.log('%c p5.maps Loaded ✓', 'color:white; background:green;');
 
-import { staticMapProviders } from './staticMapProviders';
-import { StaticMappa } from './StaticMap';
-// import { addLibrary } from './tileMapProviders';
+import { StaticMap } from './StaticMap';
 import { TileMap } from './TileMap';
+
+import * as staticMapProviders from './providers/staticProviders';
 
 class Mappa {
   constructor(provider, key) {
@@ -22,34 +22,34 @@ class Mappa {
   }
 
   staticMap(...args) {
-    let OPTIONS = {};
+    let options = {};
 
     if(typeof args[0] == 'object'){
-      OPTIONS = Object.assign({}, args[0])
+      options = Object.assign({}, args[0])
     } else {
       args.forEach((el, i) => {
         let option = staticMapProviders[this.provider].options[i];
-        OPTIONS[option] = el;
+        options[option] = el;
       })
     };
-    OPTIONS.key = this.key;
+    options.key = this.key;
 
-    return new StaticMappa(this.provider, OPTIONS);
+    return new StaticMap(this.provider, options);
   }
 
   tileMap(...args){
-    let OPTIONS;
+    let options;
 
     if(typeof args[0] == 'object'){
-      OPTIONS = Object.assign({}, args[0])
+      options = Object.assign({}, args[0])
     } else {
       ['lat', 'lng', 'zoom'].forEach((el, i) => {
-        OPTIONS[el] = args[i];
+        options[el] = args[i];
       })
     };
-    OPTIONS.key = this.key;
+    options.key = this.key;
 
-    return new TileMap(this.provider, OPTIONS);
+    return new TileMap(this.provider, options);
   }
 
 }

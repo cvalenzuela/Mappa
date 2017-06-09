@@ -3,6 +3,9 @@ var mapboxKey = 'pk.eyJ1IjoiZW5qYWxvdCIsImEiOiJjaWhtdmxhNTIwb25zdHBsejk0NGdhODJh
 var canvas;
 var myMap;
 
+var img;
+var nyc;
+
 var options = {
   lat: 40.7828647,
   lng: -73.9675438,
@@ -10,11 +13,11 @@ var options = {
   style: 'mapbox://styles/mapbox/satellite-streets-v10'
 }
 
+
 function setup(){
   canvas = createCanvas(800, 900);
 
-  mappa = new Mappa('mapbox', mapboxKey);
-
+  mappa = new Mappa('mapboxgl', mapboxKey);
   myMap = mappa.tileMap(options);
   myMap.append(canvas);
 

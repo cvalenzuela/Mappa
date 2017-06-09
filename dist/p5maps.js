@@ -77,7 +77,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ })
 /************************************************************************/
 /******/ ([
-/* 0 */
+/* 0 */,
+/* 1 */,
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86,123 +88,58 @@ return /******/ (function(modules) { // webpackBootstrap
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.adjustSize = exports.staticMapProviders = undefined;
+exports.StaticMap = undefined;
 
-var _consoleMessages = __webpack_require__(1);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); // Static Maps
 
-// Static URL
-var staticMapProviders = {
-  google: {
-    options: ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'format', 'maptype', 'language', 'region', 'path', 'style', 'signature', 'center'],
-    urlParser: function urlParser(OPTIONS) {
-      var url = 'https://maps.googleapis.com/maps/api/staticmap?';
-      var _OPTIONS = Object.assign({}, OPTIONS);
-      _OPTIONS.size = _OPTIONS.width + 'x' + _OPTIONS.height;
-      !_OPTIONS.center && (_OPTIONS.center = _OPTIONS.lat + ',' + _OPTIONS.lng);
-      !_OPTIONS.scale && (_OPTIONS.scale = 1);
-      ['width', 'height', 'lat', 'lng'].forEach(function (e) {
-        return delete _OPTIONS[e];
-      });
-      for (var option in _OPTIONS) {
-        _OPTIONS[option] != undefined && (url += '&' + option + '=' + _OPTIONS[option]);
-      }return url;
-    }
-  },
-  mapbox: {
-    options: ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'bearing', 'pitch', 'style', 'username', 'overlay', 'attribution', 'logo', 'before_layer', 'center', 'size'],
-    urlParser: function urlParser(OPTIONS) {
-      var url = 'https://api.mapbox.com/styles/v1/';
-      OPTIONS.username != undefined ? url += OPTIONS.username + '/' : url += 'mapbox/';
-      OPTIONS.style != undefined ? url += OPTIONS.style + '/' : url += 'streets-v10/';
-      url += 'static/';
-      OPTIONS.overlay != undefined && (url += OPTIONS.overlay + '/');
-      url += OPTIONS.lng + ',' + OPTIONS.lat + ',';
-      OPTIONS.auto == false || OPTIONS.auto == undefined ? ['zoom', 'bearing', 'pitch'].forEach(function (e, i) {
-        OPTIONS[e] != undefined ? url += OPTIONS[e] : url += 0;
-        i < 2 && (url += ',');
-      }) : url += 'auto';
-      url += '/' + OPTIONS.width + 'x' + OPTIONS.height;
-      OPTIONS.scale == 2 && (url += '@2x');
-      url += '?access_token=' + OPTIONS.key;
-      !OPTIONS.attribution && (url += '&attribution=false');
-      !OPTIONS.logo && (url += '&logo=false');
-      !OPTIONS.before_layer && (url += '&before_layer=' + OPTIONS.before_layer);
-      return url;
-    }
+var _staticProviders = __webpack_require__(11);
+
+var staticProviders = _interopRequireWildcard(_staticProviders);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var StaticMap = function () {
+  function StaticMap(provider, options) {
+    _classCallCheck(this, StaticMap);
+
+    this.provider = staticProviders[provider];
+    this.options = options;
+    this.img = this.image();
   }
-};
 
-// Check the size and scale and adjust output to match requirements from providers when necessary
-// Module to add maps providers libraries and store static URL's
+  _createClass(StaticMap, [{
+    key: 'image',
+    value: function image() {
+      return this.provider.urlParser(this.options);
+    }
+  }, {
+    key: 'latLng',
+    value: function latLng(lat, lng) {
+      return {
+        x: this.fromLngToPoint(lng) - this.fromLngToPoint(this.options.lng) + this.options.width / (2 / this.options.scale),
+        y: this.fromLatToPoint(lat) - this.fromLatToPoint(this.options.lat) + this.options.height / (2 / this.options.scale)
+      };
+    }
+  }, {
+    key: 'fromLatToPoint',
+    value: function fromLatToPoint(l) {
+      return this.options.pixels / PI * pow(2, this.options.zoom) * (PI - log(tan(PI / 4 + radians(l) / 2)));
+    }
+  }, {
+    key: 'fromLngToPoint',
+    value: function fromLngToPoint(l) {
+      return this.options.pixels / PI * pow(2, this.options.zoom) * (radians(l) + PI);
+    }
+  }]);
 
-var adjustSize = function adjustSize(provider, options) {
-  if (provider == 'google') {
-    if (options.scale == 1 || options.scale == undefined) {
-      options.pixels = 128;
-      options.scale = 1;
-    } else if (options.scale == 2) {
-      options.pixels = 256;
-    }
-    if (options.width > 640) {
-      _consoleMessages.warnings.staticSize.google('width', options.width);
-      options.width = 640;
-    }
-    if (options.height > 640) {
-      _consoleMessages.warnings.staticSize.google('height', options.height);
-      options.height = 640;
-    }
-  } else if (provider == 'mapbox') {
-    options.pixels = 256;
-    !options.scale && (options.scale = 1);
-    if (options.scale == 2) {
-      options.pixels = 512;
-    } else {
-      if (options.width > 1024) {
-        _consoleMessages.warnings.staticSize.mapbox('width', options.width);
-        options.width = 1024;
-      }
-      if (options.height > 1024) {
-        _consoleMessages.warnings.staticSize.mapbox('height', options.height);
-        options.height = 1024;
-      }
-    }
-  }
-};
+  return StaticMap;
+}();
 
-exports.staticMapProviders = staticMapProviders;
-exports.adjustSize = adjustSize;
+exports.StaticMap = StaticMap;
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-// Collection of console messages
-
-
-var warnings = {
-  staticSize: {
-    google: function google(s, m) {
-      console.warn('You requested an image with a ' + s + ' of ' + m + 'px. Google Maps Static API max ' + s + ' value is 640px. For larger images, change the scale to 2 and keep the ' + s + ' between 1-640px. i.e: if you want an image 800x800px, set the width and height to 400x400 and the scale to 2.');
-    },
-    mapbox: function mapbox(s, m) {
-      console.warn('You requested an image with a ' + s + ' of ' + m + 'px. Mapbox Static API max ' + s + ' value is 1024px.');
-    }
-  },
-  noKey: function noKey() {
-    console.warn('Please provide an API key for your map provider.');
-  }
-};
-
-exports.warnings = warnings;
-
-/***/ }),
-/* 2 */,
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -216,18 +153,20 @@ exports.TileMap = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); // Tiled Maps
 
+var _tileProviders = __webpack_require__(12);
 
-var _tileMapProviders = __webpack_require__(6);
+var tileProviders = _interopRequireWildcard(_tileProviders);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var TileMap = function () {
-  function TileMap(PROVIDER, OPTIONS) {
+  function TileMap(provider, options) {
     _classCallCheck(this, TileMap);
 
-    this.mapProvider = PROVIDER;
-    this.options = OPTIONS;
-    this.library = (0, _tileMapProviders.addLibrary)(this.mapProvider, this.options.key);
+    this.provider = tileProviders[provider];
+    this.options = options;
   }
 
   _createClass(TileMap, [{
@@ -237,7 +176,7 @@ var TileMap = function () {
       document.body.appendChild(div);
       div.setAttribute('style', 'position:absolute;width:' + canvas.width + 'px;height:' + canvas.height + 'px;top:0;left:0;z-index:-99');
       div.setAttribute('id', 'mappa');
-      (0, _tileMapProviders.createMap)(canvas, div, this.mapProvider, this.options);
+      this.provider.createMap(canvas, div, this.options);
     }
   }]);
 
@@ -265,16 +204,19 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _staticMapProviders = __webpack_require__(0);
-
-var _StaticMap = __webpack_require__(9);
+var _StaticMap = __webpack_require__(2);
 
 var _TileMap = __webpack_require__(3);
+
+var _staticProviders = __webpack_require__(11);
+
+var staticMapProviders = _interopRequireWildcard(_staticProviders);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 console.log('%c p5.maps Loaded ✓', 'color:white; background:green;');
-// import { addLibrary } from './tileMapProviders';
 
 var Mappa = function () {
   function Mappa(provider, key) {
@@ -289,23 +231,23 @@ var Mappa = function () {
     value: function staticMap() {
       var _this = this;
 
-      var OPTIONS = {};
+      var options = {};
 
       for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
       }
 
       if (_typeof(args[0]) == 'object') {
-        OPTIONS = Object.assign({}, args[0]);
+        options = Object.assign({}, args[0]);
       } else {
         args.forEach(function (el, i) {
-          var option = _staticMapProviders.staticMapProviders[_this.provider].options[i];
-          OPTIONS[option] = el;
+          var option = staticMapProviders[_this.provider].options[i];
+          options[option] = el;
         });
       };
-      OPTIONS.key = this.key;
+      options.key = this.key;
 
-      return new _StaticMap.StaticMappa(this.provider, OPTIONS);
+      return new _StaticMap.StaticMap(this.provider, options);
     }
   }, {
     key: 'tileMap',
@@ -314,18 +256,18 @@ var Mappa = function () {
         args[_key2] = arguments[_key2];
       }
 
-      var OPTIONS = void 0;
+      var options = void 0;
 
       if (_typeof(args[0]) == 'object') {
-        OPTIONS = Object.assign({}, args[0]);
+        options = Object.assign({}, args[0]);
       } else {
         ['lat', 'lng', 'zoom'].forEach(function (el, i) {
-          OPTIONS[el] = args[i];
+          options[el] = args[i];
         });
       };
-      OPTIONS.key = this.key;
+      options.key = this.key;
 
-      return new _TileMap.TileMap(this.provider, OPTIONS);
+      return new _TileMap.TileMap(this.provider, options);
     }
   }]);
 
@@ -336,7 +278,8 @@ module.exports = Mappa;
 
 /***/ }),
 /* 5 */,
-/* 6 */
+/* 6 */,
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -345,108 +288,245 @@ module.exports = Mappa;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.createMap = exports.addLibrary = undefined;
+exports.urlParser = exports.options = undefined;
 
-var _consoleMessages = __webpack_require__(1);
+var _messages = __webpack_require__(14);
 
-var script = void 0; // Tile Map Provider libraries
+// Query parameters
+var options = ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'format', 'maptype', 'language', 'region', 'path', 'style', 'signature', 'center'];
 
-var addLibrary = function addLibrary(provider, key) {
-  var vendor = void 0;
-  var style = void 0;
-  !key && _consoleMessages.warnings.noKey();
+// Url builder
+// Google Static Maps API v2
+// Reference: https://developers.google.com/maps/documentation/static-maps/
 
-  if (provider === 'google') {
-    vendor = 'https://maps.googleapis.com/maps/api/js';
-    key && (vendor += '?key=' + key);
-  } else if (provider === 'mapbox' && key != null) {
-    vendor = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js';
-    style = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css';
-  } else if (provider === 'osm') {
-    vendor = null;
-  } else if (provider === 'mapzen') {
-    vendor = null;
-  } else if (provider === 'carto') {
-    vendor = null;
-  } else if (provider === 'mapquest') {
-    vendor = null;
+var urlParser = function urlParser(OPTIONS) {
+  adjustScale(OPTIONS);
+  var url = 'https://maps.googleapis.com/maps/api/staticmap?';
+  var _OPTIONS = Object.assign({}, OPTIONS);
+  _OPTIONS.size = _OPTIONS.width + 'x' + _OPTIONS.height;
+  !_OPTIONS.center && (_OPTIONS.center = _OPTIONS.lat + ',' + _OPTIONS.lng);
+  !_OPTIONS.scale && (_OPTIONS.scale = 1);
+  ['width', 'height', 'lat', 'lng', 'pixels'].forEach(function (e) {
+    return delete _OPTIONS[e];
+  });
+  for (var option in _OPTIONS) {
+    _OPTIONS[option] != undefined && (url += '&' + option + '=' + _OPTIONS[option]);
+  }return url;
+};
+
+// Image/Screen scale adjustment
+var adjustScale = function adjustScale(options) {
+  if (options.scale == 1 || options.scale == undefined) {
+    options.pixels = 128;
+    options.scale = 1;
+  } else if (options.scale == 2) {
+    options.pixels = 256;
+  }
+  if (options.width > 640) {
+    _messages.google.staticSize('width', options.width);
+    options.width = 640;
+  }
+  if (options.height > 640) {
+    _messages.google.staticSize('height', options.height);
+    options.height = 640;
+  }
+};
+
+exports.options = options;
+exports.urlParser = urlParser;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.urlParser = exports.options = undefined;
+
+var _messages = __webpack_require__(14);
+
+// Query parameters
+var options = ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'bearing', 'pitch', 'style', 'username', 'overlay', 'attribution', 'logo', 'before_layer', 'center', 'size'];
+
+// Url builder
+// Mapbox Static API v1
+// Reference: https://www.mapbox.com/api-documentation/#styles
+
+var urlParser = function urlParser(OPTIONS) {
+  adjustScale(OPTIONS);
+  var url = 'https://api.mapbox.com/styles/v1/';
+  OPTIONS.username != undefined ? url += OPTIONS.username + '/' : url += 'mapbox/';
+  OPTIONS.style != undefined ? url += OPTIONS.style + '/' : url += 'streets-v10/';
+  url += 'static/';
+  OPTIONS.overlay != undefined && (url += OPTIONS.overlay + '/');
+  url += OPTIONS.lng + ',' + OPTIONS.lat + ',';
+  OPTIONS.auto == false || OPTIONS.auto == undefined ? ['zoom', 'bearing', 'pitch'].forEach(function (e, i) {
+    OPTIONS[e] != undefined ? url += OPTIONS[e] : url += 0;
+    i < 2 && (url += ',');
+  }) : url += 'auto';
+  url += '/' + OPTIONS.width + 'x' + OPTIONS.height;
+  OPTIONS.scale == 2 && (url += '@2x');
+  url += '?access_token=' + OPTIONS.key;
+  !OPTIONS.attribution && (url += '&attribution=false');
+  !OPTIONS.logo && (url += '&logo=false');
+  !OPTIONS.before_layer && (url += '&before_layer=' + OPTIONS.before_layer);
+  return url;
+};
+
+// Image/Screen scale adjustment
+var adjustScale = function adjustScale(options) {
+  options.pixels = 256;
+  !options.scale && (options.scale = 1);
+  if (options.scale == 2) {
+    options.pixels = 512;
   } else {
-    vendor = null;
-  }
-
-  // Add provider's library to DOM
-  if (!document.getElementById(provider)) {
-    script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = vendor;
-    script.id = provider;
-    document.head.appendChild(script);
-    if (style) {
-      var st = document.createElement('link');
-      st.rel = 'stylesheet';
-      st.href = style;
-      document.head.appendChild(st);
+    if (options.width > 1024) {
+      _messages.mapbox.staticSize('width', options.width);
+      options.width = 1024;
+    }
+    if (options.height > 1024) {
+      _messages.mapbox.staticSize('height', options.height);
+      options.height = 1024;
     }
   }
 };
 
-var createMap = function createMap(canvas, div, PROVIDER, OPTIONS) {
-  var map = void 0;
-  script.onload = function () {
-    if (PROVIDER == 'mapbox') {
-      var project = function project(d) {
-        return map.project(getLL(d));
-      };
+exports.options = options;
+exports.urlParser = urlParser;
 
-      var getLL = function getLL(d) {
-        return new mapboxgl.LngLat(+d.lng, +d.lat);
-      };
+/***/ }),
+/* 9 */,
+/* 10 */,
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
 
-      mapboxgl.accessToken = OPTIONS.key;
+"use strict";
 
-      map = new mapboxgl.Map({
-        container: 'mappa',
-        style: OPTIONS.style,
-        center: [OPTIONS.lng, OPTIONS.lat],
-        zoom: OPTIONS.zoom
-      });
 
-      canvas.parent(map.getCanvasContainer());
-      canvas.elt.style.position = 'absolute';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.mapbox = exports.google = undefined;
 
-      window.tileMappa = map;
-      // function render() {
-      //   //clear();
-      // }
-      //
-      // // render for the first time
-      // render();
-      //
-      // // re-render whenever the view changes
-      // mappa.on('viewreset', function () {
-      //   render();
-      // });
-      //
-      // mappa.on('move', function () {
-      //   render();
-      // });
-      // let url = "https://{s}.tiles.mapbox.com/v4/";
-      // (OPTIONS.style) ? url += OPTIONS.style: url += 'mapbox.light';
-      // url += '/{z}/{x}/{y}@2x.png?access_token='
-      // url += OPTIONS.key
-      // let leafletMap = L.map(div).setView([options.lat, options.lng], options.zoom);
-      // L.tileLayer(url).addTo(leafletMap);
+var _google = __webpack_require__(7);
+
+var google = _interopRequireWildcard(_google);
+
+var _mapbox = __webpack_require__(8);
+
+var mapbox = _interopRequireWildcard(_mapbox);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+// Static Map Providers
+
+exports.google = google;
+exports.mapbox = mapbox;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.mapboxgl = undefined;
+
+var _mapboxGl = __webpack_require__(13);
+
+var mapboxgl = _interopRequireWildcard(_mapboxGl);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+exports.mapboxgl = mapboxgl; // Tile Map Provider
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.createMap = undefined;
+
+var _messages = __webpack_require__(14);
+
+var _addLibrary = __webpack_require__(15);
+
+// Mapbox-gl v0.37.0
+// Reference: https://www.mapbox.com/mapbox-gl-js/api/
+
+var createMap = function createMap(canvas, div, options) {
+
+  if (!options.key) {
+    return _messages.mapboxgl.noKey();
+  }
+
+  var script = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js';
+  var style = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css';
+
+  var lib = (0, _addLibrary.addLibrary)(options.key, 'mapbox', script, style);
+
+  lib.onload = function () {
+
+    mapboxgl.accessToken = options.key;
+
+    var map = new mapboxgl.Map({
+      container: 'mappa',
+      style: options.style,
+      center: [options.lng, options.lat],
+      zoom: options.zoom
+    });
+
+    canvas.parent(map.getCanvasContainer());
+    canvas.elt.style.position = 'absolute';
+
+    function project(d) {
+      return map.project(getLL(d));
     }
+    function getLL(d) {
+      return new mapboxgl.LngLat(+d.lng, +d.lat);
+    }
+
+    window.tileMappa = map;
   };
+  // function render() {
+  //   //clear();
+  // }
+  //
+  // // render for the first time
+  // render();
+  //
+  // // re-render whenever the view changes
+  // mappa.on('viewreset', function () {
+  //   render();
+  // });
+  //
+  // mappa.on('move', function () {
+  //   render();
+  // });
+  // let url = "https://{s}.tiles.mapbox.com/v4/";
+  // (OPTIONS.style) ? url += OPTIONS.style: url += 'mapbox.light';
+  // url += '/{z}/{x}/{y}@2x.png?access_token='
+  // url += OPTIONS.key
+  // let leafletMap = L.map(div).setView([options.lat, options.lng], options.zoom);
+  // L.tileLayer(url).addTo(leafletMap);
 };
 
-exports.addLibrary = addLibrary;
 exports.createMap = createMap;
 
 /***/ }),
-/* 7 */,
-/* 8 */,
-/* 9 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -455,56 +535,70 @@ exports.createMap = createMap;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.StaticMappa = undefined;
+// Collection of console messages
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); // Static Maps
+var mapbox = {
+  staticSize: function staticSize(s, m) {
+    console.warn('You requested an image with a ' + s + ' of ' + m + 'px. Mapbox Static API max ' + s + ' value is 1024px.');
+  },
+  noKey: function noKey() {
+    console.warn('Please provide an API key for your map provider.');
+  }
+};
 
-var _consoleMessages = __webpack_require__(1);
+var mapboxgl = {
+  noKey: function noKey() {
+    console.error('Mapbox need an API key to work. Please provide an API key for your map provider. To get a key visit: ');
+  }
+};
 
-var _staticMapProviders = __webpack_require__(0);
+var google = {
+  staticSize: function staticSize(s, m) {
+    console.warn('You requested an image with a ' + s + ' of ' + m + 'px. Google Maps Static API max ' + s + ' value is 640px. For larger images, change the scale to 2 and keep the ' + s + ' between 1-640px. i.e: if you want an image 800x800px, set the width and height to 400x400 and the scale to 2.');
+  },
+  noKey: function noKey() {
+    console.warn('Please provide an API key for your map provider.');
+  }
+};
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+exports.mapbox = mapbox;
+exports.google = google;
 
-var StaticMappa = function () {
-  function StaticMappa(PROVIDER, OPTIONS) {
-    _classCallCheck(this, StaticMappa);
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
 
-    this.mapProvider = PROVIDER;
-    this.mapConstructor = _staticMapProviders.staticMapProviders[PROVIDER];
-    this.options = OPTIONS;
-    this.img = this.image();
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// Add a library(.js) and style(.css) to the DOM
+
+
+var addLibrary = function addLibrary(key, provider, script, style) {
+
+  var scriptTag = void 0;
+
+  if (!document.getElementById(provider)) {
+    scriptTag = document.createElement('script');
+    scriptTag.type = 'text/javascript';
+    scriptTag.src = script;
+    scriptTag.id = provider;
+    document.head.appendChild(scriptTag);
+    if (style) {
+      var styleTag = document.createElement('link');
+      styleTag.rel = 'stylesheet';
+      styleTag.href = style;
+      document.head.appendChild(styleTag);
+    }
   }
 
-  _createClass(StaticMappa, [{
-    key: 'image',
-    value: function image() {
-      (0, _staticMapProviders.adjustSize)(this.mapProvider, this.options);
-      return this.mapConstructor.urlParser(this.options);
-    }
-  }, {
-    key: 'latLng',
-    value: function latLng(lat, lng) {
-      return {
-        x: this.fromLngToPoint(lng) - this.fromLngToPoint(this.options.lng) + this.options.width / (2 / this.options.scale),
-        y: this.fromLatToPoint(lat) - this.fromLatToPoint(this.options.lat) + this.options.height / (2 / this.options.scale)
-      };
-    }
-  }, {
-    key: 'fromLatToPoint',
-    value: function fromLatToPoint(l) {
-      return this.options.pixels / PI * pow(2, this.options.zoom) * (PI - log(tan(PI / 4 + radians(l) / 2)));
-    }
-  }, {
-    key: 'fromLngToPoint',
-    value: function fromLngToPoint(l) {
-      return this.options.pixels / PI * pow(2, this.options.zoom) * (radians(l) + PI);
-    }
-  }]);
+  return scriptTag;
+};
 
-  return StaticMappa;
-}();
-
-exports.StaticMappa = StaticMappa;
+exports.addLibrary = addLibrary;
 
 /***/ })
 /******/ ]);

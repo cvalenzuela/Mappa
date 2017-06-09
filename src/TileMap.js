@@ -1,13 +1,11 @@
 // Tiled Maps
 
-
-import { addLibrary, createMap } from './tileMapProviders';
+import * as tileProviders from './providers/tileProviders';
 
 class TileMap {
-  constructor(PROVIDER, OPTIONS){
-    this.mapProvider = PROVIDER
-    this.options = OPTIONS;
-    this.library = addLibrary(this.mapProvider, this.options.key);
+  constructor(provider, options){
+    this.provider = tileProviders[provider];
+    this.options = options;
   }
 
   append(canvas){
@@ -15,7 +13,7 @@ class TileMap {
     document.body.appendChild(div);
     div.setAttribute('style', 'position:absolute;width:'+ canvas.width + 'px;height:' + canvas.height + 'px;top:0;left:0;z-index:-99');
     div.setAttribute('id', 'mappa');
-    createMap(canvas, div, this.mapProvider, this.options)
+    this.provider.createMap(canvas, div, this.options)
   }
 
 }
