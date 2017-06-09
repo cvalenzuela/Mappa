@@ -157,6 +157,10 @@ var _tileProviders = __webpack_require__(12);
 
 var tileProviders = _interopRequireWildcard(_tileProviders);
 
+var _messages = __webpack_require__(14);
+
+var messages = _interopRequireWildcard(_messages);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -167,16 +171,49 @@ var TileMap = function () {
 
     this.provider = tileProviders[provider];
     this.options = options;
+    this.ready = false;
+    !this.options.key ? messages[provider].noKey() : this.init(provider);
   }
 
   _createClass(TileMap, [{
+    key: 'init',
+    value: function init(provider) {
+      var _this = this;
+
+      var scriptTag = void 0;
+      if (!document.getElementById(provider)) {
+        scriptTag = document.createElement('script');
+        scriptTag.type = 'text/javascript';
+        scriptTag.src = this.provider.script;
+        scriptTag.id = provider;
+        document.head.appendChild(scriptTag);
+        if (this.provider.style) {
+          var styleTag = document.createElement('link');
+          styleTag.rel = 'stylesheet';
+          styleTag.href = this.provider.style;
+          document.head.appendChild(styleTag);
+        }
+      }
+      scriptTag.onload = function () {
+        _this.ready = true;
+      };
+    }
+  }, {
     key: 'append',
     value: function append(canvas) {
-      var div = document.createElement('div');
-      document.body.appendChild(div);
-      div.setAttribute('style', 'position:absolute;width:' + canvas.width + 'px;height:' + canvas.height + 'px;top:0;left:0;z-index:-99');
-      div.setAttribute('id', 'mappa');
-      this.provider.createMap(canvas, div, this.options);
+      var _this2 = this;
+
+      if (this.ready) {
+        var div = document.createElement('div');
+        document.body.appendChild(div);
+        div.setAttribute('style', 'position:absolute;width:' + canvas.width + 'px;height:' + canvas.height + 'px;top:0;left:0;z-index:-99');
+        div.setAttribute('id', 'mappa');
+        this.map = this.provider.createMap(canvas, this.options);
+      } else {
+        setTimeout(function () {
+          _this2.append(canvas);
+        }, 300);
+      }
     }
   }]);
 
@@ -457,72 +494,50 @@ exports.mapboxgl = mapboxgl; // Tile Map Provider
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.createMap = undefined;
+exports.createMap = exports.style = exports.script = undefined;
 
 var _messages = __webpack_require__(14);
 
-var _addLibrary = __webpack_require__(15);
+// import { addLibrary } from './../addLibrary'
 
-// Mapbox-gl v0.37.0
+var script = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js'; // Mapbox-gl v0.37.0
 // Reference: https://www.mapbox.com/mapbox-gl-js/api/
 
-var createMap = function createMap(canvas, div, options) {
+var style = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css';
 
-  if (!options.key) {
-    return _messages.mapboxgl.noKey();
-  }
+var createMap = function createMap(canvas, options) {
 
-  var script = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js';
-  var style = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css';
-
-  var lib = (0, _addLibrary.addLibrary)(options.key, 'mapbox', script, style);
-
-  lib.onload = function () {
-
-    mapboxgl.accessToken = options.key;
-
-    var map = new mapboxgl.Map({
-      container: 'mappa',
-      style: options.style,
-      center: [options.lng, options.lat],
-      zoom: options.zoom
-    });
-
-    canvas.parent(map.getCanvasContainer());
-    canvas.elt.style.position = 'absolute';
-
-    function project(d) {
-      return map.project(getLL(d));
-    }
-    function getLL(d) {
-      return new mapboxgl.LngLat(+d.lng, +d.lat);
-    }
-
-    window.tileMappa = map;
-  };
-  // function render() {
-  //   //clear();
+  // if(!options.key){
+  //   return message.noKey();
   // }
   //
-  // // render for the first time
-  // render();
+  // const script = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js';
+  // const style = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css';
   //
-  // // re-render whenever the view changes
-  // mappa.on('viewreset', function () {
-  //   render();
-  // });
+  // let lib = addLibrary(options.key, 'mapbox', script, style);
+  // let map;
+  mapboxgl.accessToken = options.key;
+
+  map = new mapboxgl.Map({
+    container: 'mappa',
+    style: options.style,
+    center: [options.lng, options.lat],
+    zoom: options.zoom
+  });
+
+  canvas.parent(map.getCanvasContainer());
+  canvas.elt.style.position = 'absolute';
+
+  return map;
+  //window.tileMap = map;
+  // lib.onload = () => {
   //
-  // mappa.on('move', function () {
-  //   render();
-  // });
-  // let url = "https://{s}.tiles.mapbox.com/v4/";
-  // (OPTIONS.style) ? url += OPTIONS.style: url += 'mapbox.light';
-  // url += '/{z}/{x}/{y}@2x.png?access_token='
-  // url += OPTIONS.key
-  // let leafletMap = L.map(div).setView([options.lat, options.lng], options.zoom);
-  // L.tileLayer(url).addTo(leafletMap);
+  //
+  // };
 };
 
+exports.script = script;
+exports.style = style;
 exports.createMap = createMap;
 
 /***/ }),
@@ -563,42 +578,6 @@ var google = {
 
 exports.mapbox = mapbox;
 exports.google = google;
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-// Add a library(.js) and style(.css) to the DOM
-
-
-var addLibrary = function addLibrary(key, provider, script, style) {
-
-  var scriptTag = void 0;
-
-  if (!document.getElementById(provider)) {
-    scriptTag = document.createElement('script');
-    scriptTag.type = 'text/javascript';
-    scriptTag.src = script;
-    scriptTag.id = provider;
-    document.head.appendChild(scriptTag);
-    if (style) {
-      var styleTag = document.createElement('link');
-      styleTag.rel = 'stylesheet';
-      styleTag.href = style;
-      document.head.appendChild(styleTag);
-    }
-  }
-
-  return scriptTag;
-};
-
-exports.addLibrary = addLibrary;
 
 /***/ })
 /******/ ]);
