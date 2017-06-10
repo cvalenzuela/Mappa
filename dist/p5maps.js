@@ -77,8 +77,76 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ })
 /************************************************************************/
 /******/ ([
-/* 0 */,
-/* 1 */,
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// -----------
+// Collection of console messages
+// -----------
+
+var mapbox = {
+  staticSize: function staticSize(s, m) {
+    console.warn('You requested an image with a ' + s + ' of ' + m + 'px. Mapbox Static API max ' + s + ' value is 1024px.');
+  },
+  noKey: function noKey() {
+    console.warn('Please provide an API key for your map provider.');
+  }
+};
+
+var mapboxgl = {
+  noKey: function noKey() {
+    console.error('Mapbox need an API key to work. Please provide an API key for your map provider. To get a key visit: ');
+  }
+};
+
+var google = {
+  staticSize: function staticSize(s, m) {
+    console.warn('You requested an image with a ' + s + ' of ' + m + 'px. Google Maps Static API max ' + s + ' value is 640px. For larger images, change the scale to 2 and keep the ' + s + ' between 1-640px. i.e: if you want an image 800x800px, set the width and height to 400x400 and the scale to 2.');
+  },
+  noKey: function noKey() {
+    console.warn('Please provide an API key for your map provider.');
+  }
+};
+
+exports.mapbox = mapbox;
+exports.google = google;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.mapbox = exports.google = undefined;
+
+var _google = __webpack_require__(5);
+
+var google = _interopRequireWildcard(_google);
+
+var _mapbox = __webpack_require__(6);
+
+var mapbox = _interopRequireWildcard(_mapbox);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+// -----------
+// Static Map Providers
+// -----------
+
+exports.google = google;
+exports.mapbox = mapbox;
+
+/***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -94,7 +162,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 // Static Maps
 // -----------
 
-var _staticProviders = __webpack_require__(11);
+var _staticProviders = __webpack_require__(1);
 
 var staticProviders = _interopRequireWildcard(_staticProviders);
 
@@ -157,11 +225,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 // Tiled Maps
 // -----------
 
-var _tileProviders = __webpack_require__(12);
+var _tileProviders = __webpack_require__(9);
 
 var tileProviders = _interopRequireWildcard(_tileProviders);
 
-var _messages = __webpack_require__(14);
+var _messages = __webpack_require__(0);
 
 var messages = _interopRequireWildcard(_messages);
 
@@ -175,7 +243,7 @@ var TileMap = function () {
 
     this.provider = tileProviders[provider];
     this.options = options;
-    this.ready = false;
+    this.ready = false; // false by default
     !this.options.key ? messages[provider].noKey() : this.init(provider);
   }
 
@@ -269,7 +337,7 @@ var _StaticMap = __webpack_require__(2);
 
 var _TileMap = __webpack_require__(3);
 
-var _staticProviders = __webpack_require__(11);
+var _staticProviders = __webpack_require__(1);
 
 var staticMapProviders = _interopRequireWildcard(_staticProviders);
 
@@ -338,9 +406,7 @@ var Mappa = function () {
 module.exports = Mappa;
 
 /***/ }),
-/* 5 */,
-/* 6 */,
-/* 7 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -351,7 +417,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.urlParser = exports.options = undefined;
 
-var _messages = __webpack_require__(14);
+var _messages = __webpack_require__(0);
 
 // Query parameters
 var options = ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'format', 'maptype', 'language', 'region', 'path', 'style', 'signature', 'center'];
@@ -399,7 +465,7 @@ exports.options = options;
 exports.urlParser = urlParser;
 
 /***/ }),
-/* 8 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -410,7 +476,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.urlParser = exports.options = undefined;
 
-var _messages = __webpack_require__(14);
+var _messages = __webpack_require__(0);
 
 // Query parameters
 var options = ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'bearing', 'pitch', 'style', 'username', 'overlay', 'attribution', 'logo', 'before_layer', 'center', 'size'];
@@ -464,9 +530,7 @@ exports.options = options;
 exports.urlParser = urlParser;
 
 /***/ }),
-/* 9 */,
-/* 10 */,
-/* 11 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -475,49 +539,65 @@ exports.urlParser = urlParser;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.mapbox = exports.google = undefined;
+exports.latLng = exports.createMap = exports.style = exports.script = undefined;
 
-var _google = __webpack_require__(7);
+var _messages = __webpack_require__(0);
 
-var google = _interopRequireWildcard(_google);
-
-var _mapbox = __webpack_require__(8);
-
-var mapbox = _interopRequireWildcard(_mapbox);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-// -----------
-// Static Map Providers
+// Library
+var script = function script(key) {
+  return 'https://maps.googleapis.com/maps/api/js?key=' + key;
+}; // -----------
+// Google Maps JavaScript v3.28
+// Reference: https://developers.google.com/maps/documentation/javascript/
 // -----------
 
-exports.google = google;
-exports.mapbox = mapbox;
+var style = null;
+
+var map = void 0;
+var overlay = void 0;
+var overlayProjection = void 0;
+
+// Create the map
+var createMap = function createMap(canvas, options) {
+  map = new google.maps.Map(document.getElementById('mappa'), {
+    center: { lat: options.lat, lng: options.lng },
+    zoom: options.zoom
+  });
+
+  overlay = new google.maps.OverlayView();
+  overlay.setMap(map);
+  overlay.onAdd = function () {
+    canvas.elt.style.position = 'absolute';
+    var div = canvas.elt;
+    overlay.getPanes().overlayLayer.appendChild(div);
+    overlayProjection = overlay.getProjection();
+  };
+  overlay.draw = function () {
+    overlayProjection = overlay.getProjection();
+  };
+
+  return map;
+};
+
+// Get LatLng
+var latLng = function latLng(position) {
+  if (overlayProjection) {
+    return overlayProjection.fromLatLngToContainerPixel(new google.maps.LatLng(position.lat, position.lng));
+  } else {
+    return { x: 0, y: 0 };
+  }
+};
+
+// Get Zoom
+var zoom = function zoom() {};
+
+exports.script = script;
+exports.style = style;
+exports.createMap = createMap;
+exports.latLng = latLng;
 
 /***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.mapboxgl = undefined;
-
-var _mapboxGl = __webpack_require__(13);
-
-var mapboxgl = _interopRequireWildcard(_mapboxGl);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-exports.mapboxgl = mapboxgl; // -----------
-// Tile Map Provider
-// -----------
-
-/***/ }),
-/* 13 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -528,7 +608,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.zoom = exports.latLng = exports.createMap = exports.style = exports.script = undefined;
 
-var _messages = __webpack_require__(14);
+var _messages = __webpack_require__(0);
 
 // Library
 var script = function script() {
@@ -542,7 +622,7 @@ var style = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css';
 
 var map = void 0;
 
-// Create the map
+// Create a Map
 var createMap = function createMap(canvas, options) {
   mapboxgl.accessToken = options.key;
 
@@ -576,7 +656,7 @@ exports.latLng = latLng;
 exports.zoom = zoom;
 
 /***/ }),
-/* 14 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -585,35 +665,23 @@ exports.zoom = zoom;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.google = exports.mapboxgl = undefined;
+
+var _mapboxGl = __webpack_require__(8);
+
+var mapboxgl = _interopRequireWildcard(_mapboxGl);
+
+var _google = __webpack_require__(7);
+
+var google = _interopRequireWildcard(_google);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 // -----------
-// Collection of console messages
+// Tile Map Provider
 // -----------
 
-var mapbox = {
-  staticSize: function staticSize(s, m) {
-    console.warn('You requested an image with a ' + s + ' of ' + m + 'px. Mapbox Static API max ' + s + ' value is 1024px.');
-  },
-  noKey: function noKey() {
-    console.warn('Please provide an API key for your map provider.');
-  }
-};
-
-var mapboxgl = {
-  noKey: function noKey() {
-    console.error('Mapbox need an API key to work. Please provide an API key for your map provider. To get a key visit: ');
-  }
-};
-
-var google = {
-  staticSize: function staticSize(s, m) {
-    console.warn('You requested an image with a ' + s + ' of ' + m + 'px. Google Maps Static API max ' + s + ' value is 640px. For larger images, change the scale to 2 and keep the ' + s + ' between 1-640px. i.e: if you want an image 800x800px, set the width and height to 400x400 and the scale to 2.');
-  },
-  noKey: function noKey() {
-    console.warn('Please provide an API key for your map provider.');
-  }
-};
-
-exports.mapbox = mapbox;
+exports.mapboxgl = mapboxgl;
 exports.google = google;
 
 /***/ })

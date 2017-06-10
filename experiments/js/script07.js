@@ -1,5 +1,6 @@
 var mappa;
 var mapboxKey = 'pk.eyJ1IjoiZW5qYWxvdCIsImEiOiJjaWhtdmxhNTIwb25zdHBsejk0NGdhODJhIn0.2-F2hS_oTZenAWc0BMf_uw'
+var googleKey = 'AIzaSyAGz9IlglBq-gWCSzCWVC11autdr1LLhbM'
 var canvas;
 var myMap;
 var nyc = [40.7828647, -73.9675438];
@@ -13,22 +14,26 @@ var options = {
 }
 
 function preload(){
-  mappa = new Mappa('mapboxgl', mapboxKey);
+  //mappa = new Mappa('mapboxgl', mapboxKey);
+  mappa = new Mappa('google', googleKey);
   myMap = mappa.tileMap(options);
-  dots = loadStrings('data/dots.csv');
+  // dots = loadStrings('data/dots.csv');
 }
 
 function setup(){
   canvas = createCanvas(900, 650);
   myMap.append(canvas);
   noStroke();
+  fill(255, 0, 255);
+  ellipse(100,100,100,100);
 }
 
 function draw(){
   clear();
   var pos = myMap.latLng(40.7828647, -73.9675438);
-  var size = myMap.zoom()*5;
-  ellipse(pos.x, pos.y, size, size);
+  //console.log(pos)
+  //var size = myMap.zoom()*5;
+  ellipse(pos.x, pos.y, 40, 40);
 
   // for (var i = 1; i < dots.length; i++) {
   //   var data = dots[i].split(/,/);

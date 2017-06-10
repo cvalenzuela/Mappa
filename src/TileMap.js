@@ -9,7 +9,7 @@ class TileMap {
   constructor(provider, options){
     this.provider = tileProviders[provider];
     this.options = options;
-    this.ready = false;
+    this.ready = false; // false by default
     (!this.options.key) ? messages[provider].noKey() : this.init(provider);
   }
 

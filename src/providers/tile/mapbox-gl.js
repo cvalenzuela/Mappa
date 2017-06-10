@@ -13,7 +13,7 @@ const style = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css';
 
 let map;
 
-// Create the map
+// Create a Map
 let createMap = (canvas, options) => {
   mapboxgl.accessToken = options.key;
 
@@ -39,5 +39,6 @@ let latLng = (position) => {
 let zoom = () => {
   return map.getZoom();
 }
+
 
 export { script, style, createMap, latLng, zoom };
