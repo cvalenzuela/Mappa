@@ -1,4 +1,6 @@
+// -----------
 // Collection of console messages
+// -----------
 
 let mapbox = {
   staticSize: (s, m) => {console.warn(`You requested an image with a ${s} of ${m}px. Mapbox Static API max ${s} value is 1024px.`)},

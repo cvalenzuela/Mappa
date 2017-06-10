@@ -1,23 +1,20 @@
+// -----------
 // Mapbox-gl v0.37.0
 // Reference: https://www.mapbox.com/mapbox-gl-js/api/
+// -----------
 
 import { mapboxgl as message } from './../messages';
-// import { addLibrary } from './../addLibrary'
 
-let script = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js';
-let style = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css';
+// Library
+let script = () =>{
+  return 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js';
+}
+const style = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css';
 
+let map;
+
+// Create the map
 let createMap = (canvas, options) => {
-
-  // if(!options.key){
-  //   return message.noKey();
-  // }
-  //
-  // const script = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js';
-  // const style = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css';
-  //
-  // let lib = addLibrary(options.key, 'mapbox', script, style);
-  // let map;
   mapboxgl.accessToken = options.key;
 
   map = new mapboxgl.Map({
@@ -31,13 +28,16 @@ let createMap = (canvas, options) => {
   canvas.elt.style.position = 'absolute';
 
   return map;
-  //window.tileMap = map;
-  // lib.onload = () => {
-  //
-  //
-  // };
-
 }
 
+// Get LatLng
+let latLng = (position) => {
+  return map.project(position);
+}
 
-export { script, style, createMap };
+// Get Zoom
+let zoom = () => {
+  return map.getZoom();
+}
+
+export { script, style, createMap, latLng, zoom };

@@ -1,4 +1,6 @@
+// -----------
 // Static Maps
+// -----------
 
 import * as staticProviders from './providers/staticProviders';
 

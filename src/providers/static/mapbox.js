@@ -1,5 +1,7 @@
+// -----------
 // Mapbox Static API v1
 // Reference: https://www.mapbox.com/api-documentation/#styles
+// -----------
 
 import { mapbox as message } from './../messages';
 

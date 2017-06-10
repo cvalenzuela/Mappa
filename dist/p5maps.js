@@ -90,7 +90,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.StaticMap = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); // Static Maps
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); // -----------
+// Static Maps
+// -----------
 
 var _staticProviders = __webpack_require__(11);
 
@@ -151,7 +153,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TileMap = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); // Tiled Maps
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); // -----------
+// Tiled Maps
+// -----------
 
 var _tileProviders = __webpack_require__(12);
 
@@ -184,7 +188,7 @@ var TileMap = function () {
       if (!document.getElementById(provider)) {
         scriptTag = document.createElement('script');
         scriptTag.type = 'text/javascript';
-        scriptTag.src = this.provider.script;
+        scriptTag.src = this.provider.script(this.options.key);
         scriptTag.id = provider;
         document.head.appendChild(scriptTag);
         if (this.provider.style) {
@@ -213,6 +217,26 @@ var TileMap = function () {
         setTimeout(function () {
           _this2.append(canvas);
         }, 300);
+      }
+    }
+  }, {
+    key: 'latLng',
+    value: function latLng() {
+      var pos = { lat: arguments.length <= 0 ? undefined : arguments[0], lng: arguments.length <= 1 ? undefined : arguments[1] };
+
+      if (this.map) {
+        return this.provider.latLng(pos);
+      } else {
+        return { x: 0, y: 0 };
+      }
+    }
+  }, {
+    key: 'zoom',
+    value: function zoom() {
+      if (this.map) {
+        return Math.floor(this.provider.zoom());
+      } else {
+        return 0;
       }
     }
   }]);
@@ -333,8 +357,10 @@ var _messages = __webpack_require__(14);
 var options = ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'format', 'maptype', 'language', 'region', 'path', 'style', 'signature', 'center'];
 
 // Url builder
+// -----------
 // Google Static Maps API v2
 // Reference: https://developers.google.com/maps/documentation/static-maps/
+// -----------
 
 var urlParser = function urlParser(OPTIONS) {
   adjustScale(OPTIONS);
@@ -390,8 +416,10 @@ var _messages = __webpack_require__(14);
 var options = ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'bearing', 'pitch', 'style', 'username', 'overlay', 'attribution', 'logo', 'before_layer', 'center', 'size'];
 
 // Url builder
+// -----------
 // Mapbox Static API v1
 // Reference: https://www.mapbox.com/api-documentation/#styles
+// -----------
 
 var urlParser = function urlParser(OPTIONS) {
   adjustScale(OPTIONS);
@@ -459,7 +487,9 @@ var mapbox = _interopRequireWildcard(_mapbox);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+// -----------
 // Static Map Providers
+// -----------
 
 exports.google = google;
 exports.mapbox = mapbox;
@@ -482,7 +512,9 @@ var mapboxgl = _interopRequireWildcard(_mapboxGl);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-exports.mapboxgl = mapboxgl; // Tile Map Provider
+exports.mapboxgl = mapboxgl; // -----------
+// Tile Map Provider
+// -----------
 
 /***/ }),
 /* 13 */
@@ -494,28 +526,24 @@ exports.mapboxgl = mapboxgl; // Tile Map Provider
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.createMap = exports.style = exports.script = undefined;
+exports.zoom = exports.latLng = exports.createMap = exports.style = exports.script = undefined;
 
 var _messages = __webpack_require__(14);
 
-// import { addLibrary } from './../addLibrary'
-
-var script = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js'; // Mapbox-gl v0.37.0
+// Library
+var script = function script() {
+  return 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js';
+}; // -----------
+// Mapbox-gl v0.37.0
 // Reference: https://www.mapbox.com/mapbox-gl-js/api/
+// -----------
 
 var style = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css';
 
-var createMap = function createMap(canvas, options) {
+var map = void 0;
 
-  // if(!options.key){
-  //   return message.noKey();
-  // }
-  //
-  // const script = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js';
-  // const style = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css';
-  //
-  // let lib = addLibrary(options.key, 'mapbox', script, style);
-  // let map;
+// Create the map
+var createMap = function createMap(canvas, options) {
   mapboxgl.accessToken = options.key;
 
   map = new mapboxgl.Map({
@@ -529,16 +557,23 @@ var createMap = function createMap(canvas, options) {
   canvas.elt.style.position = 'absolute';
 
   return map;
-  //window.tileMap = map;
-  // lib.onload = () => {
-  //
-  //
-  // };
+};
+
+// Get LatLng
+var latLng = function latLng(position) {
+  return map.project(position);
+};
+
+// Get Zoom
+var zoom = function zoom() {
+  return map.getZoom();
 };
 
 exports.script = script;
 exports.style = style;
 exports.createMap = createMap;
+exports.latLng = latLng;
+exports.zoom = zoom;
 
 /***/ }),
 /* 14 */
@@ -550,7 +585,9 @@ exports.createMap = createMap;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+// -----------
 // Collection of console messages
+// -----------
 
 var mapbox = {
   staticSize: function staticSize(s, m) {

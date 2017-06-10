@@ -1,5 +1,7 @@
+// -----------
 // Google Static Maps API v2
 // Reference: https://developers.google.com/maps/documentation/static-maps/
+// -----------
 
 import { google as message } from './../messages';
 
