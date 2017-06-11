@@ -8,23 +8,27 @@ import { TileMap } from './TileMap';
 class Google extends TileMap {
   constructor(options){
     super(options);
-    this.script = 'https://maps.googleapis.com/maps/api/js?key=' + this.options.key;
-    (!this.options.key) ? console.log('nokey') : this.init();
+    this.script = 'https://maps.googleapis.com/maps/api/js';
+    this.options.key && (this.script += '?key=' + this.options.key);
+    this.init();
   }
 
   createMap () {
+    !this.options.key && Google.messages().key();
+
     let map = new google.maps.Map(document.getElementById('mappa'), {
       center: {lat: this.options.lat, lng: this.options.lng},
-      zoom: this.options.zoom
+      zoom: this.options.zoom || 6,
     });
 
     let overlay = new google.maps.OverlayView();
+    overlay.draw = function(){}
     overlay.setMap(map);
+    let mapCanvasProjection = overlay.getProjection();
     overlay.onAdd = () => {
-      let div = this.canvas.elt;
+      let div = this.canvas;
       overlay.getPanes().overlayLayer.appendChild(div);
     }
-    overlay.draw = () => {}
 
     return map;
   }
@@ -43,6 +47,12 @@ class Google extends TileMap {
   }
 
   fromZoomtoPixel () {
+  }
+
+  static messages(){
+    return {
+      key: () => {console.warn('Please provide a Goolge Maps API Key. Get one here: https://developers.google.com/maps/documentation/javascript/ ')}
+    }
   }
 }
 
