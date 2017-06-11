@@ -3,41 +3,55 @@
 // Reference: https://developers.google.com/maps/documentation/static-maps/
 // -----------
 
-import { google as message } from './../messages';
+import { StaticMap } from './StaticMap';
 
-// Query parameters
-let options= ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'format', 'maptype', 'language', 'region', 'path', 'style', 'signature', 'center'];
+class Google extends StaticMap {
+  constructor(options){
+    super(options);
+    this.url = 'https://maps.googleapis.com/maps/api/staticmap?';
+    this.init();
+    this.img = this.createImage();
+  }
 
-// Url builder
-let urlParser = (OPTIONS) => {
-  adjustScale(OPTIONS);
-  let url = 'https://maps.googleapis.com/maps/api/staticmap?';
-  let _OPTIONS = Object.assign({}, OPTIONS);
-  _OPTIONS.size = _OPTIONS.width + 'x' + _OPTIONS.height;
-  !_OPTIONS.center && (_OPTIONS.center = _OPTIONS.lat + ',' + _OPTIONS.lng);
-  !_OPTIONS.scale && (_OPTIONS.scale = 1);
-  ['width', 'height', 'lat', 'lng', 'pixels'].forEach (e => delete _OPTIONS[e]);
-  for(let option in _OPTIONS)
-    _OPTIONS[option] != undefined && (url += '&' + option + '=' + _OPTIONS[option])
-  return url
+  init() {
+    if(this.options.scale == 1 || this.options.scale == undefined) {
+      this.options.pixels = 128
+      this.options.scale = 1;
+    } else if (this.options.scale == 2){
+      this.options.pixels = 256;
+    }
+    if (this.options.width > 640){
+      Google.messages().size('width', options.width);
+      this.options.width = 640;
+    }
+    if (this.options.height > 640){
+      Google.messages().size('height', options.height);
+      this.options.height = 640;
+    }
+    this.options.size = this.options.width + 'x' + this.options.height;
+    !this.options.center && (this.options.center = this.options.lat + ',' + this.options.lng);
+    !this.options.scale && (this.options.scale = 1);
+    ['width', 'height', 'lat', 'lng', 'pixels'].forEach (e => delete this.options[e]);
+  }
+
+  createImage() {
+    !this.options.key && (Google.messages().key());
+
+    for(let option in this.options)
+      this.options[option] != undefined && (this.url += '&' + option + '=' + this.options[option])
+    return this.url
+  }
+
+  static options(){
+    return ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'format', 'maptype', 'language', 'region', 'path', 'style', 'signature', 'center'];
+  }
+
+  static messages(){
+    return {
+      size: (s, m) => {console.warn(`You requested an image with a ${s} of ${m}px. Google Maps Static API max ${s} value is 640px. For larger images, change the scale to 2 and keep the ${s} between 1-640px. i.e: if you want an image 800x800px, set the width and height to 400x400 and the scale to 2.`)},
+      key: () => {console.warn('For large requests please provide an API key for your Google Maps Static API.')},
+    }
+  }
 }
 
-// Image/Screen scale adjustment
-let adjustScale = (options) => {
-  if(options.scale == 1 || options.scale == undefined) {
-    options.pixels = 128
-    options.scale = 1;
-  } else if (options.scale == 2){
-    options.pixels = 256;
-  }
-  if (options.width > 640){
-    message.staticSize('width', options.width);
-    options.width = 640;
-  }
-  if (options.height > 640){
-    message.staticSize('height', options.height);
-    options.height = 640;
-  }
-}
-
-export { options, urlParser }
+export { Google }

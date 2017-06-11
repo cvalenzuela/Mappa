@@ -3,52 +3,50 @@
 // Reference: https://developers.google.com/maps/documentation/javascript/
 // -----------
 
-import { google as message } from './../messages';
+import { TileMap } from './TileMap';
 
-// Library
-let script = (key) => {
-  return 'https://maps.googleapis.com/maps/api/js?key=' + key;
-}
-let style = null;
-
-let map;
-let overlay;
-let overlayProjection;
-
-// Create the map
-let createMap = (canvas, options) => {
-  map = new google.maps.Map(document.getElementById('mappa'), {
-    center: {lat: options.lat, lng: options.lng},
-    zoom: options.zoom
-  });
-
-  overlay = new google.maps.OverlayView();
-  overlay.setMap(map);
-  overlay.onAdd = () => {
-    canvas.elt.style.position = 'absolute';
-    let div = canvas.elt;
-    overlay.getPanes().overlayLayer.appendChild(div);
-    overlayProjection = overlay.getProjection();
-  }
-  overlay.draw = () => {
-    overlayProjection = overlay.getProjection();
+class Google extends TileMap {
+  constructor(options){
+    super(options);
+    this.script = 'https://maps.googleapis.com/maps/api/js?key=' + this.options.key;
+    (!this.options.key) ? console.log('nokey') : this.init();
   }
 
-  return map;
-}
+  createMap () {
+    let map = new google.maps.Map(document.getElementById('mappa'), {
+      center: {lat: this.options.lat, lng: this.options.lng},
+      zoom: this.options.zoom
+    });
 
-// Get LatLng
-let latLng = (position) => {
-  if(overlayProjection){
-    return overlayProjection.fromLatLngToContainerPixel(new google.maps.LatLng(position.lat, position.lng));
-  } else{
-    return {x:0, y:0};
+    let overlay = new google.maps.OverlayView();
+    overlay.setMap(map);
+    overlay.onAdd = () => {
+      let div = this.canvas.elt;
+      overlay.getPanes().overlayLayer.appendChild(div);
+    }
+    overlay.draw = () => {}
+
+    return map;
   }
 
+  fromLatLngtoPixel(position) {
+    if(this.map.getProjection() != undefined){
+      position = new google.maps.LatLng(position)
+      var topRight = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getNorthEast());
+      var bottomLeft = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getSouthWest());
+      var scale = Math.pow(2, this.map.getZoom());
+      var worldPoint = this.map.getProjection().fromLatLngToPoint(position);
+      return new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
+    } else{
+      return {x:0, y:0};
+    }
+  }
+
+  fromZoomtoPixel () {
+  }
 }
 
-// Get Zoom
-let zoom = () => {
-}
 
-export { script, style, createMap, latLng };
+
+
+export { Google };

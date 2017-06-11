@@ -10,10 +10,8 @@
 
 console.log('%c p5.maps Loaded ✓', 'color:white; background:green;');
 
-import { StaticMap } from './StaticMap';
-import { TileMap } from './TileMap';
-
-import * as staticMapProviders from './providers/staticProviders';
+import * as tileMap from './tileMap';
+import * as staticMap from './staticMap'
 
 class Mappa {
   constructor(provider, key) {
@@ -22,19 +20,20 @@ class Mappa {
   }
 
   staticMap(...args) {
-    let options = {};
+    let options;
 
     if(typeof args[0] == 'object'){
       options = Object.assign({}, args[0])
     } else {
+      let _options = staticMap[this.provider].options()
       args.forEach((el, i) => {
-        let option = staticMapProviders[this.provider].options[i];
+        let option = _options[i];
         options[option] = el;
       })
     };
     options.key = this.key;
 
-    return new StaticMap(this.provider, options);
+    return new staticMap[this.provider](options);
   }
 
   tileMap(...args){
@@ -48,8 +47,8 @@ class Mappa {
       })
     };
     options.key = this.key;
-
-    return new TileMap(this.provider, options);
+    options.provider = this.provider;
+    return new tileMap[this.provider](options);
   }
 
 }
