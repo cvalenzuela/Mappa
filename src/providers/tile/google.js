@@ -24,29 +24,54 @@ class Google extends TileMap {
     let overlay = new google.maps.OverlayView();
     overlay.draw = function(){}
     overlay.setMap(map);
-    let mapCanvasProjection = overlay.getProjection();
     overlay.onAdd = () => {
-      let div = this.canvas;
+      let div = this.canvas.elt;
       overlay.getPanes().overlayLayer.appendChild(div);
     }
+
+    google.maps.event.addListener(map, 'bounds_changed', () => {
+      let divCenter = overlay.getProjection().fromLatLngToDivPixel(map.getCenter());
+      let offsetX = - Math.round(this.canvas.width / 2 - divCenter.x);
+      let offsetY = - Math.round(this.canvas.height / 2 - divCenter.y);
+      let _canvas = this.canvas.elt.getContext('2d')
+      _canvas.canvas.style.transform = 'translate(' + offsetX + 'px,' + offsetY + 'px)';
+    })
+
+    google.maps.event.addListenerOnce(map, 'tilesloaded', () => { this.ready = true; });
 
     return map;
   }
 
   fromLatLngtoPixel(position) {
-    if(this.map.getProjection() != undefined){
+    if(this.ready){
       position = new google.maps.LatLng(position)
-      var topRight = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getNorthEast());
-      var bottomLeft = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getSouthWest());
-      var scale = Math.pow(2, this.map.getZoom());
+      let topRight = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getNorthEast());
+      let bottomLeft = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getSouthWest());
+      let scale = Math.pow(2, this.map.getZoom());
       var worldPoint = this.map.getProjection().fromLatLngToPoint(position);
       return new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
     } else{
-      return {x:0, y:0};
+      return {x:-100, y:-100};
     }
   }
 
-  fromZoomtoPixel () {
+  fromZoomtoPixel() {
+    if(this.ready){
+      return this.map.getZoom()
+    } else {
+      return 0
+    }
+  }
+
+  onChange(callback) {
+    if(this.ready){
+      callback()
+      google.maps.event.addListener(this.map, 'bounds_changed', () => {
+        callback();
+      })
+    } else {
+      setTimeout(() => {this.onChange(callback)}, 200);
+    }
   }
 
   static messages(){

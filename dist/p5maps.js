@@ -151,21 +151,19 @@ var TileMap = function () {
     _classCallCheck(this, TileMap);
 
     this.options = options;
-    this.ready = false; // false by default
+    this.scriptTag;
   }
 
   _createClass(TileMap, [{
     key: 'init',
     value: function init() {
-      var _this = this;
-
-      var scriptTag = void 0;
+      //let scriptTag;
       if (!document.getElementById(this.options.provider)) {
-        scriptTag = document.createElement('script');
-        scriptTag.type = 'text/javascript';
-        scriptTag.src = this.script;
-        scriptTag.id = this.options.provider;
-        document.head.appendChild(scriptTag);
+        this.scriptTag = document.createElement('script');
+        this.scriptTag.type = 'text/javascript';
+        this.scriptTag.src = this.script;
+        this.scriptTag.id = this.options.provider;
+        document.head.appendChild(this.scriptTag);
         if (this.style) {
           var styleTag = document.createElement('link');
           styleTag.rel = 'stylesheet';
@@ -173,46 +171,31 @@ var TileMap = function () {
           document.head.appendChild(styleTag);
         }
       }
-      scriptTag.onload = function () {
-        _this.ready = true;
-      };
     }
   }, {
     key: 'append',
     value: function append(canvas) {
-      var _this2 = this;
+      var _this = this;
 
-      if (this.ready) {
+      this.scriptTag.onload = function () {
         var div = document.createElement('div');
         document.body.appendChild(div);
         div.setAttribute('style', 'position:absolute;width:' + canvas.width + 'px;height:' + canvas.height + 'px;top:0;left:0;z-index:-99');
         div.setAttribute('id', 'mappa');
-        this.canvas = canvas;
-        this.map = this.createMap();
-      } else {
-        setTimeout(function () {
-          _this2.append(canvas);
-        }, 300);
-      }
+        _this.canvas = canvas;
+        _this.map = _this.createMap();
+      };
     }
   }, {
     key: 'latLng',
     value: function latLng() {
-      var pos = { lat: arguments.length <= 0 ? undefined : arguments[0], lng: arguments.length <= 1 ? undefined : arguments[1] };
-      if (this.map) {
-        return this.fromLatLngtoPixel(pos);
-      } else {
-        return { x: 0, y: 0 };
-      }
+      var pos = { lat: float(arguments.length <= 0 ? undefined : arguments[0]), lng: float(arguments.length <= 1 ? undefined : arguments[1]) };
+      return this.fromLatLngtoPixel(pos);
     }
   }, {
     key: 'zoom',
     value: function zoom() {
-      if (this.map) {
-        return Math.floor(this.fromZoomtoPixel());
-      } else {
-        return 0;
-      }
+      return Math.floor(this.fromZoomtoPixel());
     }
   }]);
 
@@ -423,8 +406,6 @@ var Google = function (_StaticMap) {
   _createClass(Google, [{
     key: 'init',
     value: function init() {
-      var _this2 = this;
-
       if (this.options.scale == 1 || this.options.scale == undefined) {
         this.options.pixels = 128;
         this.options.scale = 1;
@@ -439,26 +420,27 @@ var Google = function (_StaticMap) {
         Google.messages().size('height', options.height);
         this.options.height = 640;
       }
-      this.options.size = this.options.width + 'x' + this.options.height;
-      !this.options.center && (this.options.center = this.options.lat + ',' + this.options.lng);
-      !this.options.scale && (this.options.scale = 1);
-      ['width', 'height', 'lat', 'lng', 'pixels'].forEach(function (e) {
-        return delete _this2.options[e];
-      });
     }
   }, {
     key: 'createImage',
     value: function createImage() {
       !this.options.key && Google.messages().key();
 
+      this.options.size = this.options.width + 'x' + this.options.height;
+      !this.options.center && (this.options.center = this.options.lat + ',' + this.options.lng);
+      !this.options.scale && (this.options.scale = 1);
+
       for (var option in this.options) {
-        this.options[option] != undefined && (this.url += '&' + option + '=' + this.options[option]);
+        options().valid.indexOf(this.options[option]) > -1 && (this.url += '&' + option + '=' + this.options[option]);
       }return this.url;
     }
   }], [{
     key: 'options',
     value: function options() {
-      return ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'format', 'maptype', 'language', 'region', 'path', 'style', 'signature', 'center'];
+      return {
+        valid: ['center', 'zoom', 'size', 'scale', 'format', 'maptype', 'language', 'region', 'markers', 'path', 'visible', 'style', 'signature', 'key', 'signature'],
+        userInput: ['lat', 'lng', 'center', 'zoom', 'width', 'height', 'scale', 'format', 'maptype', 'language', 'region', 'markers', 'path', 'visible', 'style', 'key', 'signature']
+      };
     }
   }, {
     key: 'messages',
@@ -535,6 +517,7 @@ var Mapbox = function (_StaticMap) {
           this.options.height = 1024;
         }
       }
+      console.log(this.options);
     }
   }, {
     key: 'createImage',
@@ -640,18 +623,29 @@ var Google = function (_TileMap) {
       var overlay = new google.maps.OverlayView();
       overlay.draw = function () {};
       overlay.setMap(map);
-      var mapCanvasProjection = overlay.getProjection();
       overlay.onAdd = function () {
-        var div = _this2.canvas;
+        var div = _this2.canvas.elt;
         overlay.getPanes().overlayLayer.appendChild(div);
       };
+
+      google.maps.event.addListener(map, 'bounds_changed', function () {
+        var divCenter = overlay.getProjection().fromLatLngToDivPixel(map.getCenter());
+        var offsetX = -Math.round(_this2.canvas.width / 2 - divCenter.x);
+        var offsetY = -Math.round(_this2.canvas.height / 2 - divCenter.y);
+        var _canvas = _this2.canvas.elt.getContext('2d');
+        _canvas.canvas.style.transform = 'translate(' + offsetX + 'px,' + offsetY + 'px)';
+      });
+
+      google.maps.event.addListenerOnce(map, 'tilesloaded', function () {
+        _this2.ready = true;
+      });
 
       return map;
     }
   }, {
     key: 'fromLatLngtoPixel',
     value: function fromLatLngtoPixel(position) {
-      if (this.map.getProjection() != undefined) {
+      if (this.ready) {
         position = new google.maps.LatLng(position);
         var topRight = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getNorthEast());
         var bottomLeft = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getSouthWest());
@@ -659,12 +653,34 @@ var Google = function (_TileMap) {
         var worldPoint = this.map.getProjection().fromLatLngToPoint(position);
         return new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
       } else {
-        return { x: 0, y: 0 };
+        return { x: -100, y: -100 };
       }
     }
   }, {
     key: 'fromZoomtoPixel',
-    value: function fromZoomtoPixel() {}
+    value: function fromZoomtoPixel() {
+      if (this.ready) {
+        return this.map.getZoom();
+      } else {
+        return 0;
+      }
+    }
+  }, {
+    key: 'onChange',
+    value: function onChange(callback) {
+      var _this3 = this;
+
+      if (this.ready) {
+        callback();
+        google.maps.event.addListener(this.map, 'bounds_changed', function () {
+          callback();
+        });
+      } else {
+        setTimeout(function () {
+          _this3.onChange(callback);
+        }, 200);
+      }
+    }
   }], [{
     key: 'messages',
     value: function messages() {
@@ -723,6 +739,8 @@ var Mapboxgl = function (_TileMap) {
   _createClass(Mapboxgl, [{
     key: 'createMap',
     value: function createMap() {
+      var _this2 = this;
+
       mapboxgl.accessToken = this.options.key;
       var map = new mapboxgl.Map({
         container: 'mappa',
@@ -732,17 +750,46 @@ var Mapboxgl = function (_TileMap) {
       });
       this.canvas.parent(map.getCanvasContainer());
       this.canvas.elt.style.position = 'absolute';
+
+      map.on('load', function () {
+        _this2.ready = true;
+      });
+
       return map;
     }
   }, {
     key: 'fromLatLngtoPixel',
     value: function fromLatLngtoPixel(latLng) {
-      return this.map.project(latLng);
+      if (this.ready) {
+        return this.map.project(latLng);
+      } else {
+        return { x: -100, y: -100 };
+      }
     }
   }, {
     key: 'fromZoomtoPixel',
     value: function fromZoomtoPixel() {
-      return this.map.getZoom();
+      if (this.ready) {
+        return this.map.getZoom();
+      } else {
+        return 0;
+      }
+    }
+  }, {
+    key: 'onChange',
+    value: function onChange(callback) {
+      var _this3 = this;
+
+      if (this.ready) {
+        callback();
+        this.map.on('render', function () {
+          callback();
+        });
+      } else {
+        setTimeout(function () {
+          _this3.onChange(callback);
+        }, 200);
+      }
     }
   }], [{
     key: 'messages',

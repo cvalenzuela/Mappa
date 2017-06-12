@@ -28,22 +28,26 @@ class Google extends StaticMap {
       Google.messages().size('height', options.height);
       this.options.height = 640;
     }
-    this.options.size = this.options.width + 'x' + this.options.height;
-    !this.options.center && (this.options.center = this.options.lat + ',' + this.options.lng);
-    !this.options.scale && (this.options.scale = 1);
-    ['width', 'height', 'lat', 'lng', 'pixels'].forEach (e => delete this.options[e]);
   }
 
   createImage() {
     !this.options.key && (Google.messages().key());
 
+    this.options.size = this.options.width + 'x' + this.options.height;
+    !this.options.center && (this.options.center = this.options.lat + ',' + this.options.lng);
+    !this.options.scale && (this.options.scale = 1);
+
     for(let option in this.options)
-      this.options[option] != undefined && (this.url += '&' + option + '=' + this.options[option])
+      (options().valid.indexOf(this.options[option]) > -1) && (this.url += '&' + option + '=' + this.options[option])
+
     return this.url
   }
 
   static options(){
-    return ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'format', 'maptype', 'language', 'region', 'path', 'style', 'signature', 'center'];
+    return {
+      valid: ['center', 'zoom', 'size', 'scale', 'format', 'maptype', 'language', 'region', 'markers', 'path', 'visible', 'style', 'signature', 'key', 'signature'],
+      userInput: ['lat', 'lng', 'center', 'zoom', 'width', 'height', 'scale', 'format', 'maptype', 'language', 'region', 'markers', 'path', 'visible', 'style', 'key', 'signature']
+    }
   }
 
   static messages(){

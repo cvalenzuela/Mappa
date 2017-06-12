@@ -23,15 +23,37 @@ class Mapboxgl extends TileMap {
     });
     this.canvas.parent(map.getCanvasContainer());
     this.canvas.elt.style.position = 'absolute';
+
+    map.on('load', () => { this.ready = true; });
+
     return map;
   }
 
   fromLatLngtoPixel (latLng) {
-    return this.map.project(latLng);
+    if(this.ready){
+      return this.map.project(latLng);
+    } else {
+      return {x:-100, y:-100};
+    }
   }
 
   fromZoomtoPixel () {
-    return this.map.getZoom();
+    if(this.ready){
+      return this.map.getZoom();
+    } else {
+      return 0
+    }
+  }
+
+  onChange(callback) {
+    if(this.ready){
+      callback()
+      this.map.on('render', () => {
+        callback();
+      })
+    } else {
+      setTimeout(() => {this.onChange(callback)}, 200);
+    }
   }
 
   static messages(){
