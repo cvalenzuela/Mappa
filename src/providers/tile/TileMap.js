@@ -9,7 +9,6 @@ class TileMap {
   }
 
   init() {
-    //let scriptTag;
     if(!document.getElementById(this.options.provider)) {
       this.scriptTag = document.createElement('script');
       this.scriptTag.type = 'text/javascript';

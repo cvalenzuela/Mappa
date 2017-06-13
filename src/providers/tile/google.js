@@ -25,15 +25,15 @@ class Google extends TileMap {
     overlay.draw = function(){}
     overlay.setMap(map);
     overlay.onAdd = () => {
-      let div = this.canvas.elt;
-      overlay.getPanes().overlayLayer.appendChild(div);
+      overlay.getPanes().overlayLayer.appendChild(this.canvas.elt);
     }
 
     google.maps.event.addListener(map, 'bounds_changed', () => {
-      let divCenter = overlay.getProjection().fromLatLngToDivPixel(map.getCenter());
-      let offsetX = - Math.round(this.canvas.width / 2 - divCenter.x);
-      let offsetY = - Math.round(this.canvas.height / 2 - divCenter.y);
+      let center = overlay.getProjection().fromLatLngToDivPixel(map.getCenter());
+      let offsetX = - Math.round(this.canvas.width / 2 - center.x);
+      let offsetY = - Math.round(this.canvas.height / 2 - center.y);
       let _canvas = this.canvas.elt.getContext('2d')
+      console.log(center, offsetX, offsetY)
       _canvas.canvas.style.transform = 'translate(' + offsetX + 'px,' + offsetY + 'px)';
     })
 

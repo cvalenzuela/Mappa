@@ -58,7 +58,7 @@ class Mapboxgl extends TileMap {
 
   static messages(){
     return {
-      key: () => {console.warn('Please provide a Goolge Maps API Key. Get one here: https://developers.google.com/maps/documentation/javascript/ ')}
+      key: () => {console.warn('Please provide a Mapbox-gl API key. Get one here: https://www.mapbox.com/mapbox-gl-js/api/')}
     }
   }
 

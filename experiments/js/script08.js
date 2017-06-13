@@ -1,8 +1,6 @@
-// Tile maps for google maps and mapboxgl
+// leaflet
 
 var mappa;
-var mapboxKey = 'pk.eyJ1IjoiZW5qYWxvdCIsImEiOiJjaWhtdmxhNTIwb25zdHBsejk0NGdhODJhIn0.2-F2hS_oTZenAWc0BMf_uw'
-var googleKey = 'AIzaSyAGz9IlglBq-gWCSzCWVC11autdr1LLhbM'
 var canvas;
 var myMap;
 var nyc = [40.7828647, -73.9675438];
@@ -14,15 +12,14 @@ var options = {
   zoom: 4,
   width: 640,
   height: 640,
-  //style: 'mapbox://styles/mapbox/satellite-streets-v10'
+  style: 'https://api.mapbox.com/styles/v1/cvalenzuela/cj3optaml001z2qpfe064z5hb/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY3ZhbGVuenVlbGEiLCJhIjoiY2l2ZzkweTQ3MDFuODJ5cDM2NmRnaG4wdyJ9.P_0JJXX6sD1oX2D0RQeWFA'
 }
 
-
+var overlay;
 function preload(){
-  mappa = new Mappa('Google');
-  //mappa = new Mappa('Mapboxgl', mapboxKey);
+  mappa = new Mappa('Leaflet');
   myMap = mappa.tileMap(options);
-  dots = loadStrings('data/dots.csv');
+  //dots = loadStrings('data/dots.csv');
 }
 
 function setup(){
@@ -31,7 +28,7 @@ function setup(){
   myMap.append(canvas);
   noStroke();
   fill(255, 0, 0);
-  myMap.onChange(circles);
+  //myMap.onChange(circles);
 }
 
 function draw(){
