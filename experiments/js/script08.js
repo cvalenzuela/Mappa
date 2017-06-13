@@ -12,20 +12,22 @@ var options = {
   zoom: 4,
   width: 140,
   height: 140,
-  style: 'https://api.mapbox.com/styles/v1/cvalenzuela/cj3optaml001z2qpfe064z5hb/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY3ZhbGVuenVlbGEiLCJhIjoiY2l2ZzkweTQ3MDFuODJ5cDM2NmRnaG4wdyJ9.P_0JJXX6sD1oX2D0RQeWFA'
+  //style: 'https://api.mapbox.com/styles/v1/cvalenzuela/cj3optaml001z2qpfe064z5hb/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY3ZhbGVuenVlbGEiLCJhIjoiY2l2ZzkweTQ3MDFuODJ5cDM2NmRnaG4wdyJ9.P_0JJXX6sD1oX2D0RQeWFA'
 }
-var mapboxKey = 'pk.eyJ1IjoiZW5qYWxvdCIsImEiOiJjaWhtdmxhNTIwb25zdHBsejk0NGdhODJhIn0.2-F2hS_oTZenAWc0BMf_uw'
+var mapboxglKey = 'pk.eyJ1IjoiZW5qYWxvdCIsImEiOiJjaWhtdmxhNTIwb25zdHBsejk0NGdhODJhIn0.2-F2hS_oTZenAWc0BMf_uw'
+
+var mapboxkey = 'pk.eyJ1IjoiY3ZhbGVuenVlbGEiLCJhIjoiY2l2ZzkweTQ3MDFuODJ5cDM2NmRnaG4wdyJ9.P_0JJXX6sD1oX2D0RQeWFA'
 
 
 function preload(){
-  mappa = new Mappa('Google');
+  mappa = new Mappa('Mapbox', mapboxkey);
   myMap = mappa.tileMap(options);
   dots = loadStrings('data/dots.csv');
 }
 
 function setup(){
   canvas = createCanvas(900, 650);
-  //background(100,100,100);
+  background(100,100,100, 20);
   myMap.append(canvas);
   noStroke();
   //fill(255, 0, 0);
@@ -33,7 +35,6 @@ function setup(){
 }
 
 function draw(){
-  //background(255);
   // pos = myMap.latLng(40.7828647, -73.9675438);
   // translate(-width/2,-height/2,0);
   // translate(pos.x, pos.y, 0);
@@ -75,11 +76,8 @@ function draw(){
 
 function circles(){
   clear();
-  background(255,100,100,40);
   fill(200,50,50);
-  // pos = myMap.latLng(40.7828647, -73.9675438);
   var size = myMap.zoom()*5;
-  // ellipse(pos.x, pos.y, size, size);
   for (var i = 1; i < dots.length; i++) {
     var data = dots[i].split(/,/);
 

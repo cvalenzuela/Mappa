@@ -15,21 +15,15 @@ class Leaflet extends TileMap {
 
   createMap () {
 
-
     let map = L.map('mappa').setView(
       [this.options.lat, this.options.lng],
       this.options.zoom
     );
-
-
     let tiles = L.tileLayer(this.options.style).addTo(map);
-
     tiles.on('tileload', () => { this.ready = true; });
-
 
     L.overlay = L.Layer.extend({
       onAdd: () => {
-
         let overlayPane = overlay.getPane();
         let _container = L.DomUtil.create('div', 'leaflet-layer');
         _container.appendChild(this.canvas.elt);
@@ -70,7 +64,7 @@ class Leaflet extends TileMap {
   onChange(callback) {
     if(this.ready){
       callback()
-      google.maps.event.addListener(this.map, 'bounds_changed', () => {
+      this.map.on('move', () => {
         callback();
       })
     } else {
@@ -80,7 +74,7 @@ class Leaflet extends TileMap {
 
   static messages(){
     return {
-      key: () => {console.warn('Please provide a Goolge Maps API Key. Get one here: https://developers.google.com/maps/documentation/javascript/ ')}
+      tiles: () => {console.warn('You need to include a style for your Leaflet map.')}
     }
   }
 }

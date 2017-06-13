@@ -19,6 +19,8 @@
 - Webgl with mapboxgl
 - Three.js
 - Other integrations with canvas (plain mode)
+- Using omnivore for leaflet and mapbox
+- OSM
 
 ## Geojson
 - Drawing a point with geojson

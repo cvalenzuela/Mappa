@@ -285,6 +285,18 @@ Object.keys(_Leaflet).forEach(function (key) {
   });
 });
 
+var _Mapbox = __webpack_require__(10);
+
+Object.keys(_Mapbox).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Mapbox[key];
+    }
+  });
+});
+
 /***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -752,16 +764,13 @@ var Leaflet = function (_TileMap) {
       var _this2 = this;
 
       var map = L.map('mappa').setView([this.options.lat, this.options.lng], this.options.zoom);
-
       var tiles = L.tileLayer(this.options.style).addTo(map);
-
       tiles.on('tileload', function () {
         _this2.ready = true;
       });
 
       L.overlay = L.Layer.extend({
         onAdd: function onAdd() {
-
           var overlayPane = overlay.getPane();
           var _container = L.DomUtil.create('div', 'leaflet-layer');
           _container.appendChild(_this2.canvas.elt);
@@ -807,7 +816,7 @@ var Leaflet = function (_TileMap) {
 
       if (this.ready) {
         callback();
-        google.maps.event.addListener(this.map, 'bounds_changed', function () {
+        this.map.on('move', function () {
           callback();
         });
       } else {
@@ -820,8 +829,8 @@ var Leaflet = function (_TileMap) {
     key: 'messages',
     value: function messages() {
       return {
-        key: function key() {
-          console.warn('Please provide a Goolge Maps API Key. Get one here: https://developers.google.com/maps/documentation/javascript/ ');
+        tiles: function tiles() {
+          console.warn('You need to include a style for your Leaflet map.');
         }
       };
     }
@@ -941,6 +950,131 @@ var Mapboxgl = function (_TileMap) {
 }(_TileMap2.TileMap);
 
 exports.Mapboxgl = Mapboxgl;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Mapbox = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _TileMap2 = __webpack_require__(0);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // -----------
+// Mapbox v3.1.1
+// Reference: https://www.mapbox.com/mapbox.js/api/v3.1.1/
+// -----------
+
+var Mapbox = function (_TileMap) {
+  _inherits(Mapbox, _TileMap);
+
+  function Mapbox(options) {
+    _classCallCheck(this, Mapbox);
+
+    var _this = _possibleConstructorReturn(this, (Mapbox.__proto__ || Object.getPrototypeOf(Mapbox)).call(this, options));
+
+    _this.script = 'https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js';
+    _this.style = 'https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css';
+    _this.init();
+    return _this;
+  }
+
+  _createClass(Mapbox, [{
+    key: 'createMap',
+    value: function createMap() {
+      var _this2 = this;
+
+      this.options.key ? L.mapbox.accessToken = this.options.key : Mapbox.messages();
+
+      var map = L.mapbox.map('mappa').setView([this.options.lat, this.options.lng], this.options.zoom);
+      var layer = L.mapbox.tileLayer(this.options.style || 'mapbox.streets').addTo(map);
+
+      layer.on('ready', function () {
+        _this2.ready = true;
+      });
+
+      L.mapbox.overlay = L.Layer.extend({
+        onAdd: function onAdd() {
+          var overlayPane = overlay.getPane();
+          var _container = L.DomUtil.create('div', 'mapbox-layer');
+          _container.appendChild(_this2.canvas.elt);
+          overlayPane.appendChild(_container);
+        },
+        drawLayer: function drawLayer() {}
+      });
+
+      var overlay = new L.mapbox.overlay();
+      map.addLayer(overlay);
+
+      map.on('move', function () {
+        var d = map.dragging._draggable;
+        var _canvas = _this2.canvas.elt.getContext('webgl') || _this2.canvas.elt.getContext('2d');
+        _canvas.canvas.style.transform = 'translate(' + -d._newPos.x + 'px,' + -d._newPos.y + 'px)';
+      });
+
+      return map;
+    }
+  }, {
+    key: 'fromLatLngtoPixel',
+    value: function fromLatLngtoPixel(position) {
+      if (this.ready) {
+        var containerPoint = this.map.latLngToContainerPoint(position);
+        return { x: containerPoint.x, y: containerPoint.y };
+      } else {
+        return { x: -100, y: -100 };
+      }
+    }
+  }, {
+    key: 'fromZoomtoPixel',
+    value: function fromZoomtoPixel() {
+      if (this.ready) {
+        return this.map.getZoom();
+      } else {
+        return 0;
+      }
+    }
+  }, {
+    key: 'onChange',
+    value: function onChange(callback) {
+      var _this3 = this;
+
+      if (this.ready) {
+        callback();
+        this.map.on('move', function () {
+          callback();
+        });
+      } else {
+        setTimeout(function () {
+          _this3.onChange(callback);
+        }, 200);
+      }
+    }
+  }], [{
+    key: 'messages',
+    value: function messages() {
+      return {
+        key: function key() {
+          console.warn('Please provide a Mapbox API key. Get one here: https://www.mapbox.com/mapbox.js/api/v3.1.1');
+        }
+      };
+    }
+  }]);
+
+  return Mapbox;
+}(_TileMap2.TileMap);
+
+exports.Mapbox = Mapbox;
 
 /***/ })
 /******/ ]);
