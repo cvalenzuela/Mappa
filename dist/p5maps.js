@@ -642,8 +642,7 @@ var Google = function (_TileMap) {
         var center = overlay.getProjection().fromLatLngToDivPixel(map.getCenter());
         var offsetX = -Math.round(_this2.canvas.width / 2 - center.x);
         var offsetY = -Math.round(_this2.canvas.height / 2 - center.y);
-        var _canvas = _this2.canvas.elt.getContext('2d');
-        console.log(center, offsetX, offsetY);
+        var _canvas = _this2.canvas.elt.getContext('webgl') || _this2.canvas.elt.getContext('2d');
         _canvas.canvas.style.transform = 'translate(' + offsetX + 'px,' + offsetY + 'px)';
       });
 
@@ -755,27 +754,29 @@ var Leaflet = function (_TileMap) {
       var map = L.map('mappa').setView([this.options.lat, this.options.lng], this.options.zoom);
 
       var tiles = L.tileLayer(this.options.style).addTo(map);
+
       tiles.on('tileload', function () {
         _this2.ready = true;
       });
 
-      L.canvasOverlay = L.Layer.extend({
+      L.overlay = L.Layer.extend({
         onAdd: function onAdd() {
-          overlay.getPane().appendChild(_this2.canvas.elt);
+
+          var overlayPane = overlay.getPane();
+          var _container = L.DomUtil.create('div', 'leaflet-layer');
+          _container.appendChild(_this2.canvas.elt);
+          overlayPane.appendChild(_container);
         },
         drawLayer: function drawLayer() {}
       });
-      overlay = new L.canvasOverlay();
 
+      var overlay = new L.overlay();
       map.addLayer(overlay);
 
       map.on('move', function () {
-        var center = map.latLngToContainerPoint(map.getCenter());
-        var offsetX = -Math.round(_this2.canvas.width / 2 - center.x);
-        var offsetY = -Math.round(_this2.canvas.height / 2 - center.y);
-        var _canvas = _this2.canvas.elt.getContext('2d');
-        console.log(center, offsetX, offsetY);
-        _canvas.canvas.style.transform = 'translate(' + offsetX + 'px,' + offsetY + 'px)';
+        var d = map.dragging._draggable;
+        var _canvas = _this2.canvas.elt.getContext('webgl') || _this2.canvas.elt.getContext('2d');
+        _canvas.canvas.style.transform = 'translate(' + -d._newPos.x + 'px,' + -d._newPos.y + 'px)';
       });
 
       return map;
@@ -784,12 +785,8 @@ var Leaflet = function (_TileMap) {
     key: 'fromLatLngtoPixel',
     value: function fromLatLngtoPixel(position) {
       if (this.ready) {
-        position = new google.maps.LatLng(position);
-        var topRight = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getNorthEast());
-        var bottomLeft = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getSouthWest());
-        var scale = Math.pow(2, this.map.getZoom());
-        var worldPoint = this.map.getProjection().fromLatLngToPoint(position);
-        return new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
+        var containerPoint = this.map.latLngToContainerPoint(position);
+        return { x: containerPoint.x, y: containerPoint.y };
       } else {
         return { x: -100, y: -100 };
       }

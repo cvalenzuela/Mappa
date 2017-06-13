@@ -32,8 +32,7 @@ class Google extends TileMap {
       let center = overlay.getProjection().fromLatLngToDivPixel(map.getCenter());
       let offsetX = - Math.round(this.canvas.width / 2 - center.x);
       let offsetY = - Math.round(this.canvas.height / 2 - center.y);
-      let _canvas = this.canvas.elt.getContext('2d')
-      console.log(center, offsetX, offsetY)
+      let _canvas = this.canvas.elt.getContext('webgl') || this.canvas.elt.getContext('2d');
       _canvas.canvas.style.transform = 'translate(' + offsetX + 'px,' + offsetY + 'px)';
     })
 

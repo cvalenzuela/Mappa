@@ -15,45 +15,45 @@ class Leaflet extends TileMap {
 
   createMap () {
 
+
     let map = L.map('mappa').setView(
       [this.options.lat, this.options.lng],
       this.options.zoom
     );
 
+
     let tiles = L.tileLayer(this.options.style).addTo(map);
+
     tiles.on('tileload', () => { this.ready = true; });
 
-    L.canvasOverlay = L.Layer.extend({
+
+    L.overlay = L.Layer.extend({
       onAdd: () => {
-        overlay.getPane().appendChild(this.canvas.elt);
+
+        let overlayPane = overlay.getPane();
+        let _container = L.DomUtil.create('div', 'leaflet-layer');
+        _container.appendChild(this.canvas.elt);
+        overlayPane.appendChild(_container);
       },
       drawLayer: () => {},
     })
-    overlay = new L.canvasOverlay();
 
+    let overlay = new L.overlay();
     map.addLayer(overlay);
 
     map.on('move', () => {
-      let center = map.latLngToContainerPoint(map.getCenter());
-      let offsetX = - Math.round(this.canvas.width / 2 - center.x);
-      let offsetY = - Math.round(this.canvas.height / 2 - center.y);
-      let _canvas = this.canvas.elt.getContext('2d');
-      console.log(center, offsetX, offsetY)
-      _canvas.canvas.style.transform = 'translate(' + offsetX + 'px,' + offsetY + 'px)';
+      var d = map.dragging._draggable;
+      let _canvas = this.canvas.elt.getContext('webgl') || this.canvas.elt.getContext('2d');
+      _canvas.canvas.style.transform = 'translate(' + -d._newPos.x + 'px,' + -d._newPos.y + 'px)';
     })
-
 
     return map;
   }
 
   fromLatLngtoPixel(position) {
     if(this.ready){
-      position = new google.maps.LatLng(position)
-      let topRight = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getNorthEast());
-      let bottomLeft = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getSouthWest());
-      let scale = Math.pow(2, this.map.getZoom());
-      var worldPoint = this.map.getProjection().fromLatLngToPoint(position);
-      return new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
+      let containerPoint = this.map.latLngToContainerPoint(position);
+      return {x:containerPoint.x, y:containerPoint.y};
     } else{
       return {x:-100, y:-100};
     }
