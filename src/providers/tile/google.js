@@ -16,20 +16,20 @@ class Google extends TileMap {
   createMap () {
     !this.options.key && Google.messages().key();
 
-    let map = new google.maps.Map(document.getElementById('mappa'), {
+    this.map = new google.maps.Map(document.getElementById('mappa'), {
       center: {lat: this.options.lat, lng: this.options.lng},
       zoom: this.options.zoom || 6,
     });
 
     let overlay = new google.maps.OverlayView();
     overlay.draw = function(){}
-    overlay.setMap(map);
+    overlay.setMap(this.map);
     overlay.onAdd = () => {
       overlay.getPanes().overlayLayer.appendChild(this.canvas.elt);
     }
 
     google.maps.event.addListener(map, 'bounds_changed', () => {
-      let center = overlay.getProjection().fromLatLngToDivPixel(map.getCenter());
+      let center = overlay.getProjection().fromLatLngToDivPixel(this.map.getCenter());
       let offsetX = - Math.round(this.canvas.width / 2 - center.x);
       let offsetY = - Math.round(this.canvas.height / 2 - center.y);
       let _canvas = this.canvas.elt.getContext('webgl') || this.canvas.elt.getContext('2d');
@@ -37,8 +37,6 @@ class Google extends TileMap {
     })
 
     google.maps.event.addListenerOnce(map, 'tilesloaded', () => { this.ready = true; });
-
-    return map;
   }
 
   fromLatLngtoPixel(position) {

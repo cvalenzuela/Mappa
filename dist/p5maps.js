@@ -131,7 +131,7 @@ var TileMap = function () {
         div.setAttribute('style', 'position:absolute;width:' + canvas.width + 'px;height:' + canvas.height + 'px;top:0;left:0;z-index:-99');
         div.setAttribute('id', 'mappa');
         _this.canvas = canvas;
-        _this.map = _this.createMap();
+        _this.createMap();
       };
     }
   }, {
@@ -564,7 +564,6 @@ var Mapbox = function (_StaticMap) {
           this.options.height = 1024;
         }
       }
-      console.log(this.options);
     }
   }, {
     key: 'createImage',
@@ -662,20 +661,20 @@ var Google = function (_TileMap) {
 
       !this.options.key && Google.messages().key();
 
-      var map = new google.maps.Map(document.getElementById('mappa'), {
+      this.map = new google.maps.Map(document.getElementById('mappa'), {
         center: { lat: this.options.lat, lng: this.options.lng },
         zoom: this.options.zoom || 6
       });
 
       var overlay = new google.maps.OverlayView();
       overlay.draw = function () {};
-      overlay.setMap(map);
+      overlay.setMap(this.map);
       overlay.onAdd = function () {
         overlay.getPanes().overlayLayer.appendChild(_this2.canvas.elt);
       };
 
       google.maps.event.addListener(map, 'bounds_changed', function () {
-        var center = overlay.getProjection().fromLatLngToDivPixel(map.getCenter());
+        var center = overlay.getProjection().fromLatLngToDivPixel(_this2.map.getCenter());
         var offsetX = -Math.round(_this2.canvas.width / 2 - center.x);
         var offsetY = -Math.round(_this2.canvas.height / 2 - center.y);
         var _canvas = _this2.canvas.elt.getContext('webgl') || _this2.canvas.elt.getContext('2d');
@@ -685,8 +684,6 @@ var Google = function (_TileMap) {
       google.maps.event.addListenerOnce(map, 'tilesloaded', function () {
         _this2.ready = true;
       });
-
-      return map;
     }
   }, {
     key: 'fromLatLngtoPixel',
@@ -778,7 +775,7 @@ var Leaflet = function (_TileMap) {
 
     _this.script = 'https://unpkg.com/leaflet@1.0.3/dist/leaflet.js';
     _this.style = 'https://unpkg.com/leaflet@1.0.3/dist/leaflet.css';
-    _this.init();
+    _this.constructor.name == 'Leaflet' && _this.init();
     return _this;
   }
 
@@ -792,36 +789,42 @@ var Leaflet = function (_TileMap) {
         return;
       }
 
-      var map = L.map('mappa').setView([this.options.lat, this.options.lng], this.options.zoom);
-      var tiles = L.tileLayer(this.options.style).addTo(map);
-
-      tiles.on('tileload', function () {
+      this.map = L.map('mappa').setView([this.options.lat, this.options.lng], this.options.zoom);
+      this.tiles = L.tileLayer(this.options.style).addTo(map);
+      this.tiles.on('tileload', function () {
         _this2.ready = true;
       });
 
-      tiles.options.opacity = this.options.opacity;
-      document.getElementsByClassName('leaflet-container')[0].style.background = this.options.backgroundColor;
+      this.canvasOverlay();
+    }
+  }, {
+    key: 'canvasOverlay',
+    value: function canvasOverlay() {
+      var _this3 = this;
+
+      if (this.tiles) {
+        this.tiles.options.opacity = this.options.opacity;
+        document.getElementsByClassName('leaflet-container')[0].style.background = this.options.backgroundColor;
+      }
 
       L.overlay = L.Layer.extend({
         onAdd: function onAdd() {
           var overlayPane = overlay.getPane();
           var _container = L.DomUtil.create('div', 'leaflet-layer');
-          _container.appendChild(_this2.canvas.elt);
+          _container.appendChild(_this3.canvas.elt);
           overlayPane.appendChild(_container);
         },
         drawLayer: function drawLayer() {}
       });
 
       var overlay = new L.overlay();
-      map.addLayer(overlay);
+      this.map.addLayer(overlay);
 
-      map.on('move', function () {
-        var d = map.dragging._draggable;
-        var _canvas = _this2.canvas.elt.getContext('webgl') || _this2.canvas.elt.getContext('2d');
+      this.map.on('move', function () {
+        var d = _this3.map.dragging._draggable;
+        var _canvas = _this3.canvas.elt.getContext('webgl') || _this3.canvas.elt.getContext('2d');
         _canvas.canvas.style.transform = 'translate(' + -d._newPos.x + 'px,' + -d._newPos.y + 'px)';
       });
-
-      return map;
     }
   }, {
     key: 'fromLatLngtoPixel',
@@ -845,7 +848,7 @@ var Leaflet = function (_TileMap) {
   }, {
     key: 'onChange',
     value: function onChange(callback) {
-      var _this3 = this;
+      var _this4 = this;
 
       if (this.ready) {
         callback();
@@ -854,7 +857,7 @@ var Leaflet = function (_TileMap) {
         });
       } else {
         setTimeout(function () {
-          _this3.onChange(callback);
+          _this4.onChange(callback);
         }, 200);
       }
     }
@@ -919,22 +922,20 @@ var Mapboxgl = function (_TileMap) {
       var _this2 = this;
 
       mapboxgl.accessToken = this.options.key;
-      var map = new mapboxgl.Map({
+      this.map = new mapboxgl.Map({
         container: 'mappa',
         style: this.options.style || 'mapbox://styles/mapbox/satellite-streets-v10',
         center: [this.options.lng, this.options.lat],
         zoom: this.options.zoom
       });
-      this.canvas.parent(map.getCanvasContainer());
+      this.canvas.parent(this.map.getCanvasContainer());
       this.canvas.elt.style.position = 'absolute';
 
-      document.getElementsByClassName('mapboxgl-canvas')[0].style.opacity = this.options.opacity;
+      this.options.opacity && (document.getElementsByClassName('mapboxgl-canvas')[0].style.opacity = this.options.opacity);
 
-      map.on('load', function () {
+      this.map.on('load', function () {
         _this2.ready = true;
       });
-
-      return map;
     }
   }, {
     key: 'fromLatLngtoPixel',
@@ -1000,7 +1001,7 @@ exports.Mapbox = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _TileMap2 = __webpack_require__(0);
+var _Leaflet2 = __webpack_require__(8);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1011,8 +1012,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 // Reference: https://www.mapbox.com/mapbox.js/api/v3.1.1/
 // -----------
 
-var Mapbox = function (_TileMap) {
-  _inherits(Mapbox, _TileMap);
+var Mapbox = function (_Leaflet) {
+  _inherits(Mapbox, _Leaflet);
 
   function Mapbox(options) {
     _classCallCheck(this, Mapbox);
@@ -1037,71 +1038,14 @@ var Mapbox = function (_TileMap) {
         return;
       }
 
-      var map = L.mapbox.map('mappa').setView([this.options.lat, this.options.lng], this.options.zoom);
-      var tiles = L.mapbox.tileLayer(this.options.style || 'mapbox.streets').addTo(map);
-
-      tiles.on('ready', function () {
+      // Create a Mapbox Map
+      this.map = L.mapbox.map('mappa').setView([this.options.lat, this.options.lng], this.options.zoom);
+      this.tiles = L.mapbox.tileLayer(this.options.style || 'mapbox.streets').addTo(this.map);
+      this.tiles.on('ready', function () {
         _this2.ready = true;
       });
 
-      tiles.options.opacity = this.options.opacity;
-      document.getElementsByClassName('leaflet-container')[0].style.background = this.options.backgroundColor;
-
-      L.mapbox.overlay = L.Layer.extend({
-        onAdd: function onAdd() {
-          var overlayPane = overlay.getPane();
-          var _container = L.DomUtil.create('div', 'mapbox-layer');
-          _container.appendChild(_this2.canvas.elt);
-          overlayPane.appendChild(_container);
-        },
-        drawLayer: function drawLayer() {}
-      });
-
-      var overlay = new L.mapbox.overlay();
-      map.addLayer(overlay);
-
-      map.on('move', function () {
-        var d = map.dragging._draggable;
-        var _canvas = _this2.canvas.elt.getContext('webgl') || _this2.canvas.elt.getContext('2d');
-        _canvas.canvas.style.transform = 'translate(' + -d._newPos.x + 'px,' + -d._newPos.y + 'px)';
-      });
-
-      return map;
-    }
-  }, {
-    key: 'fromLatLngtoPixel',
-    value: function fromLatLngtoPixel(position) {
-      if (this.ready) {
-        var containerPoint = this.map.latLngToContainerPoint(position);
-        return { x: containerPoint.x, y: containerPoint.y };
-      } else {
-        return { x: -100, y: -100 };
-      }
-    }
-  }, {
-    key: 'fromZoomtoPixel',
-    value: function fromZoomtoPixel() {
-      if (this.ready) {
-        return this.map.getZoom();
-      } else {
-        return 0;
-      }
-    }
-  }, {
-    key: 'onChange',
-    value: function onChange(callback) {
-      var _this3 = this;
-
-      if (this.ready) {
-        callback();
-        this.map.on('move', function () {
-          callback();
-        });
-      } else {
-        setTimeout(function () {
-          _this3.onChange(callback);
-        }, 200);
-      }
+      this.canvasOverlay();
     }
   }], [{
     key: 'messages',
@@ -1115,7 +1059,7 @@ var Mapbox = function (_TileMap) {
   }]);
 
   return Mapbox;
-}(_TileMap2.TileMap);
+}(_Leaflet2.Leaflet);
 
 exports.Mapbox = Mapbox;
 
@@ -1133,7 +1077,7 @@ exports.Mapzen = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _TileMap2 = __webpack_require__(0);
+var _Leaflet2 = __webpack_require__(8);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1144,8 +1088,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 // Reference: https://mapzen.com/documentation/mapzen-js/
 // -----------
 
-var Mapzen = function (_TileMap) {
-  _inherits(Mapzen, _TileMap);
+var Mapzen = function (_Leaflet) {
+  _inherits(Mapzen, _Leaflet);
 
   function Mapzen(options) {
     _classCallCheck(this, Mapzen);
@@ -1161,91 +1105,44 @@ var Mapzen = function (_TileMap) {
   _createClass(Mapzen, [{
     key: 'createMap',
     value: function createMap() {
-      if (!this.options.scene) {
-        Mapzen.messages().tiles();
-        //return
-      }
-
-      L.Mapzen.apiKey = this.options.key;
-
-      var map = L.Mapzen.map('mappa').setView([this.options.lat, this.options.lng], this.options.zoom);
-
-      // let tiles = L.tileLayer(this.options.style).addTo(map);
-      //
-      // tiles.on('tileload', () => { this.ready = true; });
-      //
-      // tiles.options.opacity = this.options.opacity;
-      // document.getElementsByClassName('leaflet-container')[0].style.background = this.options.backgroundColor;
-      //
-      // L.overlay = L.Layer.extend({
-      //   onAdd: () => {
-      //     let overlayPane = overlay.getPane();
-      //     let _container = L.DomUtil.create('div', 'leaflet-layer');
-      //     _container.appendChild(this.canvas.elt);
-      //     overlayPane.appendChild(_container);
-      //   },
-      //   drawLayer: () => {},
-      // })
-      //
-      // let overlay = new L.overlay();
-      // map.addLayer(overlay);
-      //
-      // map.on('move', () => {
-      //   var d = map.dragging._draggable;
-      //   let _canvas = this.canvas.elt.getContext('webgl') || this.canvas.elt.getContext('2d');
-      //   _canvas.canvas.style.transform = 'translate(' + -d._newPos.x + 'px,' + -d._newPos.y + 'px)';
-      // })
-
-      return map;
-    }
-  }, {
-    key: 'fromLatLngtoPixel',
-    value: function fromLatLngtoPixel(position) {
-      if (this.ready) {
-        var containerPoint = this.map.latLngToContainerPoint(position);
-        return { x: containerPoint.x, y: containerPoint.y };
-      } else {
-        return { x: -100, y: -100 };
-      }
-    }
-  }, {
-    key: 'fromZoomtoPixel',
-    value: function fromZoomtoPixel() {
-      if (this.ready) {
-        return this.map.getZoom();
-      } else {
-        return 0;
-      }
-    }
-  }, {
-    key: 'onChange',
-    value: function onChange(callback) {
       var _this2 = this;
 
-      if (this.ready) {
-        callback();
-        this.map.on('move', function () {
-          callback();
-        });
+      if (this.options.key) {
+        L.Mapzen.apiKey = this.options.key;
       } else {
-        setTimeout(function () {
-          _this2.onChange(callback);
-        }, 200);
+        Mapzen.messages().key();
+        return;
       }
+
+      // Create a Mapzen Map
+      this.map = L.Mapzen.map('mappa', {
+        center: [this.options.lat, this.options.lng],
+        zoom: this.options.zoom,
+        tangramOptions: {
+          scene: this.options.BasemapStyles ? L.Mapzen.BasemapStyles[this.options.scene] : this.options.scene
+        }
+      });
+
+      this.map.on('tangramloaded', function () {
+        _this2.options.opacity && (document.getElementsByTagName('canvas')[0].style.opacity = _this2.options.opacity);
+        _this2.ready = true;
+      });
+
+      this.canvasOverlay();
     }
   }], [{
     key: 'messages',
     value: function messages() {
       return {
-        tiles: function tiles() {
-          console.warn('You need to include a style for your Mapzen map.');
+        key: function key() {
+          console.warn('Please provide a API key for your Mapzen map.');
         }
       };
     }
   }]);
 
   return Mapzen;
-}(_TileMap2.TileMap);
+}(_Leaflet2.Leaflet);
 
 exports.Mapzen = Mapzen;
 

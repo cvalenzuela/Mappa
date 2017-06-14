@@ -10,7 +10,7 @@ class Leaflet extends TileMap {
     super(options);
     this.script = 'https://unpkg.com/leaflet@1.0.3/dist/leaflet.js';
     this.style = 'https://unpkg.com/leaflet@1.0.3/dist/leaflet.css';
-    this.init();
+    this.constructor.name == 'Leaflet' && this.init();
   }
 
   createMap () {
@@ -19,16 +19,21 @@ class Leaflet extends TileMap {
       return
     }
 
-    let map = L.map('mappa').setView(
+    this.map = L.map('mappa').setView(
       [this.options.lat, this.options.lng],
       this.options.zoom
     );
-    let tiles = L.tileLayer(this.options.style).addTo(map);
+    this.tiles = L.tileLayer(this.options.style).addTo(map);
+    this.tiles.on('tileload', () => { this.ready = true; });
 
-    tiles.on('tileload', () => { this.ready = true; });
+    this.canvasOverlay();
+  }
 
-    tiles.options.opacity = this.options.opacity;
-    document.getElementsByClassName('leaflet-container')[0].style.background = this.options.backgroundColor;
+  canvasOverlay () {
+    if(this.tiles){
+      this.tiles.options.opacity = this.options.opacity;
+      document.getElementsByClassName('leaflet-container')[0].style.background = this.options.backgroundColor;
+    }
 
     L.overlay = L.Layer.extend({
       onAdd: () => {
@@ -41,15 +46,13 @@ class Leaflet extends TileMap {
     })
 
     let overlay = new L.overlay();
-    map.addLayer(overlay);
+    this.map.addLayer(overlay);
 
-    map.on('move', () => {
-      var d = map.dragging._draggable;
+    this.map.on('move', () => {
+      var d = this.map.dragging._draggable;
       let _canvas = this.canvas.elt.getContext('webgl') || this.canvas.elt.getContext('2d');
       _canvas.canvas.style.transform = 'translate(' + -d._newPos.x + 'px,' + -d._newPos.y + 'px)';
     })
-
-    return map;
   }
 
   fromLatLngtoPixel(position) {

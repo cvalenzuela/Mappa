@@ -1,4 +1,4 @@
-// tangram
+// mapzen
 
 var mappa;
 var canvas;
@@ -9,16 +9,19 @@ var pos;
 var options = {
   lat: 40.7828647,
   lng: -73.9675438,
-  zoom: 4,
-  scene:''
+  zoom: 2,
+  BasemapStyles: true,
+  scene: 'Tron',
+  opacity: 1
 }
 
 var mapzenkey = 'mapzen-u1JCMvx'
 
+
 function preload(){
   mappa = new Mappa('Mapzen', mapzenkey);
   myMap = mappa.tileMap(options);
-  //dots = loadStrings('data/dots.csv');
+  dots = loadStrings('data/dots.csv');
 }
 
 function setup(){
@@ -26,8 +29,8 @@ function setup(){
   background(100,100,100, 20);
   myMap.append(canvas);
   noStroke();
-  //fill(255, 0, 0);
-  //myMap.onChange(circles);
+  fill(255, 0, 0);
+  myMap.onChange(circles);
 }
 
 function draw(){
@@ -56,10 +59,11 @@ function draw(){
   // }
 
 
-  //clear();
-  //background(255,100,100,40);
+  // clear();
+  // ellipse(100,100,100,100)
+  // //background(255,100,100,40);
   // pos = myMap.latLng(40.7828647, -73.9675438);
-  // //var size = myMap.zoom()*5;
+  // // //var size = myMap.zoom()*5;
   // ellipse(pos.x, pos.y, 40, 40);
 
   // for (var i = 1; i < dots.length; i++) {

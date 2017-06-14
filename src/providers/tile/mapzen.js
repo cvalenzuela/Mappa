@@ -3,9 +3,9 @@
 // Reference: https://mapzen.com/documentation/mapzen-js/
 // -----------
 
-import { TileMap } from './TileMap';
+import { Leaflet } from './Leaflet';
 
-class Mapzen extends TileMap {
+class Mapzen extends Leaflet {
   constructor(options){
     super(options);
     this.script = 'https://mapzen.com/js/mapzen.min.js';
@@ -14,78 +14,33 @@ class Mapzen extends TileMap {
   }
 
   createMap () {
-    if(!this.options.scene){
-      Mapzen.messages().tiles();
-      //return
-    }
-
-    L.Mapzen.apiKey = this.options.key;
-
-    let map = L.Mapzen.map('mappa').setView(
-      [this.options.lat, this.options.lng],
-      this.options.zoom
-    );
-
-    // let tiles = L.tileLayer(this.options.style).addTo(map);
-    //
-    // tiles.on('tileload', () => { this.ready = true; });
-    //
-    // tiles.options.opacity = this.options.opacity;
-    // document.getElementsByClassName('leaflet-container')[0].style.background = this.options.backgroundColor;
-    //
-    // L.overlay = L.Layer.extend({
-    //   onAdd: () => {
-    //     let overlayPane = overlay.getPane();
-    //     let _container = L.DomUtil.create('div', 'leaflet-layer');
-    //     _container.appendChild(this.canvas.elt);
-    //     overlayPane.appendChild(_container);
-    //   },
-    //   drawLayer: () => {},
-    // })
-    //
-    // let overlay = new L.overlay();
-    // map.addLayer(overlay);
-    //
-    // map.on('move', () => {
-    //   var d = map.dragging._draggable;
-    //   let _canvas = this.canvas.elt.getContext('webgl') || this.canvas.elt.getContext('2d');
-    //   _canvas.canvas.style.transform = 'translate(' + -d._newPos.x + 'px,' + -d._newPos.y + 'px)';
-    // })
-
-    return map;
-  }
-
-  fromLatLngtoPixel(position) {
-    if(this.ready){
-      let containerPoint = this.map.latLngToContainerPoint(position);
-      return {x:containerPoint.x, y:containerPoint.y};
-    } else{
-      return {x:-100, y:-100};
-    }
-  }
-
-  fromZoomtoPixel() {
-    if(this.ready){
-      return this.map.getZoom()
+    if(this.options.key){
+      L.Mapzen.apiKey = this.options.key;
     } else {
-      return 0
+      Mapzen.messages().key();
+      return
     }
-  }
 
-  onChange(callback) {
-    if(this.ready){
-      callback()
-      this.map.on('move', () => {
-        callback();
-      })
-    } else {
-      setTimeout(() => {this.onChange(callback)}, 200);
-    }
+    // Create a Mapzen Map
+    this.map = L.Mapzen.map('mappa', {
+      center: [this.options.lat, this.options.lng],
+      zoom: this.options.zoom,
+      tangramOptions: {
+        scene: (this.options.BasemapStyles) ? L.Mapzen.BasemapStyles[this.options.scene] : this.options.scene,
+      }
+    });
+
+    this.map.on('tangramloaded', () =>{
+      this.options.opacity && (document.getElementsByTagName('canvas')[0].style.opacity = this.options.opacity);
+      this.ready = true;
+    });
+
+    this.canvasOverlay();
   }
 
   static messages(){
     return {
-      tiles: () => {console.warn('You need to include a style for your Mapzen map.')}
+      key: () => {console.warn('Please provide a API key for your Mapzen map.')}
     }
   }
 }

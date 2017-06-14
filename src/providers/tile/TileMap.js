@@ -31,14 +31,13 @@ class TileMap {
       div.setAttribute('style', 'position:absolute;width:'+ canvas.width + 'px;height:' + canvas.height + 'px;top:0;left:0;z-index:-99');
       div.setAttribute('id', 'mappa');
       this.canvas = canvas;
-      this.map = this.createMap();
+      this.createMap();
     };
   }
 
   latLng(...args){
     let pos = {lat: float(args[0]), lng: float(args[1])};
     return this.fromLatLngtoPixel(pos);
-
   }
 
   zoom(){

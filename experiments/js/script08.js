@@ -14,15 +14,18 @@ var options = {
   height: 140,
   backgroundColor: 'rgba(255,255,255,100)',
   opacity: 0.4,
-  style: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+  //style: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
 }
+
+var test;
 var mapboxglKey = 'pk.eyJ1IjoiZW5qYWxvdCIsImEiOiJjaWhtdmxhNTIwb25zdHBsejk0NGdhODJhIn0.2-F2hS_oTZenAWc0BMf_uw'
 
 var mapboxkey = 'pk.eyJ1IjoiY3ZhbGVuenVlbGEiLCJhIjoiY2l2ZzkweTQ3MDFuODJ5cDM2NmRnaG4wdyJ9.P_0JJXX6sD1oX2D0RQeWFA'
 
+var mapzenkey = 'mapzen-u1JCMvx'
 
 function preload(){
-  mappa = new Mappa('Leaflet');
+  mappa = new Mappa('Mapbox', mapboxkey);
   myMap = mappa.tileMap(options);
   dots = loadStrings('data/dots.csv');
 }

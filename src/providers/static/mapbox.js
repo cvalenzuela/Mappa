@@ -28,7 +28,6 @@ class Mapbox extends StaticMap {
         this.options.height = 1024;
       }
     }
-    console.log(this.options)
   };
 
   createImage() {

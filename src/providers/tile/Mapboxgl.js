@@ -15,20 +15,18 @@ class Mapboxgl extends TileMap {
 
   createMap () {
     mapboxgl.accessToken = this.options.key;
-    let map = new mapboxgl.Map({
+    this.map = new mapboxgl.Map({
       container: 'mappa',
       style: this.options.style || 'mapbox://styles/mapbox/satellite-streets-v10',
       center: [this.options.lng, this.options.lat],
       zoom: this.options.zoom,
     });
-    this.canvas.parent(map.getCanvasContainer());
+    this.canvas.parent(this.map.getCanvasContainer());
     this.canvas.elt.style.position = 'absolute';
 
-    document.getElementsByClassName('mapboxgl-canvas')[0].style.opacity = this.options.opacity;
-    
-    map.on('load', () => { this.ready = true; });
+    this.options.opacity && (document.getElementsByClassName('mapboxgl-canvas')[0].style.opacity = this.options.opacity);
 
-    return map;
+    this.map.on('load', () => { this.ready = true; });
   }
 
   fromLatLngtoPixel (latLng) {
