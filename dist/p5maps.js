@@ -297,6 +297,30 @@ Object.keys(_Mapbox).forEach(function (key) {
   });
 });
 
+var _Mapzen = __webpack_require__(11);
+
+Object.keys(_Mapzen).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Mapzen[key];
+    }
+  });
+});
+
+var _Tangram = __webpack_require__(12);
+
+Object.keys(_Tangram).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Tangram[key];
+    }
+  });
+});
+
 /***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -763,11 +787,20 @@ var Leaflet = function (_TileMap) {
     value: function createMap() {
       var _this2 = this;
 
+      if (!this.options.style) {
+        Leaflet.messages().tiles();
+        return;
+      }
+
       var map = L.map('mappa').setView([this.options.lat, this.options.lng], this.options.zoom);
       var tiles = L.tileLayer(this.options.style).addTo(map);
+
       tiles.on('tileload', function () {
         _this2.ready = true;
       });
+
+      tiles.options.opacity = this.options.opacity;
+      document.getElementsByClassName('leaflet-container')[0].style.background = this.options.backgroundColor;
 
       L.overlay = L.Layer.extend({
         onAdd: function onAdd() {
@@ -895,6 +928,8 @@ var Mapboxgl = function (_TileMap) {
       this.canvas.parent(map.getCanvasContainer());
       this.canvas.elt.style.position = 'absolute';
 
+      document.getElementsByClassName('mapboxgl-canvas')[0].style.opacity = this.options.opacity;
+
       map.on('load', function () {
         _this2.ready = true;
       });
@@ -995,14 +1030,22 @@ var Mapbox = function (_TileMap) {
     value: function createMap() {
       var _this2 = this;
 
-      this.options.key ? L.mapbox.accessToken = this.options.key : Mapbox.messages();
+      if (this.options.key) {
+        L.mapbox.accessToken = this.options.key;
+      } else {
+        Mapbox.messages().key();
+        return;
+      }
 
       var map = L.mapbox.map('mappa').setView([this.options.lat, this.options.lng], this.options.zoom);
-      var layer = L.mapbox.tileLayer(this.options.style || 'mapbox.streets').addTo(map);
+      var tiles = L.mapbox.tileLayer(this.options.style || 'mapbox.streets').addTo(map);
 
-      layer.on('ready', function () {
+      tiles.on('ready', function () {
         _this2.ready = true;
       });
+
+      tiles.options.opacity = this.options.opacity;
+      document.getElementsByClassName('leaflet-container')[0].style.background = this.options.backgroundColor;
 
       L.mapbox.overlay = L.Layer.extend({
         onAdd: function onAdd() {
@@ -1075,6 +1118,266 @@ var Mapbox = function (_TileMap) {
 }(_TileMap2.TileMap);
 
 exports.Mapbox = Mapbox;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Mapzen = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _TileMap2 = __webpack_require__(0);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // -----------
+// Mapzen v0.12.5
+// Reference: https://mapzen.com/documentation/mapzen-js/
+// -----------
+
+var Mapzen = function (_TileMap) {
+  _inherits(Mapzen, _TileMap);
+
+  function Mapzen(options) {
+    _classCallCheck(this, Mapzen);
+
+    var _this = _possibleConstructorReturn(this, (Mapzen.__proto__ || Object.getPrototypeOf(Mapzen)).call(this, options));
+
+    _this.script = 'https://mapzen.com/js/mapzen.min.js';
+    _this.style = 'https://mapzen.com/js/mapzen.css';
+    _this.init();
+    return _this;
+  }
+
+  _createClass(Mapzen, [{
+    key: 'createMap',
+    value: function createMap() {
+      if (!this.options.scene) {
+        Mapzen.messages().tiles();
+        //return
+      }
+
+      L.Mapzen.apiKey = this.options.key;
+
+      var map = L.Mapzen.map('mappa').setView([this.options.lat, this.options.lng], this.options.zoom);
+
+      // let tiles = L.tileLayer(this.options.style).addTo(map);
+      //
+      // tiles.on('tileload', () => { this.ready = true; });
+      //
+      // tiles.options.opacity = this.options.opacity;
+      // document.getElementsByClassName('leaflet-container')[0].style.background = this.options.backgroundColor;
+      //
+      // L.overlay = L.Layer.extend({
+      //   onAdd: () => {
+      //     let overlayPane = overlay.getPane();
+      //     let _container = L.DomUtil.create('div', 'leaflet-layer');
+      //     _container.appendChild(this.canvas.elt);
+      //     overlayPane.appendChild(_container);
+      //   },
+      //   drawLayer: () => {},
+      // })
+      //
+      // let overlay = new L.overlay();
+      // map.addLayer(overlay);
+      //
+      // map.on('move', () => {
+      //   var d = map.dragging._draggable;
+      //   let _canvas = this.canvas.elt.getContext('webgl') || this.canvas.elt.getContext('2d');
+      //   _canvas.canvas.style.transform = 'translate(' + -d._newPos.x + 'px,' + -d._newPos.y + 'px)';
+      // })
+
+      return map;
+    }
+  }, {
+    key: 'fromLatLngtoPixel',
+    value: function fromLatLngtoPixel(position) {
+      if (this.ready) {
+        var containerPoint = this.map.latLngToContainerPoint(position);
+        return { x: containerPoint.x, y: containerPoint.y };
+      } else {
+        return { x: -100, y: -100 };
+      }
+    }
+  }, {
+    key: 'fromZoomtoPixel',
+    value: function fromZoomtoPixel() {
+      if (this.ready) {
+        return this.map.getZoom();
+      } else {
+        return 0;
+      }
+    }
+  }, {
+    key: 'onChange',
+    value: function onChange(callback) {
+      var _this2 = this;
+
+      if (this.ready) {
+        callback();
+        this.map.on('move', function () {
+          callback();
+        });
+      } else {
+        setTimeout(function () {
+          _this2.onChange(callback);
+        }, 200);
+      }
+    }
+  }], [{
+    key: 'messages',
+    value: function messages() {
+      return {
+        tiles: function tiles() {
+          console.warn('You need to include a style for your Mapzen map.');
+        }
+      };
+    }
+  }]);
+
+  return Mapzen;
+}(_TileMap2.TileMap);
+
+exports.Mapzen = Mapzen;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Tangram = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _TileMap2 = __webpack_require__(0);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // -----------
+// Tangram v0.12.5
+// Reference: https://mapzen.com/documentation/tangram/
+// -----------
+
+var Tangram = function (_TileMap) {
+  _inherits(Tangram, _TileMap);
+
+  function Tangram(options) {
+    _classCallCheck(this, Tangram);
+
+    var _this = _possibleConstructorReturn(this, (Tangram.__proto__ || Object.getPrototypeOf(Tangram)).call(this, options));
+
+    _this.script = 'https://mapzen.com/tangram/tangram.min.js';
+    _this.init();
+    return _this;
+  }
+
+  _createClass(Tangram, [{
+    key: 'createMap',
+    value: function createMap() {
+      var _this2 = this;
+
+      if (!this.options.scene) {
+        Leaflet.messages().tiles();
+        return;
+      }
+
+      var map = L.map('mappa').setView([this.options.lat, this.options.lng], this.options.zoom);
+      var tiles = L.tileLayer(this.options.style).addTo(map);
+
+      tiles.on('tileload', function () {
+        _this2.ready = true;
+      });
+
+      tiles.options.opacity = this.options.opacity;
+      document.getElementsByClassName('leaflet-container')[0].style.background = this.options.backgroundColor;
+
+      L.overlay = L.Layer.extend({
+        onAdd: function onAdd() {
+          var overlayPane = overlay.getPane();
+          var _container = L.DomUtil.create('div', 'leaflet-layer');
+          _container.appendChild(_this2.canvas.elt);
+          overlayPane.appendChild(_container);
+        },
+        drawLayer: function drawLayer() {}
+      });
+
+      var overlay = new L.overlay();
+      map.addLayer(overlay);
+
+      map.on('move', function () {
+        var d = map.dragging._draggable;
+        var _canvas = _this2.canvas.elt.getContext('webgl') || _this2.canvas.elt.getContext('2d');
+        _canvas.canvas.style.transform = 'translate(' + -d._newPos.x + 'px,' + -d._newPos.y + 'px)';
+      });
+
+      return map;
+    }
+  }, {
+    key: 'fromLatLngtoPixel',
+    value: function fromLatLngtoPixel(position) {
+      if (this.ready) {
+        var containerPoint = this.map.latLngToContainerPoint(position);
+        return { x: containerPoint.x, y: containerPoint.y };
+      } else {
+        return { x: -100, y: -100 };
+      }
+    }
+  }, {
+    key: 'fromZoomtoPixel',
+    value: function fromZoomtoPixel() {
+      if (this.ready) {
+        return this.map.getZoom();
+      } else {
+        return 0;
+      }
+    }
+  }, {
+    key: 'onChange',
+    value: function onChange(callback) {
+      var _this3 = this;
+
+      if (this.ready) {
+        callback();
+        this.map.on('move', function () {
+          callback();
+        });
+      } else {
+        setTimeout(function () {
+          _this3.onChange(callback);
+        }, 200);
+      }
+    }
+  }], [{
+    key: 'messages',
+    value: function messages() {
+      return {
+        tiles: function tiles() {
+          console.warn('You need to include a style for your Leaflet map.');
+        }
+      };
+    }
+  }]);
+
+  return Tangram;
+}(_TileMap2.TileMap);
+
+exports.Tangram = Tangram;
 
 /***/ })
 /******/ ]);

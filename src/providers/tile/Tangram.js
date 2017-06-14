@@ -1,20 +1,19 @@
 // -----------
-// Leaflet v1.0.3
-// Reference: http://leafletjs.com/reference-1.0.3.html
+// Tangram v0.12.5
+// Reference: https://mapzen.com/documentation/tangram/
 // -----------
 
 import { TileMap } from './TileMap';
 
-class Leaflet extends TileMap {
+class Tangram extends TileMap {
   constructor(options){
     super(options);
-    this.script = 'https://unpkg.com/leaflet@1.0.3/dist/leaflet.js';
-    this.style = 'https://unpkg.com/leaflet@1.0.3/dist/leaflet.css';
+    this.script = 'https://mapzen.com/tangram/tangram.min.js';
     this.init();
   }
 
   createMap () {
-    if(!this.options.style){
+    if(!this.options.scene){
       Leaflet.messages().tiles();
       return
     }
@@ -87,4 +86,4 @@ class Leaflet extends TileMap {
   }
 }
 
-export { Leaflet };
+export { Tangram };

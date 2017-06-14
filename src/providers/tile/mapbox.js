@@ -14,14 +14,22 @@ class Mapbox extends TileMap {
   }
 
   createMap () {
-    this.options.key ? L.mapbox.accessToken = this.options.key : Mapbox.messages();
+    if(this.options.key){
+      L.mapbox.accessToken = this.options.key
+    } else {
+      Mapbox.messages().key();
+      return
+    }
 
     let map = L.mapbox.map('mappa').setView([this.options.lat, this.options.lng], this.options.zoom);
-    let layer = L.mapbox.tileLayer(this.options.style || 'mapbox.streets').addTo(map);
+    let tiles = L.mapbox.tileLayer(this.options.style || 'mapbox.streets').addTo(map);
 
-    layer.on('ready', () => {
+    tiles.on('ready', () => {
       this.ready = true;
     });
+
+    tiles.options.opacity = this.options.opacity;
+    document.getElementsByClassName('leaflet-container')[0].style.background = this.options.backgroundColor;
 
     L.mapbox.overlay = L.Layer.extend({
       onAdd: () => {

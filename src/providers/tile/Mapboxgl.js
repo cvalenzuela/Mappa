@@ -24,6 +24,8 @@ class Mapboxgl extends TileMap {
     this.canvas.parent(map.getCanvasContainer());
     this.canvas.elt.style.position = 'absolute';
 
+    document.getElementsByClassName('mapboxgl-canvas')[0].style.opacity = this.options.opacity;
+    
     map.on('load', () => { this.ready = true; });
 
     return map;
