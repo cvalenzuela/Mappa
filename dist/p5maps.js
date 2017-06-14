@@ -100,7 +100,6 @@ var TileMap = function () {
     _classCallCheck(this, TileMap);
 
     this.options = options;
-    this.scriptTag;
   }
 
   _createClass(TileMap, [{
@@ -820,10 +819,10 @@ var Leaflet = function (_TileMap) {
       var overlay = new L.overlay();
       this.map.addLayer(overlay);
 
+      var _canvas = this.canvas.elt.getContext('webgl') || this.canvas.elt.getContext('2d');
       this.map.on('move', function () {
         var d = _this3.map.dragging._draggable;
-        var _canvas = _this3.canvas.elt.getContext('webgl') || _this3.canvas.elt.getContext('2d');
-        _canvas.canvas.style.transform = 'translate(' + -d._newPos.x + 'px,' + -d._newPos.y + 'px)';
+        d._newPos && (_canvas.canvas.style.transform = 'translate(' + -d._newPos.x + 'px,' + -d._newPos.y + 'px)');
       });
     }
   }, {
@@ -1124,7 +1123,6 @@ var Mapzen = function (_Leaflet) {
       });
 
       this.map.on('tangramloaded', function () {
-        _this2.options.opacity && (document.getElementsByTagName('canvas')[0].style.opacity = _this2.options.opacity);
         _this2.ready = true;
       });
 
@@ -1160,7 +1158,7 @@ exports.Tangram = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _TileMap2 = __webpack_require__(0);
+var _Leaflet2 = __webpack_require__(8);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1171,14 +1169,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 // Reference: https://mapzen.com/documentation/tangram/
 // -----------
 
-var Tangram = function (_TileMap) {
-  _inherits(Tangram, _TileMap);
+var Tangram = function (_Leaflet) {
+  _inherits(Tangram, _Leaflet);
 
   function Tangram(options) {
     _classCallCheck(this, Tangram);
 
     var _this = _possibleConstructorReturn(this, (Tangram.__proto__ || Object.getPrototypeOf(Tangram)).call(this, options));
 
+    _this.options.provider = 'Leaflet';
+    _this.init();
+    _this.options.provider = 'Tangram';
     _this.script = 'https://mapzen.com/tangram/tangram.min.js';
     _this.init();
     return _this;
@@ -1189,90 +1190,34 @@ var Tangram = function (_TileMap) {
     value: function createMap() {
       var _this2 = this;
 
-      if (!this.options.scene) {
-        Leaflet.messages().tiles();
-        return;
-      }
-
-      var map = L.map('mappa').setView([this.options.lat, this.options.lng], this.options.zoom);
-      var tiles = L.tileLayer(this.options.style).addTo(map);
-
-      tiles.on('tileload', function () {
-        _this2.ready = true;
+      // Create a Tangram Map
+      this.map = L.map('mappa');
+      this.tangramScene = window.Tangram.leafletLayer({
+        scene: this.options.scene,
+        attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | &copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a>'
       });
+      this.tangramScene.addTo(this.map);
+      this.map.setView([this.options.lat, this.options.lng], this.options.zoom);
 
-      tiles.options.opacity = this.options.opacity;
-      document.getElementsByClassName('leaflet-container')[0].style.background = this.options.backgroundColor;
+      this.tangramScene.scene.subscribe({ load: function load() {
+          _this2.ready = true;
+        } });
 
-      L.overlay = L.Layer.extend({
-        onAdd: function onAdd() {
-          var overlayPane = overlay.getPane();
-          var _container = L.DomUtil.create('div', 'leaflet-layer');
-          _container.appendChild(_this2.canvas.elt);
-          overlayPane.appendChild(_container);
-        },
-        drawLayer: function drawLayer() {}
-      });
-
-      var overlay = new L.overlay();
-      map.addLayer(overlay);
-
-      map.on('move', function () {
-        var d = map.dragging._draggable;
-        var _canvas = _this2.canvas.elt.getContext('webgl') || _this2.canvas.elt.getContext('2d');
-        _canvas.canvas.style.transform = 'translate(' + -d._newPos.x + 'px,' + -d._newPos.y + 'px)';
-      });
-
-      return map;
-    }
-  }, {
-    key: 'fromLatLngtoPixel',
-    value: function fromLatLngtoPixel(position) {
-      if (this.ready) {
-        var containerPoint = this.map.latLngToContainerPoint(position);
-        return { x: containerPoint.x, y: containerPoint.y };
-      } else {
-        return { x: -100, y: -100 };
-      }
-    }
-  }, {
-    key: 'fromZoomtoPixel',
-    value: function fromZoomtoPixel() {
-      if (this.ready) {
-        return this.map.getZoom();
-      } else {
-        return 0;
-      }
-    }
-  }, {
-    key: 'onChange',
-    value: function onChange(callback) {
-      var _this3 = this;
-
-      if (this.ready) {
-        callback();
-        this.map.on('move', function () {
-          callback();
-        });
-      } else {
-        setTimeout(function () {
-          _this3.onChange(callback);
-        }, 200);
-      }
+      this.canvasOverlay();
     }
   }], [{
     key: 'messages',
     value: function messages() {
       return {
-        tiles: function tiles() {
-          console.warn('You need to include a style for your Leaflet map.');
+        key: function key() {
+          console.warn('Please provide a API key for your Mapzen map.');
         }
       };
     }
   }]);
 
   return Tangram;
-}(_TileMap2.TileMap);
+}(_Leaflet2.Leaflet);
 
 exports.Tangram = Tangram;
 

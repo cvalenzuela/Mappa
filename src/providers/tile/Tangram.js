@@ -3,85 +3,37 @@
 // Reference: https://mapzen.com/documentation/tangram/
 // -----------
 
-import { TileMap } from './TileMap';
+import { Leaflet } from './Leaflet';
 
-class Tangram extends TileMap {
+class Tangram extends Leaflet {
   constructor(options){
     super(options);
+    this.options.provider = 'Leaflet';
+    this.init();
+    this.options.provider = 'Tangram';
     this.script = 'https://mapzen.com/tangram/tangram.min.js';
     this.init();
   }
 
   createMap () {
-    if(!this.options.scene){
-      Leaflet.messages().tiles();
-      return
-    }
 
-    let map = L.map('mappa').setView(
-      [this.options.lat, this.options.lng],
-      this.options.zoom
-    );
-    let tiles = L.tileLayer(this.options.style).addTo(map);
+    // Create a Tangram Map
+    this.map = L.map('mappa');
+    this.tangramScene = window.Tangram.leafletLayer({
+        scene: this.options.scene,
+        attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | &copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a>'
+    });
+    this.tangramScene.addTo(this.map);
+    this.map.setView([this.options.lat, this.options.lng], this.options.zoom);
 
-    tiles.on('tileload', () => { this.ready = true; });
+    this.tangramScene.scene.subscribe({ load: () => { this.ready = true }});
 
-    tiles.options.opacity = this.options.opacity;
-    document.getElementsByClassName('leaflet-container')[0].style.background = this.options.backgroundColor;
-
-    L.overlay = L.Layer.extend({
-      onAdd: () => {
-        let overlayPane = overlay.getPane();
-        let _container = L.DomUtil.create('div', 'leaflet-layer');
-        _container.appendChild(this.canvas.elt);
-        overlayPane.appendChild(_container);
-      },
-      drawLayer: () => {},
-    })
-
-    let overlay = new L.overlay();
-    map.addLayer(overlay);
-
-    map.on('move', () => {
-      var d = map.dragging._draggable;
-      let _canvas = this.canvas.elt.getContext('webgl') || this.canvas.elt.getContext('2d');
-      _canvas.canvas.style.transform = 'translate(' + -d._newPos.x + 'px,' + -d._newPos.y + 'px)';
-    })
-
-    return map;
-  }
-
-  fromLatLngtoPixel(position) {
-    if(this.ready){
-      let containerPoint = this.map.latLngToContainerPoint(position);
-      return {x:containerPoint.x, y:containerPoint.y};
-    } else{
-      return {x:-100, y:-100};
-    }
-  }
-
-  fromZoomtoPixel() {
-    if(this.ready){
-      return this.map.getZoom()
-    } else {
-      return 0
-    }
-  }
-
-  onChange(callback) {
-    if(this.ready){
-      callback()
-      this.map.on('move', () => {
-        callback();
-      })
-    } else {
-      setTimeout(() => {this.onChange(callback)}, 200);
-    }
+    this.canvasOverlay();
   }
 
   static messages(){
     return {
-      tiles: () => {console.warn('You need to include a style for your Leaflet map.')}
+      key: () => {console.warn('Please provide a API key for your Mapzen map.')}
     }
   }
 }

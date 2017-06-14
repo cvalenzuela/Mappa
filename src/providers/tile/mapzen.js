@@ -30,10 +30,7 @@ class Mapzen extends Leaflet {
       }
     });
 
-    this.map.on('tangramloaded', () =>{
-      this.options.opacity && (document.getElementsByTagName('canvas')[0].style.opacity = this.options.opacity);
-      this.ready = true;
-    });
+    this.map.on('tangramloaded', () =>{ this.ready = true; });
 
     this.canvasOverlay();
   }

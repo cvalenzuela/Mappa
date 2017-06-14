@@ -48,10 +48,10 @@ class Leaflet extends TileMap {
     let overlay = new L.overlay();
     this.map.addLayer(overlay);
 
+    let _canvas = this.canvas.elt.getContext('webgl') || this.canvas.elt.getContext('2d');
     this.map.on('move', () => {
       var d = this.map.dragging._draggable;
-      let _canvas = this.canvas.elt.getContext('webgl') || this.canvas.elt.getContext('2d');
-      _canvas.canvas.style.transform = 'translate(' + -d._newPos.x + 'px,' + -d._newPos.y + 'px)';
+      d._newPos && (_canvas.canvas.style.transform = 'translate(' + -d._newPos.x + 'px,' + -d._newPos.y + 'px)');
     })
   }
 
