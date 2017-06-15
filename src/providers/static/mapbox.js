@@ -55,13 +55,17 @@ class Mapbox extends StaticMap {
   };
 
   static options(){
-    return ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'bearing', 'pitch', 'style', 'username', 'overlay', 'attribution', 'logo', 'before_layer', 'center', 'size'];
+    // This needs to be rewritten
+    return {
+      valid: ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'bearing', 'pitch', 'style', 'username', 'overlay', 'attribution', 'logo', 'before_layer', 'center', 'size'],
+      userInput: ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'bearing', 'pitch', 'style', 'username', 'overlay', 'attribution', 'logo', 'before_layer', 'center', 'size']
+    }
   }
 
   static messages(){
     return {
       size: (s, m) => console.warn(`You requested an image with a ${s} of ${m}px. Mapbox Static API max ${s} value is 1024px.`),
-      key: () => {console.error('Mapbox need an API key to work. Please provide an API key for your map provider. To get a key visit: https://www.mapbox.com/api-documentation/#static')},
+      key: () => {console.error('Mapbox Static API needs a key to work. To get a key visit: https://www.mapbox.com/api-documentation/#static')},
     }
   }
 }

@@ -20,12 +20,12 @@ class Mappa {
   }
 
   staticMap(...args) {
-    let options;
+    let options = {};
 
     if(typeof args[0] == 'object'){
       options = Object.assign({}, args[0])
     } else {
-      let _options = staticMap[this.provider].options()
+      let _options = staticMap[this.provider].options().userInput
       args.forEach((el, i) => {
         let option = _options[i];
         options[option] = el;
