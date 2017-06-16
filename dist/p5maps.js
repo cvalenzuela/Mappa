@@ -126,7 +126,7 @@ var Leaflet = function (_TileMap) {
       }
 
       this.map = L.map('mappa').setView([this.options.lat, this.options.lng], this.options.zoom);
-      this.tiles = L.tileLayer(this.options.style).addTo(map);
+      this.tiles = L.tileLayer(this.options.style).addTo(this.map);
       this.tiles.on('tileload', function () {
         _this2.ready = true;
       });
@@ -202,7 +202,7 @@ var Leaflet = function (_TileMap) {
     value: function messages() {
       return {
         tiles: function tiles() {
-          console.warn('You need to include a style for your Leaflet map.');
+          console.warn('You need to include a style for your Leaflet map. Try with: http://{s}.tile.osm.org/{z}/{x}/{y}.png');
         }
       };
     }
@@ -723,7 +723,6 @@ var Mapbox = function (_StaticMap) {
       }) : this.url += 'auto';
       this.url += '/' + this.options.width + 'x' + this.options.height;
       this.options.scale == 2 && (this.url += '@2x');
-      console.log(this.url);
       this.url += '?access_token=' + this.options.key;
       this.options.attribution ? this.url += '&attribution=' + this.options.attribution : this.url += '&attribution=false';
       this.options.logo ? this.url += '&logo=' + this.options.logo : this.url += '&logo=false';
@@ -816,7 +815,7 @@ var Google = function (_TileMap) {
         overlay.getPanes().overlayLayer.appendChild(_this2.canvas.elt);
       };
 
-      google.maps.event.addListener(map, 'bounds_changed', function () {
+      google.maps.event.addListener(this.map, 'bounds_changed', function () {
         var center = overlay.getProjection().fromLatLngToDivPixel(_this2.map.getCenter());
         var offsetX = -Math.round(_this2.canvas.width / 2 - center.x);
         var offsetY = -Math.round(_this2.canvas.height / 2 - center.y);
@@ -824,7 +823,7 @@ var Google = function (_TileMap) {
         _canvas.canvas.style.transform = 'translate(' + offsetX + 'px,' + offsetY + 'px)';
       });
 
-      google.maps.event.addListenerOnce(map, 'tilesloaded', function () {
+      google.maps.event.addListenerOnce(this.map, 'tilesloaded', function () {
         _this2.ready = true;
       });
     }
@@ -1128,7 +1127,7 @@ var Mapzen = function (_Leaflet) {
           scene: this.options.BasemapStyles ? L.Mapzen.BasemapStyles[this.options.scene] : this.options.scene
         }
       });
-
+      console.log(this.map);
       this.map.on('tangramloaded', function () {
         _this2.ready = true;
       });

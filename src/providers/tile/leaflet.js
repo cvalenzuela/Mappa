@@ -23,7 +23,7 @@ class Leaflet extends TileMap {
       [this.options.lat, this.options.lng],
       this.options.zoom
     );
-    this.tiles = L.tileLayer(this.options.style).addTo(map);
+    this.tiles = L.tileLayer(this.options.style).addTo(this.map);
     this.tiles.on('tileload', () => { this.ready = true; });
 
     this.canvasOverlay();
@@ -85,7 +85,7 @@ class Leaflet extends TileMap {
 
   static messages(){
     return {
-      tiles: () => {console.warn('You need to include a style for your Leaflet map.')}
+      tiles: () => {console.warn('You need to include a style for your Leaflet map. Try with: http://{s}.tile.osm.org/{z}/{x}/{y}.png')}
     }
   }
 }

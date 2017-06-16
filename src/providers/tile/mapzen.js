@@ -29,7 +29,7 @@ class Mapzen extends Leaflet {
         scene: (this.options.BasemapStyles) ? L.Mapzen.BasemapStyles[this.options.scene] : this.options.scene,
       }
     });
-
+    console.log(this.map)
     this.map.on('tangramloaded', () =>{ this.ready = true; });
 
     this.canvasOverlay();

@@ -28,7 +28,7 @@ class Google extends TileMap {
       overlay.getPanes().overlayLayer.appendChild(this.canvas.elt);
     }
 
-    google.maps.event.addListener(map, 'bounds_changed', () => {
+    google.maps.event.addListener(this.map, 'bounds_changed', () => {
       let center = overlay.getProjection().fromLatLngToDivPixel(this.map.getCenter());
       let offsetX = - Math.round(this.canvas.width / 2 - center.x);
       let offsetY = - Math.round(this.canvas.height / 2 - center.y);
@@ -36,7 +36,7 @@ class Google extends TileMap {
       _canvas.canvas.style.transform = 'translate(' + offsetX + 'px,' + offsetY + 'px)';
     })
 
-    google.maps.event.addListenerOnce(map, 'tilesloaded', () => { this.ready = true; });
+    google.maps.event.addListenerOnce(this.map, 'tilesloaded', () => { this.ready = true; });
   }
 
   fromLatLngtoPixel(position) {
