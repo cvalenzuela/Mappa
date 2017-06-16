@@ -237,6 +237,7 @@ var TileMap = function () {
     _classCallCheck(this, TileMap);
 
     this.options = options;
+    this.scriptTag;
   }
 
   _createClass(TileMap, [{
@@ -370,6 +371,18 @@ Object.keys(_Google).forEach(function (key) {
     enumerable: true,
     get: function get() {
       return _Google[key];
+    }
+  });
+});
+
+var _Mapquest = __webpack_require__(13);
+
+Object.keys(_Mapquest).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Mapquest[key];
     }
   });
 });
@@ -517,7 +530,6 @@ var Mappa = function () {
         });
       };
       options.key = this.key;
-
       return new _staticMap[this.provider](options);
     }
   }, {
@@ -1127,7 +1139,6 @@ var Mapzen = function (_Leaflet) {
           scene: this.options.BasemapStyles ? L.Mapzen.BasemapStyles[this.options.scene] : this.options.scene
         }
       });
-      console.log(this.map);
       this.map.on('tangramloaded', function () {
         _this2.ready = true;
       });
@@ -1226,6 +1237,109 @@ var Tangram = function (_Leaflet) {
 }(_Leaflet2.Leaflet);
 
 exports.Tangram = Tangram;
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Mapquest = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _StaticMap2 = __webpack_require__(2);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // -----------
+// Mapquest v5
+// Reference: https://developer.mapquest.com/documentation/static-map-api/v5/
+// -----------
+
+
+var Mapquest = function (_StaticMap) {
+  _inherits(Mapquest, _StaticMap);
+
+  function Mapquest(options) {
+    _classCallCheck(this, Mapquest);
+
+    var _this = _possibleConstructorReturn(this, (Mapquest.__proto__ || Object.getPrototypeOf(Mapquest)).call(this, options));
+
+    _this.url = 'https://www.mapquestapi.com/staticmap/v5/map?';
+    _this.init();
+    _this.img = _this.createImage();
+    return _this;
+  }
+
+  _createClass(Mapquest, [{
+    key: 'init',
+    value: function init() {
+      if (this.options.scale == 1 || this.options.scale == undefined) {
+        this.options.pixels = 128;
+        this.options.scale = 1;
+      } else if (this.options.scale == 2) {
+        this.options.pixels = 256;
+      }
+      if (this.options.width > 1920) {
+        Mapquest.messages().size('width', this.options.width);
+        this.options.width = 1920;
+      }
+      if (this.options.height > 1920) {
+        Mapquest.messages().size('height', this.options.height);
+        this.options.height = 1920;
+      }
+    }
+  }, {
+    key: 'createImage',
+    value: function createImage() {
+      if (!this.options.key) {
+        Mapquest.messages().key();
+        return;
+      }
+
+      this.options.size = this.options.width + ',' + this.options.height;
+      this.options.scale == 2 && (this.options.size += '@2x');
+      !this.options.center && (this.options.center = this.options.lat + ',' + this.options.lng);
+
+      for (var option in this.options) {
+        Mapquest.options().valid.indexOf(option) > -1 && (this.url += '&' + option + '=' + this.options[option]);
+      }
+
+      return this.url;
+    }
+  }], [{
+    key: 'options',
+    value: function options() {
+      return {
+        valid: ['key', 'size', 'zoom', 'center', 'boundingBox', 'margin', 'format', 'type', 'scalebar', 'locations', 'declutter', 'defaultMarker', 'banner', 'traffic', 'key'],
+        userInput: ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'boundingBox', 'margin', 'format', 'type', 'scalebar', 'locations', 'declutter', 'defaultMarker', 'banner', 'traffic', 'key']
+      };
+    }
+  }, {
+    key: 'messages',
+    value: function messages() {
+      return {
+        size: function size(s, m) {
+          console.warn('You requested an image with a ' + s + ' of ' + m + 'px. Mapquest Static API max ' + s + ' value is 1920px. For larger images, change the scale to 2 and keep the ' + s + ' between 170x30px. i.e: if you want an 3840x3840px image, set the width and height to 1920x1920 and the scale to 2.');
+        },
+        key: function key() {
+          console.warn('Please provide and API key to work with Mapquest Static API. Get one here: https://developer.mapquest.com/documentation/');
+        }
+      };
+    }
+  }]);
+
+  return Mapquest;
+}(_StaticMap2.StaticMap);
+
+exports.Mapquest = Mapquest;
 
 /***/ })
 /******/ ]);

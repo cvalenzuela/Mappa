@@ -15,16 +15,7 @@ var options = {
   // scene: 'Tron'
 }
 
-// var options = {
-//   lat: 40.78,
-//   lng: -73.96,
-//   zoom: 10,
-//   width: 400,
-//   height: 400,
-//   // BasemapStyles: true,
-//   // scene: 'Tron'
-//   //style: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-// }
+git
 
 var mapzenkey = 'mapzen-u1JCMvx';
 var mapboxKey = 'pk.eyJ1IjoiY3ZhbGVuenVlbGEiLCJhIjoiY2l2ZzkweTQ3MDFuODJ5cDM2NmRnaG4wdyJ9.P_0JJXX6sD1oX2D0RQeWFA';
@@ -32,14 +23,13 @@ var googleKey = 'AIzaSyAGz9IlglBq-gWCSzCWVC11autdr1LLhbM';
 
 
 function preload(){
-  mappa = new Mappa('Tangram', mapzenkey);
-  myMap = mappa.tileMap(options);
   dots = loadStrings('data/dots.csv');
 }
 
 function setup(){
   canvas = createCanvas(900, 650);
-
+  mappa = new Mappa('Tangram', );
+  myMap = mappa.tileMap(options);
   myMap.append(canvas);
   noStroke();
   fill(255, 0, 0);

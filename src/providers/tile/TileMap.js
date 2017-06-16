@@ -5,6 +5,7 @@
 class TileMap {
   constructor(options){
     this.options = options;
+    this.scriptTag;
   }
 
   init() {

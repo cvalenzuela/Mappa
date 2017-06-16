@@ -32,7 +32,6 @@ class Mappa {
       })
     };
     options.key = this.key;
-
     return new staticMap[this.provider](options);
   }
 

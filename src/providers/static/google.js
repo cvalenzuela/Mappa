@@ -59,4 +59,4 @@ class Google extends StaticMap {
   }
 }
 
-export { Google }
+export { Google };
