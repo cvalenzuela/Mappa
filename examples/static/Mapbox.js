@@ -1,25 +1,23 @@
 // -----------
-// Google Maps Static API Demo
+// Mapbox Static API Demo
 // -----------
 
 // Import API key
-var key = 'AIzaSyAGz9IlglBq-gWCSzCWVC11autdr1LLhbM'
+var key = 'pk.eyJ1IjoiY3ZhbGVuenVlbGEiLCJhIjoiY2l2ZzkweTQ3MDFuODJ5cDM2NmRnaG4wdyJ9.P_0JJXX6sD1oX2D0RQeWFA'
 
-// Create a new instance of Google
-var mappa = new Mappa('Google', key);
+// Create a new instance of Mapbox
+var mappa = new Mappa('Mapbox', key);
 
 // Options for map
 var options = {
   lat: 40.782,
   lng: -73.967,
   zoom: 4,
-  width: 640,
-  height: 640,
+  width: 1280,
+  height: 1280,
   scale: 1,
-  format: 'PNG',
-  language: 'en',
-  maptype: 'hybrid'
-
+  pitch: 0,
+  style: 'satellite-streets-v10'
 }
 
 // Create a Static Map

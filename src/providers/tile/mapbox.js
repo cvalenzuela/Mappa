@@ -25,7 +25,9 @@ class Mapbox extends Leaflet {
     this.map = L.mapbox.map('mappa').setView(
       [this.options.lat, this.options.lng], this.options.zoom
     );
-    this.tiles = L.mapbox.tileLayer(this.options.style || 'mapbox.streets').addTo(this.map);
+
+    (this.options.studio)? this.tiles = L.mapbox.styleLayer(this.options.style || 'mapbox://styles/mapbox/emerald-v8').addTo(this.map) : this.tiles = L.mapbox.tileLayer(this.options.style || 'mapbox.streets').addTo(this.map);
+
     this.tiles.on('ready', () => { this.ready = true; });
 
     this.canvasOverlay();

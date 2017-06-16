@@ -19,13 +19,13 @@ class Mapbox extends StaticMap {
     if(this.options.scale == 2){
       this.options.pixels = 512
     } else{
-      if (this.options.width > 1024){
+      if (this.options.width > 1280){
         Mapbox.messages().size('width', this.options.width);
-        this.options.width = 1024;
+        this.options.width = 1280;
       }
-      if (this.options.height > 1024){
+      if (this.options.height > 1280){
         Mapbox.messages().size('height', this.options.width);
-        this.options.height = 1024;
+        this.options.height = 1280;
       }
     }
   };
@@ -55,7 +55,6 @@ class Mapbox extends StaticMap {
   };
 
   static options(){
-    // This needs to be rewritten
     return {
       valid: ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'bearing', 'pitch', 'style', 'username', 'overlay', 'attribution', 'logo', 'before_layer', 'center', 'size'],
       userInput: ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'bearing', 'pitch', 'style', 'username', 'overlay', 'attribution', 'logo', 'before_layer', 'center', 'size']
@@ -64,7 +63,7 @@ class Mapbox extends StaticMap {
 
   static messages(){
     return {
-      size: (s, m) => console.warn(`You requested an image with a ${s} of ${m}px. Mapbox Static API max ${s} value is 1024px.`),
+      size: (s, m) => console.warn(`You requested an image with a ${s} of ${m}px. Mapbox Static API max ${s} value is 1280px. If you want a large image change the scale to 2.`),
       key: () => {console.error('Mapbox Static API needs a key to work. To get a key visit: https://www.mapbox.com/api-documentation/#static')},
     }
   }

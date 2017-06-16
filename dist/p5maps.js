@@ -705,13 +705,13 @@ var Mapbox = function (_StaticMap) {
       if (this.options.scale == 2) {
         this.options.pixels = 512;
       } else {
-        if (this.options.width > 1024) {
+        if (this.options.width > 1280) {
           Mapbox.messages().size('width', this.options.width);
-          this.options.width = 1024;
+          this.options.width = 1280;
         }
-        if (this.options.height > 1024) {
+        if (this.options.height > 1280) {
           Mapbox.messages().size('height', this.options.width);
-          this.options.height = 1024;
+          this.options.height = 1280;
         }
       }
     }
@@ -744,7 +744,6 @@ var Mapbox = function (_StaticMap) {
   }], [{
     key: 'options',
     value: function options() {
-      // This needs to be rewritten
       return {
         valid: ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'bearing', 'pitch', 'style', 'username', 'overlay', 'attribution', 'logo', 'before_layer', 'center', 'size'],
         userInput: ['lat', 'lng', 'zoom', 'width', 'height', 'scale', 'bearing', 'pitch', 'style', 'username', 'overlay', 'attribution', 'logo', 'before_layer', 'center', 'size']
@@ -755,7 +754,7 @@ var Mapbox = function (_StaticMap) {
     value: function messages() {
       return {
         size: function size(s, m) {
-          return console.warn('You requested an image with a ' + s + ' of ' + m + 'px. Mapbox Static API max ' + s + ' value is 1024px.');
+          return console.warn('You requested an image with a ' + s + ' of ' + m + 'px. Mapbox Static API max ' + s + ' value is 1280px. If you want a large image change the scale to 2.');
         },
         key: function key() {
           console.error('Mapbox Static API needs a key to work. To get a key visit: https://www.mapbox.com/api-documentation/#static');
@@ -817,7 +816,9 @@ var Google = function (_TileMap) {
 
       this.map = new google.maps.Map(document.getElementById('mappa'), {
         center: { lat: this.options.lat, lng: this.options.lng },
-        zoom: this.options.zoom || 6
+        zoom: this.options.zoom || 6,
+        mapTypeId: this.options.mapTypeId || 'terrain',
+        styles: this.options.styles || ''
       });
 
       var overlay = new google.maps.OverlayView();
@@ -947,7 +948,9 @@ var Mapbox = function (_Leaflet) {
 
       // Create a Mapbox Map
       this.map = L.mapbox.map('mappa').setView([this.options.lat, this.options.lng], this.options.zoom);
-      this.tiles = L.mapbox.tileLayer(this.options.style || 'mapbox.streets').addTo(this.map);
+
+      this.options.studio ? this.tiles = L.mapbox.styleLayer(this.options.style || 'mapbox://styles/mapbox/emerald-v8').addTo(this.map) : this.tiles = L.mapbox.tileLayer(this.options.style || 'mapbox.streets').addTo(this.map);
+
       this.tiles.on('ready', function () {
         _this2.ready = true;
       });

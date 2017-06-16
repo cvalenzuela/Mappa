@@ -19,6 +19,8 @@ class Google extends TileMap {
     this.map = new google.maps.Map(document.getElementById('mappa'), {
       center: {lat: this.options.lat, lng: this.options.lng},
       zoom: this.options.zoom || 6,
+      mapTypeId: this.options.mapTypeId || 'terrain',
+      styles: this.options.styles || ''
     });
 
     let overlay = new google.maps.OverlayView();
