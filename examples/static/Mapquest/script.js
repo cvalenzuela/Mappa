@@ -15,7 +15,7 @@ var options = {
   zoom: 4,
   width: 640,
   height: 640,
-  scale: 2,
+  scale: 1,
   type: 'hyb',
   scalebar: 'true|bottom',
   traffic: 'flow',
@@ -32,11 +32,11 @@ var dots;
 function preload(){
   // Load the image from the mappa instance
   img = loadImage(myMap.img);
-  dots = loadStrings('./data/dots.csv');
+  dots = loadStrings('../../data/dots.csv');
 }
 
 function setup(){
-  createCanvas(1280,1280);
+  createCanvas(640,640);
   noStroke();
   fill(255, 0, 0);
 

@@ -1,18 +1,19 @@
 // -----------
-// Mapzen Demo
+// Mapbox Demo
 // -----------
 
-var key = 'mapzen-u1JCMvx'
+var key = 'pk.eyJ1IjoiY3ZhbGVuenVlbGEiLCJhIjoiY2l2ZzkweTQ3MDFuODJ5cDM2NmRnaG4wdyJ9.P_0JJXX6sD1oX2D0RQeWFA'
 
 var options = {
   lat: 40.7828647,
   lng: -73.9675438,
-  zoom: 7,
-  BasemapStyles: true,
-  scene: 'Tron'
+  zoom: 4,
+  studio: false,
+  style: 'mapbox.satellite' //streets, outdoors, light, dark, satellite (for nonstudio)
+  //style: 'mapbox://styles/cvalenzuela/cj3optaml001z2qpfe064z5hb'
 }
 
-var mappa = new Mappa('Mapzen', key);
+var mappa = new Mappa('Mapbox', key);
 var myMap;
 
 var canvas;
@@ -22,7 +23,7 @@ function setup(){
   canvas = createCanvas(800, 700);
   myMap = mappa.tileMap(options);
   myMap.append(canvas);
-  dots = loadStrings('data/dots.csv');
+  dots = loadStrings('../../data/dots.csv');
   myMap.onChange(circles);
 }
 

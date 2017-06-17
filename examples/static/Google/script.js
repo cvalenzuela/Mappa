@@ -1,23 +1,25 @@
 // -----------
-// Mapbox Static API Demo
+// Google Maps Static API Demo
 // -----------
 
 // Import API key
-var key = 'pk.eyJ1IjoiY3ZhbGVuenVlbGEiLCJhIjoiY2l2ZzkweTQ3MDFuODJ5cDM2NmRnaG4wdyJ9.P_0JJXX6sD1oX2D0RQeWFA'
+var key = 'AIzaSyAGz9IlglBq-gWCSzCWVC11autdr1LLhbM'
 
-// Create a new instance of Mapbox
-var mappa = new Mappa('Mapbox', key);
+// Create a new instance of Google
+var mappa = new Mappa('Google', key);
 
 // Options for map
 var options = {
   lat: 40.782,
   lng: -73.967,
   zoom: 4,
-  width: 1280,
-  height: 1280,
+  width: 640,
+  height: 640,
   scale: 1,
-  pitch: 0,
-  style: 'satellite-streets-v10'
+  format: 'PNG',
+  language: 'en',
+  maptype: 'hybrid'
+
 }
 
 // Create a Static Map
@@ -30,11 +32,11 @@ var dots;
 function preload(){
   // Load the image from the mappa instance
   img = loadImage(myMap.img);
-  dots = loadStrings('./data/dots.csv');
+  dots = loadStrings('../../data/dots.csv');
 }
 
 function setup(){
-  createCanvas(1280,1280);
+  createCanvas(800,500);
   noStroke();
   fill(255, 0, 0);
 

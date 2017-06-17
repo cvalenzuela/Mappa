@@ -1,17 +1,15 @@
 // -----------
-// Tangram Demo
+// Leaflet Demo with OSM
 // -----------
-
-var key = 'mapzen-u1JCMvx'
 
 var options = {
   lat: 40.7828647,
   lng: -73.9675438,
   zoom: 4,
-  scene: './scenes/scene.yaml'
+  style: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
 }
 
-var mappa = new Mappa('Tangram', key);
+var mappa = new Mappa('Leaflet');
 var myMap;
 
 var canvas;
@@ -21,7 +19,7 @@ function setup(){
   canvas = createCanvas(800, 700);
   myMap = mappa.tileMap(options);
   myMap.append(canvas);
-  dots = loadStrings('data/dots.csv');
+  dots = loadStrings('../../data/dots.csv');
   myMap.onChange(circles);
 }
 

@@ -7,13 +7,14 @@ export default {
   output: {
     path: join(__dirname, 'dist'),
     libraryTarget: 'umd',
-    library: 'Mappa',
+    publicPath: "/dist/",
+    filename: "p5maps.js",
+    library: 'Mappa'
   },
-  watch: true,
   module: {
     loaders: [
       { test: /\.js$/, loader: 'babel-loader', include },
       { test: /\.json$/, loader: 'json', include },
     ],
-  },
+  }
 }

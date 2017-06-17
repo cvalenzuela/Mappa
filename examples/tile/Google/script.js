@@ -22,7 +22,7 @@ function setup(){
   canvas = createCanvas(800, 700);
   myMap = mappa.tileMap(options);
   myMap.append(canvas);
-  dots = loadStrings('data/dots.csv');
+  dots = loadStrings('../../data/dots.csv');
   myMap.onChange(circles);
 }
 

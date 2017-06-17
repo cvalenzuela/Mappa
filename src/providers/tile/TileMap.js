@@ -36,12 +36,12 @@ class TileMap {
   }
 
   latLng(...args){
-    let pos = {lat: float(args[0]), lng: float(args[1])};
+    let pos = {lat: Number(args[0]), lng: Number(args[1])};
     return this.fromLatLngtoPixel(pos);
   }
 
   zoom(){
-    return Math.floor(this.fromZoomtoPixel());
+    return Math.floor(this.getZoom());
   }
 
 }

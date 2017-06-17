@@ -54,7 +54,7 @@ class Google extends TileMap {
     }
   }
 
-  fromZoomtoPixel() {
+  getZoom() {
     if(this.ready){
       return this.map.getZoom()
     } else {

@@ -1,19 +1,17 @@
 // -----------
-// Mapbox Demo
+// Tangram Demo
 // -----------
 
-var key = 'pk.eyJ1IjoiY3ZhbGVuenVlbGEiLCJhIjoiY2l2ZzkweTQ3MDFuODJ5cDM2NmRnaG4wdyJ9.P_0JJXX6sD1oX2D0RQeWFA'
+var key = 'mapzen-u1JCMvx'
 
 var options = {
   lat: 40.7828647,
   lng: -73.9675438,
   zoom: 4,
-  studio: false,
-  style: 'mapbox.satellite' //streets, outdoors, light, dark, satellite (for nonstudio)
-  //style: 'mapbox://styles/cvalenzuela/cj3optaml001z2qpfe064z5hb'
+  scene: 'scene.yaml'
 }
 
-var mappa = new Mappa('Mapbox', key);
+var mappa = new Mappa('Tangram', key);
 var myMap;
 
 var canvas;
@@ -23,7 +21,7 @@ function setup(){
   canvas = createCanvas(800, 700);
   myMap = mappa.tileMap(options);
   myMap.append(canvas);
-  dots = loadStrings('data/dots.csv');
+  dots = loadStrings('../../data/dots.csv');
   myMap.onChange(circles);
 }
 
