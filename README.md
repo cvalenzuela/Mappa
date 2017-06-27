@@ -28,7 +28,6 @@ In most cases an API is required. Check [this guide]() to learn how to get and s
 # Reference
 
 ## Static Maps
-***
 
 Mappa provides a simple interface when working with static maps. It currently supports [Google Maps Static API](https://developers.google.com/maps/documentation/static-maps/), [Mapbox Static API](https://www.mapbox.com/api-documentation/#styles) and [Mapquest Static API](https://developer.mapquest.com/documentation/static-map-api/v5/) as map providers.
 
@@ -125,7 +124,6 @@ function setup(){
 Here are more complete examples when working with: [Google Maps](), [Mapbox]() and [Mapquest]().
 
 ## Tile Maps
-***
 
 Mappa allows to overlay p5.js canvas in top of a tile map. This is useful for interactive geolocation-based visual sketches. It currently supports [Google Maps](https://developers.google.com/maps/documentation/javascript/), [Mapbox](https://www.mapbox.com/mapbox.js/api/v3.1.1/), [Mapbox-GL](https://www.mapbox.com/mapbox-gl-js/api/) and [Mapzen](https://mapzen.com/documentation/mapzen-js/api-reference/), [Tangram](https://mapzen.com/documentation/tangram/Javascript-API/) as map providers. It also supports [Leaflet](http://leafletjs.com/) with any custom map.
 
