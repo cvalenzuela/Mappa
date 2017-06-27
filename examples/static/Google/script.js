@@ -19,7 +19,6 @@ var options = {
   format: 'PNG',
   language: 'en',
   maptype: 'hybrid'
-
 }
 
 // Create a Static Map

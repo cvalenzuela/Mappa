@@ -20,6 +20,12 @@ class Mapboxgl extends TileMap {
       style: this.options.style || 'mapbox://styles/mapbox/satellite-streets-v10',
       center: [this.options.lng, this.options.lat],
       zoom: this.options.zoom,
+      minZoom: this.options.minZoom || 0,
+      maxZoom: this.options.maxZoom || 22,
+      bearing: this.options.bearing || 0,
+      pitch: this.options.pitch || 0,
+      renderWorldCopies: true && this.options.renderWorldCopies,
+      maxBounds: this.options.maxBounds || undefined
     });
     this.canvas.parent(this.map.getCanvasContainer());
     this.canvas.elt.style.position = 'absolute';

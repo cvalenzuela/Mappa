@@ -53,6 +53,7 @@ class Leaflet extends TileMap {
       var d = this.map.dragging._draggable;
       d._newPos && (_canvas.canvas.style.transform = 'translate(' + -d._newPos.x + 'px,' + -d._newPos.y + 'px)');
     })
+
   }
 
   fromLatLngtoPixel(position) {
