@@ -1,8 +1,8 @@
 # Mappa
 
 
-Mappa is a library to facilitate working with existing map libraries and [p5.js](https://github.com/processing/p5.js). It provides a set of tools for displaying static and tile maps, geolocation, zoom and panning control among other useful things when building geolocation-based visual representations.
-Although Mappa was originally designed for p5.js, it can be used with other libraries that use the canvas element as the render object.
+Mappa is a library to facilitate work between [p5.js](https://github.com/processing/p5.js) and existing map libraries. It provides a set of tools for displaying static images, tile maps, geolocation, zoom and panning control among other useful things when building geolocation-based visual representations.
+Although Mappa was originally designed for [p5.js](https://github.com/processing/p5.js), it can be used with other libraries that use the canvas element as the render object.
 
 # Usage
 
@@ -14,16 +14,20 @@ Just add the library in your head tag. Mappa will automatically load any third-p
   <script src="p5maps.js"></script>
 </head>
 ```
-Then create a new Mappa instance with your prefered map provider.
+Then create a `new Mappa` instance with your preferred map provider.
 
 ```javascript
 // API key for map provider.
 var key = 'abcdefghijklmnopqrstuvwxyz'
 
 // Create a new Mappa instance.
-var mappa = new Mappa('Your-Map-Provider', key);
+var mappa = new Mappa('Map-Provider', key);
 ```
-In most cases an API is required. Check [this guide]() to learn how to get an API and set permission depending on your provider.
+In most cases an API is required. Check [this guide]() to learn how to get an API and set proper permission depending on your provider.
+
+For static maps, [Google Maps Static API](https://developers.google.com/maps/documentation/static-maps/), [Mapbox Static API](https://www.mapbox.com/api-documentation/#styles) and [Mapquest Static API](https://developer.mapquest.com/documentation/static-map-api/v5/) are supported.
+
+For tile maps, [Google Maps](https://developers.google.com/maps/documentation/javascript/), [Mapbox](https://www.mapbox.com/mapbox.js/api/v3.1.1/), [Mapbox-GL](https://www.mapbox.com/mapbox-gl-js/api/), [Mapzen](https://mapzen.com/documentation/mapzen-js/api-reference/), [Tangram](https://mapzen.com/documentation/tangram/Javascript-API/) and [Leaflet](http://leafletjs.com/)
 
 If you are new to maps, check out [this glossary of terms]().
 
@@ -239,11 +243,11 @@ Optional:
 
 #### append(canvas)
 
-> Appends (overlays) a canvas to a tile map. This method needs to be called inside [`setup()`](https://p5js.org/reference/#/p5/setup). It needs to be used together with [`tileMap(options)`]() to display a map.
+> Appends (overlays) a canvas to a tile map. This method needs to be called inside [`setup()`](https://p5js.org/reference/#/p5/setup). It needs to be used together with [`tileMap()`]() to display a map.
 
-This method will actually create the tile map referenced in [`tileMap(options)`]() and overlay the selected canvas on top of it, allowing to control and move the map while maintaining the canvas position and relationship. The tile map generated is a separate DOM element that is displayed behind the canvas and is the same size of the canvas.
+This method will actually create the tile map referenced in [`tileMap()`]() and overlay the selected canvas on top of it, allowing to control and move the map while maintaining the canvas position and relationship. The tile map generated is a separate DOM element that is displayed behind the canvas and is the same size of the canvas.
 
-Since this map has no relationship with the elements drawn on the canvas, no background color needs to be used in the sketch in order to see the map. Alternatively, using p5 [clear()](https://p5js.org/reference/#/p5/clear) function in the `draw()` method will allow to clear the canvas each frame. This is useful when displaying geolocated elements and moving the map.
+Since this map has no relationship with the elements drawn on the canvas, no background color needs to be used in the sketch in order to see the map. Alternatively, using p5 [clear()](https://p5js.org/reference/#/p5/clear) function in the [`draw()`](https://p5js.org/reference/#/p5/draw) method will allow to clear the canvas each frame. This is useful when displaying geolocated elements and moving the map.
 
 `apennd(canvas)`
 
@@ -262,7 +266,7 @@ function setup(){
 }
 ```
 
-Once `append()` is used, a complete access to the base map and its original properties and methods can be found in `myMap.map`. This will allow to call any map original property or method.
+Once `append()` is used, a complete access to the base map and its original properties and methods can be found in `myMap.map`. This allows to call any of the maps original properties or methods.
 
 ##### Complete Example:
 
@@ -296,9 +300,10 @@ function draw(){
 
 ```
 This will render the following sketch:
+
 ![mapboxgl_tile_example](examples/images/mapboxgl_tile.gif)
 
-### latLng(lat, lng)
+#### latLng(lat, lng)
 
 > Get pixel position (x,y) for latitude and longitude coordinates.
 
@@ -314,7 +319,7 @@ var pos = myMap.latLng(40.782, -73.967);
 ellipse(pos.x, pos.y, 10, 10);
 ```
 
-### pixelToLatlng()
+#### pixelToLatlng()
 
 > Get the latitude and longitude coordinates for a (x,y) pixel position.
 
@@ -322,7 +327,7 @@ ellipse(pos.x, pos.y, 10, 10);
 
 *Not implemented yet.*
 
-### zoom()
+#### zoom()
 
 > Get the map current zoom level.
 
@@ -339,7 +344,7 @@ var zoom = myMap.zoom();
 ellipse(20, 20 , zoom, zoom);
 ```
 
-### onChange(function)
+#### onChange(function)
 
 > Executes a function only when the map changes (ie: zoom, panned, flyTo or moved). Useful when visualizing lots of data points.
 
@@ -402,7 +407,7 @@ function circles(){
 This will render the following sketch:
 ![google_tile_move](examples/images/google_tile.gif)
 
-### loadGeoJSON()
+#### loadGeoJSON()
 
 > Load and display GeoJSON data.
 
@@ -410,7 +415,7 @@ This will render the following sketch:
 
 *Not implemented yet.*
 
-### geoCoding()
+#### geoCoding()
 
 > Convert addresses into pixel coordinates.
 
@@ -473,6 +478,9 @@ This will render the following sketch:
 - Tests and coverage
 - More examples
 - Contributing guide
+- Guide to get API's
+- Glossary
+- Add google street view?
 - Tutorials
   - Map Basics
   - Tile vs static maps
@@ -485,3 +493,4 @@ This will render the following sketch:
   - Choropleth
   - Zip Codes (Ben Fry)
   - All streets (Ben Fry)
+- Examples without p5.js
