@@ -53,7 +53,7 @@ If you are new to maps, check out [this glossary of terms]().
 + [tileMap()](#tilemapoptions)
 + [append()](#appendcanvas)
 + [latLng()](#latlnglat-lng)
-+ [point()](#pointx-y)
++ [point()](#pointxy)
 + [zoom()](#zoom)
 + [onChange()](#onchangefunction)
 + [~~loadGeoJSON~~](loadgeojson)
