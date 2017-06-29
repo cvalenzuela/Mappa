@@ -8,7 +8,7 @@ export default {
     path: join(__dirname, 'dist'),
     libraryTarget: 'umd',
     publicPath: "/dist/",
-    filename: "p5maps.js",
+    filename: "mappa.js",
     library: 'Mappa'
   },
   module: {

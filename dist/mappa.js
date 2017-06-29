@@ -793,7 +793,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 // Reference: https://developer.mapquest.com/documentation/static-map-api/v5/
 // -----------
 
-
 var Mapquest = function (_StaticMap) {
   _inherits(Mapquest, _StaticMap);
 
