@@ -10,9 +10,9 @@ var mappa = new Mappa('Mapbox', key);
 
 // Options for map
 var options = {
-  lat: 40.782,
-  lng: -73.967,
-  zoom: 4,
+  lat: 0,
+  lng: 0,
+  zoom: 1,
   width: 640,
   height: 640,
   scale: 1,
@@ -36,7 +36,7 @@ function preload(){
 function setup(){
   createCanvas(640,640);
   noStroke();
-  fill(255, 0, 0);
+  fill(255);
 
   image(img, 0, 0);
 
@@ -44,6 +44,6 @@ function setup(){
     var data = dots[i].split(/,/);
 
     pos = myMap.latLng(data[9], data[8]);
-    ellipse(pos.x, pos.y, 10, 10);
+    ellipse(pos.x, pos.y, 3, 3);
   }
 }

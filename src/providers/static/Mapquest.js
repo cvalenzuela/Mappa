@@ -3,7 +3,6 @@
 // Reference: https://developer.mapquest.com/documentation/static-map-api/v5/
 // -----------
 
-
 import { StaticMap } from './StaticMap';
 
 class Mapquest extends StaticMap {
@@ -40,7 +39,6 @@ class Mapquest extends StaticMap {
     this.options.size = this.options.width + ',' + this.options.height;
     this.options.scale == 2 && (this.options.size += '@2x');
     !this.options.center && (this.options.center = this.options.lat + ',' + this.options.lng);
-
 
     for(let option in this.options){
       (Mapquest.options().valid.indexOf(option) > -1) && (this.url += '&' + option + '=' + this.options[option]);

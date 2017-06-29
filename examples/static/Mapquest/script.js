@@ -10,16 +10,13 @@ var mappa = new Mappa('Mapquest', key);
 
 // Options for map
 var options = {
-  lat: 40.782,
-  lng: -73.967,
-  zoom: 4,
+  lat: 0,
+  lng: 0,
+  zoom: 1,
   width: 640,
   height: 640,
   scale: 1,
   type: 'hyb',
-  scalebar: 'true|bottom',
-  traffic: 'flow',
-  banner: 'My+Map'
 }
 
 // Create a Static Map
@@ -46,6 +43,6 @@ function setup(){
     var data = dots[i].split(/,/);
 
     pos = myMap.latLng(data[9], data[8]);
-    ellipse(pos.x, pos.y, 10, 10);
+    ellipse(pos.x, pos.y, 3, 3);
   }
 }
