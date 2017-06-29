@@ -21,6 +21,7 @@ class StaticMap  {
   fromLngToPoint(l){
     return (((this.options.pixels) / PI) * pow(2, this.options.zoom)) * (radians(l) + PI);
   }
+
 }
 
 export { StaticMap };

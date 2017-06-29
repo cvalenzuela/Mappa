@@ -36,8 +36,13 @@ class TileMap {
   }
 
   latLng(...args){
-    let pos = {lat: Number(args[0]), lng: Number(args[1])};
+    let pos;
+    (typeof args[0] == 'object') ? pos = args[0] : pos = {lat: Number(args[0]), lng: Number(args[1])};
     return this.fromLatLngtoPixel(pos);
+  }
+
+  point(...args){
+    return this.fromPointToLatLng(...args);
   }
 
   zoom(){

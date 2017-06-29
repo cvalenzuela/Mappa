@@ -35,11 +35,19 @@ class Mapboxgl extends TileMap {
     this.map.on('load', () => { this.ready = true; });
   }
 
-  fromLatLngtoPixel (latLng) {
+  fromLatLngtoPixel(latLng){
     if(this.ready){
       return this.map.project(latLng);
     } else {
       return {x:-100, y:-100};
+    }
+  }
+
+  fromPointToLatLng(...args){
+    if(this.ready){
+      return this.map.unproject(args);
+    } else{
+      return {lat:-100, lng:-100};
     }
   }
 

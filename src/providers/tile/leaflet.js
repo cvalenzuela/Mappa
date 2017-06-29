@@ -65,6 +65,14 @@ class Leaflet extends TileMap {
     }
   }
 
+  fromPointToLatLng(...args){
+    if(this.ready){
+      return this.map.containerPointToLatLng(args);
+    } else{
+      return {lat:-100, lng:-100};
+    }
+  }
+
   getZoom() {
     if(this.ready){
       return this.map.getZoom()

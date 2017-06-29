@@ -173,6 +173,19 @@ var Leaflet = function (_TileMap) {
       }
     }
   }, {
+    key: 'fromPointToLatLng',
+    value: function fromPointToLatLng() {
+      if (this.ready) {
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        return this.map.containerPointToLatLng(args);
+      } else {
+        return { lat: -100, lng: -100 };
+      }
+    }
+  }, {
     key: 'getZoom',
     value: function getZoom() {
       if (this.ready) {
@@ -275,6 +288,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -325,8 +340,14 @@ var TileMap = function () {
   }, {
     key: 'latLng',
     value: function latLng() {
-      var pos = { lat: Number(arguments.length <= 0 ? undefined : arguments[0]), lng: Number(arguments.length <= 1 ? undefined : arguments[1]) };
+      var pos = void 0;
+      _typeof(arguments.length <= 0 ? undefined : arguments[0]) == 'object' ? pos = arguments.length <= 0 ? undefined : arguments[0] : pos = { lat: Number(arguments.length <= 0 ? undefined : arguments[0]), lng: Number(arguments.length <= 1 ? undefined : arguments[1]) };
       return this.fromLatLngtoPixel(pos);
+    }
+  }, {
+    key: 'point',
+    value: function point() {
+      return this.fromPointToLatLng.apply(this, arguments);
     }
   }, {
     key: 'zoom',
@@ -950,10 +971,24 @@ var Google = function (_TileMap) {
         var topRight = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getNorthEast());
         var bottomLeft = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getSouthWest());
         var scale = Math.pow(2, this.map.getZoom());
-        var worldPoint = this.map.getProjection().fromLatLngToPoint(position);
-        return new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
+        var point = this.map.getProjection().fromLatLngToPoint(position);
+        return new google.maps.Point((point.x - bottomLeft.x) * scale, (point.y - topRight.y) * scale);
       } else {
         return { x: -100, y: -100 };
+      }
+    }
+  }, {
+    key: 'fromPointToLatLng',
+    value: function fromPointToLatLng() {
+      if (this.ready) {
+        var topRight = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getNorthEast());
+        var bottomLeft = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getSouthWest());
+        var scale = Math.pow(2, this.map.getZoom());
+        var point = new google.maps.Point((arguments.length <= 0 ? undefined : arguments[0]) / scale + bottomLeft.x, (arguments.length <= 1 ? undefined : arguments[1]) / scale + topRight.y);
+        var latlng = this.map.getProjection().fromPointToLatLng(point);
+        return { lat: latlng.lat(), lng: latlng.lng() };
+      } else {
+        return { lat: -100, lng: -100 };
       }
     }
   }, {
@@ -1148,6 +1183,19 @@ var Mapboxgl = function (_TileMap) {
         return this.map.project(latLng);
       } else {
         return { x: -100, y: -100 };
+      }
+    }
+  }, {
+    key: 'fromPointToLatLng',
+    value: function fromPointToLatLng() {
+      if (this.ready) {
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        return this.map.unproject(args);
+      } else {
+        return { lat: -100, lng: -100 };
       }
     }
   }, {

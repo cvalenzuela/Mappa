@@ -53,8 +53,8 @@ If you are new to maps, check out [this glossary of terms]().
 + [tileMap()](#tilemapoptions)
 + [append()](#appendcanvas)
 + [latLng()](#latlnglat-lng)
++ [point()](#pointx-y)
 + [zoom()](#zoom)
-+ [~~pixelToLatlng()~~](#pixeltolatlng)
 + [onChange()](#onchangefunction)
 + [~~loadGeoJSON~~](loadgeojson)
 + [~~geoCoding~~](#geocoding)
@@ -277,7 +277,7 @@ function setup(){
   canvas = createCanvas(800, 700);
   // Create a tile map center in New York with an initial zoom level of 10.
   myMap = mappa.tileMap(40.782, -73.967, 10);
-  // Append the canvas to the new map created.
+  // Append the canvas to the new tile map created.
   myMap.append(canvas);
 }
 ```
@@ -312,11 +312,14 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
 
   function setup(){
     canvas = createCanvas(800, 700);
+    // Create a tile map centered in New York with an initial zoom level of 4.
     myMap = mappa.tileMap(options);
+    // Append the tile map to the p5 canvas. This will display the map.
     myMap.append(canvas);
   }
 
   function draw(){
+    // Clear the background so the maps is clearly seen at each frame.
     clear();
     ellipse(mouseX, mouseY, 40, 40);
   }
@@ -328,7 +331,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
 
   #### latLng(lat, lng)
 
-  > Get pixel position (x,y) for latitude and longitude coordinates.
+  > Get pixel position (x,y) for latitude and longitude coordinates. Returns an object with x and y position.
 
   This method allows to get the pixel position of latitude and longitude coordinates in relationship to a [`staticMap()`](#staticmapoptions) or a [`tileMap()`](#tilemapoptions). The pixel position will be stored as x and y.
 
@@ -342,17 +345,77 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
   ellipse(pos.x, pos.y, 10, 10);
   ```
 
-  #### pixelToLatlng()
+  See [onChange()](#onchangefunction) for a Complete Example.
 
-  > Get the latitude and longitude coordinates for a (x,y) pixel position.
+  #### point(x,y)
 
-  `pixelToLatlng(x, y)`
+  > Get the latitude and longitude coordinates for a (x,y) pixel position. Returns an object with lat and lng.
 
-  *Not implemented yet.*
+  `point(x, y)`
+
+  This method returns the latitude and longitude of a point in the canvas in reference of a [`tileMap()`](#tilemapoptions).
+
+  Example:
+  ```javascript
+  if (mouseIsPressed) {
+    // Store the current latitude and longitude of the mouse position
+    var position = myMap.point(mouseX, mouseY);
+  }
+  ```
+
+  ##### Complete Example:
+
+  ```javascript
+  // Your Google Maps API Key
+  var key = 'abcd'
+
+  var options = {
+    lat: 40.7828647,
+    lng: -73.9675438,
+    zoom: 4
+  }
+
+  // Create a new Mappa instance using Google.
+  var mappa = new Mappa('Google', key);
+  var myMap;
+
+  var canvas;
+  var points = []
+
+  function setup(){
+    canvas = createCanvas(800, 700);
+    myMap = mappa.tileMap(options);
+    myMap.append(canvas);
+    noFill();
+  }
+
+  function draw(){
+    clear();
+
+    // Draw a line using latLng() with all the points in the points array.
+    beginShape();
+    for(var i = 0; i < points.length; i++){
+      var pos = myMap.latLng(points[i])
+      vertex(pos.x, pos.y);
+    }
+    endShape();
+
+    // If the mouse right button is pressed, store the current mouse position in an array of points.
+    if (mouseIsPressed) {
+      if (mouseButton == RIGHT){
+        var line = myMap.point(mouseX, mouseY);
+        lines.push(line)
+      }
+    }
+  }
+  ```
+  This will render the following sketch:
+
+  ![google_draw_example](examples/images/google_draw.gif)
 
   #### zoom()
 
-  > Get the map current zoom level.
+  > Get the map current zoom level. Returns a number.
 
   This method allows to get a [`tileMap()`](#tilemapoptions) current zoom level.
 
@@ -363,7 +426,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
   ```javascript
   // Get the pixel position for Central Park.
   var zoom = myMap.zoom();
-  // Change an ellipse size depending in the map zoom.
+  // Change the size of an ellipse depending on the map zoom.
   ellipse(20, 20 , zoom, zoom);
   ```
 

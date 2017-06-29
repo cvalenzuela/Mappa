@@ -47,10 +47,23 @@ class Google extends TileMap {
       let topRight = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getNorthEast());
       let bottomLeft = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getSouthWest());
       let scale = Math.pow(2, this.map.getZoom());
-      var worldPoint = this.map.getProjection().fromLatLngToPoint(position);
-      return new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
+      let point = this.map.getProjection().fromLatLngToPoint(position);
+      return new google.maps.Point((point.x - bottomLeft.x) * scale, (point.y - topRight.y) * scale);
     } else{
       return {x:-100, y:-100};
+    }
+  }
+
+  fromPointToLatLng(...args){
+    if(this.ready){
+      let topRight = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getNorthEast());
+      let bottomLeft = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getSouthWest());
+      let scale = Math.pow(2, this.map.getZoom());
+      let point = new google.maps.Point(args[0] / scale + bottomLeft.x, args[1] / scale + topRight.y);
+      let latlng = this.map.getProjection().fromPointToLatLng(point);
+      return {lat: latlng.lat(), lng: latlng.lng()};
+    } else {
+      return {lat:-100, lng:-100};
     }
   }
 
