@@ -10,8 +10,8 @@ Although Mappa was originally designed for [p5.js](https://github.com/processing
 Just add the library in your head tag. Mappa will automatically load any third-party map provider library when necessary.
 
 ```html
+<!DOCTYPE html>
 <head>
-  <script src="p5.min.js"></script>
   <script src="mappa.js"></script>
 </head>
 ```
@@ -24,13 +24,15 @@ var key = 'abcd'
 // Create a new Mappa instance.
 var mappa = new Mappa('Map-Provider', key);
 ```
-In most cases an API is required. Check [this guide]() to learn how to get an API and set proper permission depending on your provider.
+Check [this guide]() to learn how to get an API and set proper permission depending on your map provider.
 
 For static maps, [Google Maps Static API](https://developers.google.com/maps/documentation/static-maps/), [Mapbox Static API](https://www.mapbox.com/api-documentation/#styles) and [Mapquest Static API](https://developer.mapquest.com/documentation/static-map-api/v5/) are supported.
 
 For tile maps, [Google Maps](https://developers.google.com/maps/documentation/javascript/), [Mapbox](https://www.mapbox.com/mapbox.js/api/v3.1.1/), [Mapbox-GL](https://www.mapbox.com/mapbox-gl-js/api/), [Mapzen](https://mapzen.com/documentation/mapzen-js/api-reference/), [Tangram](https://mapzen.com/documentation/tangram/Javascript-API/) and [Leaflet](http://leafletjs.com/) are supported.
 
-If you are new to maps, check out [this glossary of terms]().
+Not sure what map provider to use? Check out this [guide to picking a map library]().
+
+If you are new to maps, check out this [complete tutorial]() and [this glossary of terms]().
 
 # Examples
 + Static Maps
@@ -46,6 +48,11 @@ If you are new to maps, check out [this glossary of terms]().
   - Tangram ([Code](examples/tile/Tangram) | [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Tangram/))
   - Leaflet ([Code](examples/tile/Leaflet) | [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Leaflet/))
   - Using p5 in WEBGL mode ([Code](examples/tile/Webgl) | [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Webgl/))
+  - Using Three.js ([Code](#) | [Demo](#)
+
++ Using Data
+  - Loading GeoJSON ([Code](#) | [Demo](#)
+  - Loading TopoJSON ([Code](#) | [Demo](#)
 
 # Reference
 
@@ -56,7 +63,6 @@ If you are new to maps, check out [this glossary of terms]().
 + [point()](#pointxy)
 + [zoom()](#zoom)
 + [onChange()](#onchangefunction)
-+ [~~loadGeoJSON~~](loadgeojson)
 + [~~geoCoding~~](#geocoding)
 
 ---
@@ -65,7 +71,7 @@ If you are new to maps, check out [this glossary of terms]().
 
 > Creates a static map image with the provided parameters.
 
-Mappa provides a simple interface when working with static maps. It currently supports [Google Maps Static API](https://developers.google.com/maps/documentation/static-maps/), [Mapbox Static API](https://www.mapbox.com/api-documentation/#styles) and [Mapquest Static API](https://developer.mapquest.com/documentation/static-map-api/v5/).
+Mappa provides a simple interface when working with static maps. It currently supports [Google Maps Static API v2](https://developers.google.com/maps/documentation/static-maps/), [Mapbox Static API v1](https://www.mapbox.com/api-documentation/#styles) and [Mapquest Static API v5](https://developer.mapquest.com/documentation/static-map-api/v5/).
 
 `staticMap(lat, lng, zoom, width, height, [optional])` or `staticMap(parameters)`
 
@@ -181,7 +187,7 @@ Here are more complete examples when working with [Google Maps](examples/static/
 
 > Creates a tile map with the provided parameters. This method needs to be called inside [`setup()`](https://p5js.org/reference/#/p5/setup). It needs to be used together with [`append()`](#appendcanvas) to display a map.
 
-Mappa allows to overlay a canvas element in top of [tile maps](glossary/tile-maps). This is useful for interactive geolocation-based visual sketches. It currently supports [Google Maps](https://developers.google.com/maps/documentation/javascript/), [Mapbox](https://www.mapbox.com/mapbox.js/api/v3.1.1/), [Mapbox-GL](https://www.mapbox.com/mapbox-gl-js/api/), [Mapzen](https://mapzen.com/documentation/mapzen-js/api-reference/) and [Tangram](https://mapzen.com/documentation/tangram/Javascript-API/) as map providers. It also supports [Leaflet](http://leafletjs.com/) with any custom set of tiles. [`tileMap()`](#tilemapoptions) will only create the reference to a tile map. In order to visualize the map, [`append()`](#appendcanvas) must be used.
+Mappa allows to overlay a canvas element in top of [tile maps](glossary/tile-maps). This is useful for interactive geolocation-based visual sketches. It currently supports [Google Maps v3.28](https://developers.google.com/maps/documentation/javascript/), [Mapbox v3.1.1](https://www.mapbox.com/mapbox.js/api/v3.1.1/), [Mapbox-GL v0.37.0](https://www.mapbox.com/mapbox-gl-js/api/), [Mapzen v0.12.5](https://mapzen.com/documentation/mapzen-js/api-reference/) and [Tangram v0.12.5](https://mapzen.com/documentation/tangram/Javascript-API/) as map providers. It also supports [Leaflet v1.0.3](http://leafletjs.com/) with any custom set of tiles. [`tileMap()`](#tilemapoptions) will only create the reference to a tile map. In order to visualize the map, [`append()`](#appendcanvas) must be used.
 
 `tileMap(lat, lng, zoom, [optional])` or `tileMap(parameters)`
 
@@ -319,7 +325,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
   }
 
   function draw(){
-    // Clear the background so the maps is clearly seen at each frame.
+    // Clear the background so the map is clearly seen at each frame.
     clear();
     ellipse(mouseX, mouseY, 40, 40);
   }
@@ -503,7 +509,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
 
   #### geoCoding()
 
-  > Convert addresses into pixel coordinates.
+  > Convert addresses into latitude and longitude coordinates.
 
   `geoCoding()`
 

@@ -19,10 +19,12 @@ class Leaflet extends TileMap {
       return
     }
 
-    this.map = L.map('mappa').setView(
-      [this.options.lat, this.options.lng],
-      this.options.zoom
-    );
+    this.map = L.map('mappa', {
+      center: [this.options.lat, this.options.lng],
+      zoom: this.options.zoom,
+      inertia: false,
+    });
+    this.map
     this.tiles = L.tileLayer(this.options.style).addTo(this.map);
     this.tiles.on('tileload', () => { this.ready = true; });
 
