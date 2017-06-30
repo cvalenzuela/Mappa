@@ -32,7 +32,7 @@ For tile maps, [Google Maps](https://developers.google.com/maps/documentation/ja
 
 Not sure what map provider to use? Check out this [guide to picking a map library]().
 
-If you are new to maps, check out this [complete tutorial]() and [this glossary of terms]().
+If you are new to maps, check out [this complete tutorial]() and [this glossary of terms]().
 
 # Examples
 + Static Maps
@@ -48,11 +48,11 @@ If you are new to maps, check out this [complete tutorial]() and [this glossary 
   - Tangram ([Code](examples/tile/Tangram) | [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Tangram/))
   - Leaflet ([Code](examples/tile/Leaflet) | [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Leaflet/))
   - Using p5 in WEBGL mode ([Code](examples/tile/Webgl) | [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Webgl/))
-  - Using Three.js ([Code](#) | [Demo](#)
+  - Using Three.js ([Code](#) | [Demo](#))
 
 + Using Data
-  - Loading GeoJSON ([Code](#) | [Demo](#)
-  - Loading TopoJSON ([Code](#) | [Demo](#)
+  - GeoJSON ([Code](#) | [Demo](#))
+  - TopoJSON ([Code](#) | [Demo](#))
 
 # Reference
 
@@ -69,7 +69,7 @@ If you are new to maps, check out this [complete tutorial]() and [this glossary 
 
 #### staticMap(options)
 
-> Creates a static map image with the provided parameters.
+> Creates a static map image with the provided parameters. Return an object.
 
 Mappa provides a simple interface when working with static maps. It currently supports [Google Maps Static API v2](https://developers.google.com/maps/documentation/static-maps/), [Mapbox Static API v1](https://www.mapbox.com/api-documentation/#styles) and [Mapquest Static API v5](https://developer.mapquest.com/documentation/static-map-api/v5/).
 
@@ -191,7 +191,7 @@ Mappa allows to overlay a canvas element in top of [tile maps](glossary/tile-map
 
 `tileMap(lat, lng, zoom, [optional])` or `tileMap(parameters)`
 
-Example:
+Examples:
 
 ```javascript
 var canvas;
@@ -293,7 +293,6 @@ Once `append()` is used, a complete access to the base map and its original prop
 For example, calling [flyTo](http://leafletjs.com/reference-1.0.0.html#flyToBounds) in a Leaflet Map:
 
 ```javascript
-//
 myMap.map.flyTo([-33.448890, -70.669265], 9)
 ```
 
@@ -498,14 +497,6 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
   ```
   This will render the following sketch:
   ![google_tile_move](examples/images/google_tile.gif)
-
-  #### loadGeoJSON()
-
-  > Load and display GeoJSON data.
-
-  `loadGeoJSON()`
-
-  *Not implemented yet.*
 
   #### geoCoding()
 
