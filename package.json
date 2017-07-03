@@ -1,7 +1,7 @@
 {
   "name": "Mappa",
   "version": "0.0.1",
-  "description": "Maps and p5.js",
+  "description": "Mappa is a library to facilitate work between p5.js and existing map libraries",
   "main": "src/index.js",
   "directories": {
     "example": "examples",
