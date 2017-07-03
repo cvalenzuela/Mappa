@@ -2,6 +2,8 @@
 // Static Map
 // -----------
 
+import { parseGeoJSON } from '../../utils/parseGeoJSON';
+
 class StaticMap  {
   constructor(options){
     this.options = options;
@@ -20,6 +22,10 @@ class StaticMap  {
 
   fromLngToPoint(l){
     return (((this.options.pixels) / PI) * pow(2, this.options.zoom)) * (radians(l) + PI);
+  }
+
+  geoJSON(...args){
+    return parseGeoJSON(args[0], args[1]);
   }
 
 }

@@ -2,7 +2,7 @@
 
 **_This project is currently in development_**
 
-Mappa is a library to facilitate work between [p5.js](https://github.com/processing/p5.js) and existing map libraries. It provides a set of tools for displaying static images, tile maps, geolocation, zoom and panning control among other useful things when building geolocation-based visual representations.
+Mappa is a library to facilitate work between [p5.js](https://github.com/processing/p5.js) and existing map libraries. The goal is to simplify the amount of setup time when working with maps. It provides a set of tools for displaying static images, tile maps, geolocation, zoom and panning control among other useful things when building geolocation-based visual representations.
 Although Mappa was originally designed for [p5.js](https://github.com/processing/p5.js), it can be used with other libraries that use the canvas element as the render object.
 
 # Usage
@@ -56,6 +56,7 @@ If you are new to maps, check out [this complete tutorial]() and [this glossary 
 
 # Reference
 
++ [Mappa()](#newmappa)
 + [staticMap()](#staticmapoptions)
 + [tileMap()](#tilemapoptions)
 + [append()](#appendcanvas)
@@ -63,9 +64,56 @@ If you are new to maps, check out [this complete tutorial]() and [this glossary 
 + [point()](#pointxy)
 + [zoom()](#zoom)
 + [onChange()](#onchangefunction)
++ [geoJSON()](#geojson)
 + [~~geoCoding~~](#geocoding)
 
 ---
+
+#### Mappa(provider, key)
+
+> Constructor to initialize a new Mappa Instance.
+
+This is the constructor necessary to create a instance of Mappa. This will also add the necessary scripts and styles from the defined map provider.
+
+Examples:
+```javascript
+// Google API key.
+var key = 'abcd'
+
+// Create a new Mappa instance using Google.
+var mappa = new Mappa('Google', key);
+```
+
+```javascript
+// Create a new Mappa instance with Leaflet. No key is required
+var mappa = new Mappa('Leaflet');
+```
+
+Options for providers:
+  + Static Maps:
+    - `Google`
+    - `Mapbox`
+    - `Mapquest`
+
+
+  + Tile Maps:
+    - `Google`
+    - `Mapbox`
+    - `Mapboxgl`
+    - `Mapzen`
+    - `Tangram`
+    - `Leaflet`
+
+You can add the libraries manually in your HTML, just add an `id` with the name of the library to the script tag:
+```html
+<!DOCTYPE html>
+<head>
+  <script id="Leaflet" src="https://unpkg.com/leaflet@1.1.0/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.1.0/dist/leaflet.css">
+
+  <script src="mappa.js"></script>
+</head>
+```
 
 #### staticMap(options)
 
@@ -497,6 +545,104 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
   ```
   This will render the following sketch:
   ![google_tile_move](examples/images/google_tile.gif)
+
+  #### geoJSON(data, featureType)
+
+  > Parses a geoJSON file and store all coordinates in an array. Returns an array.
+
+  This method is useful when loading [GeoJSON files](glossary/#geojson). It will return an array with the specified GeoJSON features. It can be used with [staticMap()](#staticmapoptions) and [tileMap()](#tilemapoptions).
+
+  Types of Feature:
+  + `Point`
+  + `LineString`
+  + `Polygon`
+  + `MultiPoint`
+  + `MultiLineString`
+  + `MultiPolygon`
+  + `GeometryCollection`
+
+  Example:
+
+  ```javascript
+  var data;
+  var polygons;
+
+  function preload(){
+    // Load a GeoJSON file using p5 loadJSON.
+    data = loadJSON('world.geojson');
+  }
+
+  function setup(){
+    createCanvas(640, 640);
+    // Store all Polygons features in an array called polygons.
+    polygons = myMap.geoJSON(data, 'Polygon')
+  }
+  ```
+
+  ##### Complete Example:
+  ```javascript
+  var key = 'abcd';
+
+  var options = {
+    lat: 0,
+    lng: 0,
+    zoom: 2,
+    width: 640,
+    height: 640,
+    maptype: 'hybrid'
+  }
+
+  var mappa = new Mappa('Google', key);
+  var myMap = mappa.staticMap(options);
+
+  var data;
+  var polygons;
+  var multiPolygons;
+
+  function preload(){
+    img = loadImage(myMap.img);
+    data = loadJSON('world.geojson');
+  }
+
+  function setup(){
+    canvas = createCanvas(640, 640);
+    // Load all polygons and multipolygons in a geoJSON file in two arrays.
+    polygons = myMap.geoJSON(data, 'Polygon');
+    multiPolygons = myMap.geoJSON(data, 'MultiPolygon');
+    // Display the static map image.
+    image(img, 0, 0);
+
+    // For all polygons loop through the array and create a new Shape.
+    for(var i = 0; i < polygons.length; i++){
+      beginShape();
+      fill(random(255), random(255), random(255));
+      for (var j = 0; j < polygons[i][0].length; j ++){
+        var pos = myMap.latLng(polygons[i][0][j][1], polygons[i][0][j][0]);
+        vertex(pos.x, pos.y);
+      }
+      endShape();
+    }
+
+    // For all multiPolygons loop through the array and create a new Shape.
+    for(var i = 0; i < multiPolygons.length; i++){
+      for(var k = 0; k < multiPolygons[i].length; k++){
+        beginShape();
+        fill(random(255), random(255), random(255), 100);
+        for (var j = 0; j < multiPolygons[i][k][0].length; j ++){
+          var pos = myMap.latLng(multiPolygons[i][k][0][j][1], multiPolygons[i][k][0][j][0]);
+          vertex(pos.x, pos.y);
+        }
+        endShape();
+      }
+    }
+
+  }
+  ```
+
+  This will render the following sketch:
+  ![google_geojson](examples/images/geojson.png)
+
+  `geoCoding()`
 
   #### geoCoding()
 

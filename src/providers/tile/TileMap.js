@@ -2,6 +2,8 @@
 // Tiled Map
 // -----------
 
+import { parseGeoJSON } from '../../utils/parseGeoJSON';
+
 class TileMap {
   constructor(options){
     this.options = options;
@@ -43,6 +45,10 @@ class TileMap {
 
   point(...args){
     return this.fromPointToLatLng(...args);
+  }
+
+  geoJSON(...args){
+    return parseGeoJSON(args[0], args[1]);
   }
 
   zoom(){
