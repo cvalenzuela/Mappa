@@ -30,7 +30,7 @@ class TileMap {
     this.scriptTag.onload = () => {
       let div = document.createElement('div');
       document.body.appendChild(div);
-      div.setAttribute('style', 'position:absolute;width:'+ canvas.width + 'px;height:' + canvas.height + 'px;top:0;left:0;z-index:-99');
+      div.setAttribute('style', 'position:relative;width:'+ canvas.width + 'px;height:' + canvas.height + 'px;top:0;left:0;z-index:999');
       div.setAttribute('id', 'mappa');
       this.canvas = canvas;
       this.createMap();

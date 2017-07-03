@@ -56,7 +56,7 @@ If you are new to maps, check out [this complete tutorial]() and [this glossary 
 
 # Reference
 
-+ [Mappa()](#newmappa)
++ [Mappa()](#mappaprovider-key)
 + [staticMap()](#staticmapoptions)
 + [tileMap()](#tilemapoptions)
 + [append()](#appendcanvas)
@@ -64,7 +64,7 @@ If you are new to maps, check out [this complete tutorial]() and [this glossary 
 + [point()](#pointxy)
 + [zoom()](#zoom)
 + [onChange()](#onchangefunction)
-+ [geoJSON()](#geojson)
++ [geoJSON()](#geojsondata-featuretype)
 + [~~geoCoding~~](#geocoding)
 
 ---

@@ -1,7 +1,7 @@
 {
-  "name": "p5.maps",
+  "name": "Mappa",
   "version": "0.0.1",
-  "description": "An map library for p5",
+  "description": "Maps and p5.js",
   "main": "src/index.js",
   "directories": {
     "example": "examples",
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cvalenzuela/p5.maps.git"
+    "url": "git+https://github.com/cvalenzuela/Mappa.git"
   },
   "keywords": [
     "p5.js",
@@ -32,9 +32,9 @@
   "author": "Cristobal Valenzuela <cvalenzuela@nyu.edu> (https://github.com/cvalenzuela)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/cvalenzuela/p5.maps/issues"
+    "url": "https://github.com/cvalenzuela/Mappa/issues"
   },
-  "homepage": "https://github.com/cvalenzuela/p5.maps#readme",
+  "homepage": "https://github.com/cvalenzuela/Mappa#readme",
   "devDependencies": {
     "babel-cli": "6.24.1",
     "babel-loader": "7.0.0",
@@ -72,7 +72,5 @@
       "stage-2"
     ]
   },
-  "dependencies": {
-    "p5": "0.5.10"
-  }
+  "dependencies": {}
 }
