@@ -1,9 +1,5 @@
-// -----------
-// Test Taks
-// -----------
-
-var expect = chai.expect;
-var assert = chai.assert;
+let expect = require('chai').expect;
+let Mappa = require('../../src/index');
 
 var key = 'abcd'
 var mappa = new Mappa('Google', key);

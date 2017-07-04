@@ -11,6 +11,8 @@ var options = {
   //style: 'mapbox://styles/cvalenzuela/cj3optaml001z2qpfe064z5hb'
 }
 
+var colors = ['#fff5f0','#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#a50f15','#67000d'];
+
 var mappa = new Mappa('Mapboxgl', key);
 var myMap;
 
@@ -26,6 +28,7 @@ function setup(){
   myMap.append(canvas);
   dots = loadStrings('../../data/dots.csv');
   myMap.onChange(circles);
+  noFill();
 }
 
 function draw(){
@@ -38,6 +41,7 @@ function circles(){
   for (var i = 1; i < dots.length; i++) {
     var data = dots[i].split(/,/);
     var pos = myMap.latLng(data[9], data[8]);
+    fill(random(colors))
     ellipse(pos.x, pos.y, size, size);
   }
 }

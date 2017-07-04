@@ -193,8 +193,8 @@ var mappa = new Mappa('Google', key);
 
 // Map options
 var options = {
-  lat: 40.782,
-  lng: -73.967,
+  lat: -26.658045,
+  lng: -68.512952,
   zoom: 10,
   width: 640,
   height: 640,
@@ -205,7 +205,7 @@ var options = {
 }
 var img;
 
-// Create an image of New York.
+// Create a map image of the Chilean Dessert
 var myMap = mappa.staticMap(options);
 
 // Load the image from the mappa instance as any other p5 image.
@@ -220,7 +220,8 @@ function setup(){
 
 ```
 This will render the following image:
-![google_static_map](examples/images/google_static.png)
+
+![static image](examples/images/static-chile.png)
 
 Here are more complete examples when working with [Google Maps](examples/static/Google), [Mapbox](examples/static/Mapbox) and [Mapquest](examples/static/Mapquest).
 
@@ -329,7 +330,7 @@ function setup(){
 }
 ```
 
-Once `append()` is used, a complete access to the base map and its original properties and methods can be found in `myMap.map`. This allows to call any of the maps original properties or methods.
+Once `append()` is used, a complete access to the base map library and its original properties and methods can be found in `map`. This allows to call any of the maps original properties or methods.
 
 For example, calling [flyTo](http://leafletjs.com/reference-1.0.0.html#flyToBounds) in a Leaflet Map:
 
@@ -508,6 +509,8 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
     mapTypeId: 'satellite'
   }
 
+  var colors = ['#fff5f0','#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#a50f15','#67000d'];
+
   var mappa = new Mappa('Google', key);
   var myMap;
 
@@ -518,6 +521,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
     canvas = createCanvas(800, 700);
     myMap = mappa.tileMap(options);
     myMap.append(canvas);
+    // Load a file with lat-lng coordinates.
     dots = loadStrings('../../data/dots.csv');
     myMap.onChange(circles);
   }
@@ -531,13 +535,14 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
     var size = myMap.zoom() * 2;
     for (var i = 1; i < dots.length; i++) {
       var data = dots[i].split(/,/);
+      fill(random(colors))
       var pos = myMap.latLng(data[9], data[8]);
       ellipse(pos.x, pos.y, size, size);
     }
   }
   ```
   This will render the following sketch:
-  ![google_tile_move](examples/images/google_tile.gif)
+  ![google_tile_move](examples/images/dots.gif)
 
   #### geoJSON(data, featureType)
 
@@ -577,15 +582,16 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
   var key = 'abcd';
 
   var options = {
-    lat: 0,
-    lng: 0,
-    zoom: 2,
-    width: 640,
-    height: 640,
-    maptype: 'hybrid'
+    lat: 40.896905,
+    lng: -74.0423,
+    zoom: 3,
+    BasemapStyles: true,
+    scene: 'Zinc'
   }
 
-  var mappa = new Mappa('Google', key);
+  var colors = ["#fff7fb", "#ece7f2", "#d0d1e6", "#a6bddb", "#74a9cf", "#3690c0", "#0570b0", "#045a8d", "#023858"];
+
+  var mappa = new Mappa('Mapzen', key);
   var myMap = mappa.staticMap(options);
 
   var data;
@@ -608,7 +614,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
     // For all polygons loop through the array and create a new Shape.
     for(var i = 0; i < polygons.length; i++){
       beginShape();
-      fill(random(255), random(255), random(255));
+      fill(random(colors));
       for (var j = 0; j < polygons[i][0].length; j ++){
         var pos = myMap.latLng(polygons[i][0][j][1], polygons[i][0][j][0]);
         vertex(pos.x, pos.y);
@@ -620,7 +626,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
     for(var i = 0; i < multiPolygons.length; i++){
       for(var k = 0; k < multiPolygons[i].length; k++){
         beginShape();
-        fill(random(255), random(255), random(255), 100);
+        fill(random(colors));
         for (var j = 0; j < multiPolygons[i][k][0].length; j ++){
           var pos = myMap.latLng(multiPolygons[i][k][0][j][1], multiPolygons[i][k][0][j][0]);
           vertex(pos.x, pos.y);
@@ -633,9 +639,8 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
   ```
 
   This will render the following sketch:
-  ![google_geojson](examples/images/geojson.png)
+  ![google_geojson](examples/images/data-geojson.png)
 
-  `geoCoding()`
 
   #### geoCoding()
 
