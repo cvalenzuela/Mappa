@@ -639,6 +639,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
   ```
 
   This will render the following sketch:
+  
   ![google_geojson](examples/images/data-geojson.png)
 
 
