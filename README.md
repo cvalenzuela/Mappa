@@ -1,4 +1,4 @@
-# Mappa
+![Mappa](examples/images/mappa.png)
 
 **_This project is currently in development._**
 
@@ -221,7 +221,7 @@ function setup(){
 ```
 This will render the following image:
 
-![static image](examples/images/static-chile.png)
+![static image](examples/images/staticchile.png)
 
 Here are more complete examples when working with [Google Maps](examples/static/Google), [Mapbox](examples/static/Mapbox) and [Mapquest](examples/static/Mapquest).
 
@@ -417,9 +417,9 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
   var key = 'abcd'
 
   var options = {
-    lat: 40.7828647,
-    lng: -73.9675438,
-    zoom: 4
+    lat: 36.964241,
+    lng: -122.013963,
+    zoom: 18,
   }
 
   // Create a new Mappa instance using Google.
@@ -434,6 +434,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
     myMap = mappa.tileMap(options);
     myMap.append(canvas);
     noFill();
+    stroke('#08306b');
   }
 
   function draw(){
@@ -450,15 +451,15 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
     // If the mouse right button is pressed, store the current mouse position in an array of points.
     if (mouseIsPressed) {
       if (mouseButton == RIGHT){
-        var line = myMap.point(mouseX, mouseY);
-        lines.push(line)
+        var point = myMap.point(mouseX, mouseY);
+        points.push(point)
       }
     }
   }
   ```
   This will render the following sketch:
 
-  ![google_draw_example](examples/images/google_draw.gif)
+  ![google_draw_example](examples/images/draw.gif)
 
   #### zoom()
 
@@ -542,7 +543,8 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
   }
   ```
   This will render the following sketch:
-  ![google_tile_move](examples/images/dots.gif)
+
+  ![google_tile_move](examples/images/tile-dots.gif)
 
   #### geoJSON(data, featureType)
 
@@ -639,8 +641,8 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
   ```
 
   This will render the following sketch:
-  
-  ![google_geojson](examples/images/data-geojson.png)
+
+  ![google_geojson](examples/images/geoJSON.png)
 
 
   #### geoCoding()

@@ -10,6 +10,8 @@ class Google extends TileMap {
     super(options);
     this.script = 'https://maps.googleapis.com/maps/api/js';
     this.options.key && (this.script += '?key=' + this.options.key);
+    this.options.language && (this.script += '&language=' + this.options.language);
+    this.options.region && (this.script += '&region=' + this.options.region);
     this.init();
   }
 
@@ -19,8 +21,8 @@ class Google extends TileMap {
     this.map = new google.maps.Map(document.getElementById('mappa'), {
       center: {lat: this.options.lat, lng: this.options.lng},
       zoom: this.options.zoom || 6,
-      mapTypeId: this.options.mapTypeId || 'terrain',
-      styles: this.options.styles || ''
+      mapTypeId: this.options.maptype || 'terrain',
+      styles: this.options.styles || '',
     });
 
     let overlay = new google.maps.OverlayView();
@@ -92,8 +94,5 @@ class Google extends TileMap {
     }
   }
 }
-
-
-
 
 export { Google };
