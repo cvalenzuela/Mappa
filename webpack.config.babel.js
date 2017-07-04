@@ -11,6 +11,7 @@ export default {
     filename: "mappa.js",
     library: 'Mappa'
   },
+  devtool: 'source-map',
   module: {
     loaders: [
       { test: /\.js$/, loader: 'babel-loader', include },

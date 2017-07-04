@@ -1,19 +1,15 @@
 # Mappa
 
-**_This project is currently in development_**
+**_This project is currently in development._**
 
-Mappa is a library to facilitate work between [p5.js](https://github.com/processing/p5.js) and existing map libraries. The goal is to simplify the amount of setup time when working with maps. It provides a set of tools for displaying static images, tile maps, geolocation, zoom and panning control among other useful things when building geolocation-based visual representations.
-Although Mappa was originally designed for [p5.js](https://github.com/processing/p5.js), it can be used with other libraries that use the canvas element as the render object.
+Mappa is a [p5.js](https://github.com/processing/p5.js) addon to facilitate work between p5 and existing map libraries and APIs. It provides a set of tools for working with static maps, interactive tile maps and geo-data among other tools useful when building geolocation-based visual representations. Although Mappa was originally designed for [p5.js](https://github.com/processing/p5.js), it can also be used with other libraries that use the canvas element as the render object.
 
 # Usage
 
-Just add the library in your head tag. Mappa will automatically load any third-party map provider library when necessary.
+Download the [full](dist/mappa.js) or [minified](dist/mappa.min.js) version and add  it to your sketch. Mappa will automatically load the required map libraries when necessary.
 
 ```html
-<!DOCTYPE html>
-<head>
-  <script src="mappa.js"></script>
-</head>
+<script src="mappa.min.js" type="text/javascript"></script>
 ```
 Then create a `new Mappa` instance with your preferred map provider.
 
@@ -71,9 +67,9 @@ If you are new to maps, check out [this complete tutorial]() and [this glossary 
 
 #### Mappa(provider, key)
 
-> Constructor to initialize a new Mappa Instance.
+> Constructor to initialize a new Mappa instance with a defined provider and key. Returns an object.
 
-This is the constructor necessary to create a instance of Mappa. This will also add the necessary scripts and styles from the defined map provider.
+This is the constructor necessary to create a valid instance of Mappa. This will also add the necessary scripts and styles from the defined map provider.
 
 Examples:
 ```javascript
@@ -104,20 +100,17 @@ Options for providers:
     - `Tangram`
     - `Leaflet`
 
-You can add the libraries manually in your HTML, just add an `id` with the name of the library to the script tag:
+Alternatively, you can add any maps provider library manually. Just add an `id` with the name of the library to the script tag:
 ```html
-<!DOCTYPE html>
-<head>
   <script id="Leaflet" src="https://unpkg.com/leaflet@1.1.0/dist/leaflet.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.1.0/dist/leaflet.css">
 
   <script src="mappa.js"></script>
-</head>
 ```
 
 #### staticMap(options)
 
-> Creates a static map image with the provided parameters. Return an object.
+> Creates a static map image with the provided parameters. Returns an object.
 
 Mappa provides a simple interface when working with static maps. It currently supports [Google Maps Static API v2](https://developers.google.com/maps/documentation/static-maps/), [Mapbox Static API v1](https://www.mapbox.com/api-documentation/#styles) and [Mapquest Static API v5](https://developer.mapquest.com/documentation/static-map-api/v5/).
 
