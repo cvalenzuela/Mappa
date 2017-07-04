@@ -2,7 +2,7 @@
   "name": "Mappa",
   "version": "0.0.1",
   "description": "An addon to facilitate work between p5 and existing map libraries and APIs.",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "directories": {
     "example": "examples",
     "lib": "lib",
@@ -10,17 +10,16 @@
   },
   "scripts": {
     "commit": "git-cz",
-    "check-coverage": "nyc check-coverage --statements 100 --branch 100",
+    "check-coverage": "nyc check-coverage --statements 1 --branch 1 --functions 1 --lines 1",
     "report-coverage": "cat ./coverage/lcov.info | codecov",
-    "test:w": "npm t -- -w",
+    "watch:test": "npm t -- -w",
     "test": "mocha test/js/index.test.js --compilers js:babel-register",
     "cover": "nyc npm t",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "prebuild": "rimraf dist",
-    "build:main": "babel --copy-files --out-dir dist --ignore *.test.js src",
-    "build": "webpack --output-filename mappa.js",
+    "build": "npm-run-all --parallel build:*",
+    "build:main": "webpack --output-filename mappa.js",
     "build:min": "webpack --output-filename mappa.min.js -p",
-    "build:all": "npm-run-all --parallel build:*"
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
     "type": "git",
@@ -58,12 +57,12 @@
     "webpack": "2.6.1",
     "webpack-dev-server": "2.4.5"
   },
-  "czConfig": {
-    "path": "node_modules/cz-conventional-changelog"
-  },
   "config": {
     "ghooks": {
-      "pre-commit": ""
+      "pre-commit": "npm run cover && npm run check-coverage"
+    },
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
     }
   },
   "files": [

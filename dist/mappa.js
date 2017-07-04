@@ -987,6 +987,8 @@ var Google = function (_TileMap) {
 
     _this.script = 'https://maps.googleapis.com/maps/api/js';
     _this.options.key && (_this.script += '?key=' + _this.options.key);
+    _this.options.language && (_this.script += '&language=' + _this.options.language);
+    _this.options.region && (_this.script += '&region=' + _this.options.region);
     _this.init();
     return _this;
   }
@@ -1001,7 +1003,7 @@ var Google = function (_TileMap) {
       this.map = new google.maps.Map(document.getElementById('mappa'), {
         center: { lat: this.options.lat, lng: this.options.lng },
         zoom: this.options.zoom || 6,
-        mapTypeId: this.options.mapTypeId || 'terrain',
+        mapTypeId: this.options.maptype || 'terrain',
         styles: this.options.styles || ''
       });
 
@@ -1461,3 +1463,4 @@ exports.Tangram = Tangram;
 /***/ })
 /******/ ]);
 });
+//# sourceMappingURL=mappa.js.map

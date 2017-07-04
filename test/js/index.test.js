@@ -1,5 +1,5 @@
-let expect = require('chai').expect;
-let Mappa = require('../../src/index');
+import { expect } from 'chai'
+import Mappa from '../../src/index'
 
 var key = 'abcd'
 var mappa = new Mappa('Google', key);
