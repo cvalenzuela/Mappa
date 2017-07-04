@@ -3,6 +3,7 @@
 * https://github.com/cvalenzuela/p5.maps
 *
 * Cristóbal Valenzuela
+* cv965@nyu.edu
 * Google Summer of Code 2017
 */
 
