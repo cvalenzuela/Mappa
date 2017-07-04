@@ -2,7 +2,7 @@
 
 [![travis build](https://img.shields.io/travis/cvalenzuela/Mappa.svg?style=flat-square)](https://travis-ci.org/cvalenzuela/Mappa)
 [![codecov coverage](https://img.shields.io/codecov/c/github/cvalenzuela/Mappa.svg?style=flat-square)](https://codecov.io/github/cvalenzuela/Mappa)
-![version](https://img.shields.io/npm/v/Mappa.svg?style=flat-square)
+![version](https://img.shields.io/npm/v/mappa-mundi.svg?style=flat-square)
 
 
 **_This project is currently in development._**
@@ -11,11 +11,21 @@ Mappa is a [p5.js](https://github.com/processing/p5.js) addon to facilitate work
 
 # Usage
 
-Download the [full](dist/mappa.js) or [minified](dist/mappa.min.js) version and add  it to your sketch. Mappa will automatically load the required map libraries when necessary.
+Download the [full](dist/mappa.js), [minified](dist/mappa.min.js) or use the online version and add  it to the head section of the document. Mappa will automatically load the required map libraries when necessary.
 
 ```html
 <script src="mappa.min.js" type="text/javascript"></script>
 ```
+or
+```html
+<script src="https://unpkg.com/mappa-mundi@1.0.0/dist/mappa.min.js" type="text/javascript"></script>
+```
+
+If you are using npm:
+```bash
+npm install mappa-mundi
+```
+
 Then create a `new Mappa` instance with your preferred map provider.
 
 ```javascript
