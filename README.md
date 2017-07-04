@@ -50,6 +50,9 @@ If you are new to maps, check out [this complete tutorial]() and [this glossary 
   - GeoJSON ([Code](#) | [Demo](#))
   - TopoJSON ([Code](#) | [Demo](#))
 
+# Tutorials
+Soon!
+
 # Reference
 
 + [Mappa()](#mappaprovider-key)
@@ -512,7 +515,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
 
   var colors = ['#fff5f0','#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c','#cb181d','#a50f15','#67000d'];
 
-  var mappa = new Mappa('Google', key);
+  var mappa = new Mappa('Mapboxgl', key);
   var myMap;
 
   var canvas;
@@ -544,7 +547,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
   ```
   This will render the following sketch:
 
-  ![google_tile_move](examples/images/tile-dots.gif)
+  ![tile_move](examples/images/tile-dots.gif)
 
   #### geoJSON(data, featureType)
 
@@ -602,6 +605,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
 
   function preload(){
     img = loadImage(myMap.img);
+    // A geoJSON file with world coordinates for all countries.
     data = loadJSON('world.geojson');
   }
 

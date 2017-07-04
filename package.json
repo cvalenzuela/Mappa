@@ -15,6 +15,7 @@
     "test:w": "npm t -- -w",
     "test": "mocha test/js/index.test.js --compilers js:babel-register",
     "cover": "nyc npm t",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "prebuild": "rimraf dist",
     "build:main": "babel --copy-files --out-dir dist --ignore *.test.js src",
     "build": "webpack --output-filename mappa.js",
@@ -56,6 +57,9 @@
     "rimraf": "2.6.1",
     "webpack": "2.6.1",
     "webpack-dev-server": "2.4.5"
+  },
+  "czConfig": {
+    "path": "node_modules/cz-conventional-changelog"
   },
   "config": {
     "ghooks": {
