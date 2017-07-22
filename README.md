@@ -73,9 +73,9 @@ Soon!
 + [Mappa()](#mappaprovider-key)
 + [staticMap()](#staticmapoptions)
 + [tileMap()](#tilemapoptions)
-+ [append()](#appendcanvas)
-+ [latLng()](#latlnglat-lng)
-+ [point()](#pointxy)
++ [overlay()](#overlaycanvas)
++ [latLngToPixel()](#latLngToPixellat-lng)
++ [pixelToLatlng()](#pixelToLatlngxy)
 + [zoom()](#zoom)
 + [onChange()](#onchangefunction)
 + [geoJSON()](#geojsondata-featuretype)
@@ -118,7 +118,7 @@ Options for providers:
     - `Tangram`
     - `Leaflet`
 
-Alternatively, you can add any maps provider library manually. Just add an `id` with the name of the library to the script tag:
+Alternatively, you can add any maps provider libraries manually. Just add an `id` with the name of the library to the script tag:
 ```html
   <script id="Leaflet" src="https://unpkg.com/leaflet@1.1.0/dist/leaflet.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.1.0/dist/leaflet.css">
@@ -152,17 +152,17 @@ var options = {
 var myMap = mappa.staticMap(options)
 ```
 
-The resulting URL of the image will be stored inside the `img` value of the myMap variable. To load the image in p5 use [`loadImage()`](https://p5js.org/reference/#/p5/loadImage) in [`preload()`](https://p5js.org/reference/#/p5/preload) as with any other p5 image:
+The resulting URL of the image will be stored inside the `imgUrl` value of the myMap variable. To load the image in p5 use [`loadImage()`](https://p5js.org/reference/#/p5/loadImage) in [`preload()`](https://p5js.org/reference/#/p5/preload) as with any other p5 image:
 
 ```javascript
 var img;
 
 function preload(){
-  img = loadImage(myMap.img);
+  img = loadImage(myMap.imgUrl);
 }
 ```
 
-to use it into other elements just refer to `myMap.img`.
+to use it into other elements just refer to `myMap.imgUrl`.
 
 Required parameters:
 + `lat`: latitude for the center of the image.
@@ -228,7 +228,7 @@ var myMap = mappa.staticMap(options);
 
 // Load the image from the mappa instance as any other p5 image.
 function preload(){
-  img = loadImage(myMap.img);
+  img = loadImage(myMap.imgUrl);
 }
 
 function setup(){
@@ -245,9 +245,9 @@ Here are more complete examples when working with [Google Maps](examples/static/
 
 #### tileMap(options)
 
-> Creates a tile map with the provided parameters. This method needs to be called inside [`setup()`](https://p5js.org/reference/#/p5/setup). It needs to be used together with [`append()`](#appendcanvas) to display a map.
+> Creates a tile map with the provided parameters. This method needs to be called inside [`setup()`](https://p5js.org/reference/#/p5/setup). It needs to be used together with [`overlay()`](#overlaycanvas) to display a map.
 
-Mappa allows to overlay a canvas element in top of [tile maps](glossary/tile-maps). This is useful for interactive geolocation-based visual sketches. It currently supports [Google Maps v3.28](https://developers.google.com/maps/documentation/javascript/), [Mapbox v3.1.1](https://www.mapbox.com/mapbox.js/api/v3.1.1/), [Mapbox-GL v0.37.0](https://www.mapbox.com/mapbox-gl-js/api/), [Mapzen v0.12.5](https://mapzen.com/documentation/mapzen-js/api-reference/) and [Tangram v0.12.5](https://mapzen.com/documentation/tangram/Javascript-API/) as map providers. It also supports [Leaflet v1.0.3](http://leafletjs.com/) with any custom set of tiles. [`tileMap()`](#tilemapoptions) will only create the reference to a tile map. In order to visualize the map, [`append()`](#appendcanvas) must be used.
+Mappa allows to overlay a canvas element in top of [tile maps](glossary/tile-maps). This is useful for interactive geolocation-based visual sketches. It currently supports [Google Maps v3.28](https://developers.google.com/maps/documentation/javascript/), [Mapbox v3.1.1](https://www.mapbox.com/mapbox.js/api/v3.1.1/), [Mapbox-GL v0.37.0](https://www.mapbox.com/mapbox-gl-js/api/), [Mapzen v0.12.5](https://mapzen.com/documentation/mapzen-js/api-reference/) and [Tangram v0.12.5](https://mapzen.com/documentation/tangram/Javascript-API/) as map providers. It also supports [Leaflet v1.0.3](http://leafletjs.com/) with any custom set of tiles. [`tileMap()`](#tilemapoptions) will only create the reference to a tile map. In order to visualize the map, [`overlay()`](#overlaycanvas) must be used.
 
 `tileMap(lat, lng, zoom, [optional])` or `tileMap(parameters)`
 
@@ -323,9 +323,9 @@ Optional:
 + Leaflet:
   - `style`: tile style to be used. Defaults to `http://{s}.tile.osm.org/{z}/{x}/{y}.png`.
 
-#### append(canvas)
+#### overlay(canvas)
 
-> Appends (overlays) a canvas to a tile map. This method needs to be called inside [`setup()`](https://p5js.org/reference/#/p5/setup). It needs to be used together with [`tileMap()`](#tilemapoptions) to display a map.
+> Overlays a canvas to a tile map. This method needs to be called inside [`setup()`](https://p5js.org/reference/#/p5/setup). It needs to be used together with [`tileMap()`](#tilemapoptions) to display a map.
 
 This method will actually create the tile map referenced in [`tileMap()`](#tilemapoptions) and overlay the selected canvas on top of it, allowing to control and move the map while maintaining the canvas position and relationship. The tile map generated is a separate DOM element that is displayed behind the canvas and is the same size of the canvas.
 
@@ -343,12 +343,12 @@ function setup(){
   canvas = createCanvas(800, 700);
   // Create a tile map center in New York with an initial zoom level of 10.
   myMap = mappa.tileMap(40.782, -73.967, 10);
-  // Append the canvas to the new tile map created.
-  myMap.append(canvas);
+  // Overlay the canvas to the new tile map created.
+  myMap.overlay(canvas);
 }
 ```
 
-Once `append()` is used, a complete access to the base map library and its original properties and methods can be found in `map`. This allows to call any of the maps original properties or methods.
+Once `overlay()` is used, a complete access to the base map library and its original properties and methods can be found in `map`. This allows to call any of the maps original properties or methods.
 
 For example, calling [flyTo](http://leafletjs.com/reference-1.0.0.html#flyToBounds) in a Leaflet Map:
 
@@ -379,8 +379,8 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
     canvas = createCanvas(800, 700);
     // Create a tile map centered in New York with an initial zoom level of 4.
     myMap = mappa.tileMap(options);
-    // Append the tile map to the p5 canvas. This will display the map.
-    myMap.append(canvas);
+    // Overlay the tile map to the p5 canvas. This will display the map.
+    myMap.overlay(canvas);
   }
 
   function draw(){
@@ -394,29 +394,29 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
 
   ![mapboxgl_tile_example](examples/images/mapboxgl_tile.gif)
 
-  #### latLng(lat, lng)
+  #### latLngToPixel(lat, lng)
 
   > Get pixel position (x,y) for latitude and longitude coordinates. Returns an object with x and y position.
 
   This method allows to get the pixel position of latitude and longitude coordinates in relationship to a [`staticMap()`](#staticmapoptions) or a [`tileMap()`](#tilemapoptions). The pixel position will be stored as x and y.
 
-  `latLng(lat, lng)`
+  `latLngToPixel(lat, lng)`
 
   Example:
   ```javascript
   // Get the pixel position for Central Park.
-  var pos = myMap.latLng(40.782, -73.967);
+  var pos = myMap.latLngToPixel(40.782, -73.967);
   // Draw an ellipse using pos
   ellipse(pos.x, pos.y, 10, 10);
   ```
 
   See [onChange()](#onchangefunction) for a Complete Example.
 
-  #### point(x,y)
+  #### pixelToLatlng(x,y)
 
   > Get the latitude and longitude coordinates for a (x,y) pixel position. Returns an object with lat and lng.
 
-  `point(x, y)`
+  `pixelToLatlng(x, y)`
 
   This method returns the latitude and longitude of a point in the canvas in reference of a [`tileMap()`](#tilemapoptions).
 
@@ -424,7 +424,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
   ```javascript
   if (mouseIsPressed) {
     // Store the current latitude and longitude of the mouse position
-    var position = myMap.point(mouseX, mouseY);
+    var position = myMap.pixelToLatlng(mouseX, mouseY);
   }
   ```
 
@@ -450,7 +450,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
   function setup(){
     canvas = createCanvas(800, 700);
     myMap = mappa.tileMap(options);
-    myMap.append(canvas);
+    myMap.overlay(canvas);
     noFill();
     stroke('#08306b');
   }
@@ -458,10 +458,10 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
   function draw(){
     clear();
 
-    // Draw a line using latLng() with all the points in the points array.
+    // Draw a line using latLngToPixel() with all the points in the points array.
     beginShape();
     for(var i = 0; i < points.length; i++){
-      var pos = myMap.latLng(points[i])
+      var pos = myMap.latLngToPixel(points[i])
       vertex(pos.x, pos.y);
     }
     endShape();
@@ -469,7 +469,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
     // If the mouse right button is pressed, store the current mouse position in an array of points.
     if (mouseIsPressed) {
       if (mouseButton == RIGHT){
-        var point = myMap.point(mouseX, mouseY);
+        var point = myMap.pixelToLatlng(mouseX, mouseY);
         points.push(point)
       }
     }
@@ -510,7 +510,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
   function setup(){
     canvas = createCanvas(800, 700);
     myMap = mappa.tileMap(options);
-    myMap.append(canvas);
+    myMap.overlay(canvas);
     myMap.onChange(myCustomFunction);
   }
   ```
@@ -539,7 +539,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
   function setup(){
     canvas = createCanvas(800, 700);
     myMap = mappa.tileMap(options);
-    myMap.append(canvas);
+    myMap.overlay(canvas);
     // Load a file with lat-lng coordinates.
     dots = loadStrings('../../data/dots.csv');
     myMap.onChange(circles);
@@ -555,7 +555,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
     for (var i = 1; i < dots.length; i++) {
       var data = dots[i].split(/,/);
       fill(random(colors))
-      var pos = myMap.latLng(data[9], data[8]);
+      var pos = myMap.latLngToPixel(data[9], data[8]);
       ellipse(pos.x, pos.y, size, size);
     }
   }
@@ -619,7 +619,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
   var multiPolygons;
 
   function preload(){
-    img = loadImage(myMap.img);
+    img = loadImage(myMap.imgUrl);
     // A geoJSON file with world coordinates for all countries.
     data = loadJSON('world.geojson');
   }
@@ -637,7 +637,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
       beginShape();
       fill(random(colors));
       for (var j = 0; j < polygons[i][0].length; j ++){
-        var pos = myMap.latLng(polygons[i][0][j][1], polygons[i][0][j][0]);
+        var pos = myMap.latLngToPixel(polygons[i][0][j][1], polygons[i][0][j][0]);
         vertex(pos.x, pos.y);
       }
       endShape();
@@ -649,7 +649,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
         beginShape();
         fill(random(colors));
         for (var j = 0; j < multiPolygons[i][k][0].length; j ++){
-          var pos = myMap.latLng(multiPolygons[i][k][0][j][1], multiPolygons[i][k][0][j][0]);
+          var pos = myMap.latLngToPixel(multiPolygons[i][k][0][j][1], multiPolygons[i][k][0][j][0]);
           vertex(pos.x, pos.y);
         }
         endShape();
@@ -671,3 +671,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
   `geoCoding()`
 
   *Not implemented yet.*
+
+  # Licence
+  MIT
+

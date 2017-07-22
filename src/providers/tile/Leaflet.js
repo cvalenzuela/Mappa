@@ -14,6 +14,7 @@ class Leaflet extends TileMap {
   }
 
   createMap () {
+    // Check this when not using a map in the background
     if(!this.options.style){
       Leaflet.messages().tiles();
       return
@@ -24,7 +25,7 @@ class Leaflet extends TileMap {
       zoom: this.options.zoom,
       inertia: false,
     });
-    this.map
+
     this.tiles = L.tileLayer(this.options.style).addTo(this.map);
     this.tiles.on('tileload', () => { this.ready = true; });
 
@@ -34,6 +35,7 @@ class Leaflet extends TileMap {
   canvasOverlay () {
     if(this.tiles){
       this.tiles.options.opacity = this.options.opacity;
+      // Add this to documentation -> background color of the map.
       document.getElementsByClassName('leaflet-container')[0].style.background = this.options.backgroundColor;
     }
 

@@ -8,9 +8,9 @@ import { StaticMap } from './StaticMap';
 class Google extends StaticMap {
   constructor(options){
     super(options);
-    this.url = 'https://maps.googleapis.com/maps/api/staticmap?';
+    this.imgUrl = 'https://maps.googleapis.com/maps/api/staticmap?';
     this.init();
-    this.img = this.createImage();
+    this.createImage();
   }
 
   init() {
@@ -38,10 +38,10 @@ class Google extends StaticMap {
     !this.options.scale && (this.options.scale = 1);
 
     for(let option in this.options){
-      (Google.options().valid.indexOf(option) > -1) && (this.url += '&' + option + '=' + this.options[option]);
+      (Google.options().valid.indexOf(option) > -1) && (this.imgUrl += '&' + option + '=' + this.options[option]);
     }
 
-    return this.url
+    return this.imgUrl
   }
 
   static options(){

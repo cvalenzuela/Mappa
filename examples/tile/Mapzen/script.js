@@ -21,7 +21,7 @@ var dots;
 function setup(){
   canvas = createCanvas(800, 700);
   myMap = mappa.tileMap(options);
-  myMap.append(canvas);
+  myMap.overlay(canvas);
   dots = loadStrings('../../data/dots.csv');
   myMap.onChange(circles);
 }
@@ -35,7 +35,7 @@ function circles(){
   var size = myMap.zoom()*2;
   for (var i = 1; i < dots.length; i++) {
     var data = dots[i].split(/,/);
-    var pos = myMap.latLng(data[9], data[8]);
+    var pos = myMap.latLngToPixel(data[9], data[8]);
     ellipse(pos.x, pos.y, size, size);
   }
 }

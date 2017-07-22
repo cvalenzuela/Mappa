@@ -29,7 +29,7 @@ var dots;
 
 function preload(){
   // Load the image from the mappa instance
-  img = loadImage(myMap.img);
+  img = loadImage(myMap.imgUrl);
   dots = loadStrings('../../data/dots.csv');
 }
 
@@ -43,7 +43,7 @@ function setup(){
   for (var i = 1; i < dots.length; i++) {
     var data = dots[i].split(/,/);
 
-    pos = myMap.latLng(data[9], data[8]);
+    pos = myMap.latLngToPixel(data[9], data[8]);
     ellipse(pos.x, pos.y, 3, 3);
   }
 }

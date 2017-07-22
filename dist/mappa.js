@@ -120,6 +120,7 @@ var Leaflet = function (_TileMap) {
     value: function createMap() {
       var _this2 = this;
 
+      // Check this when not using a map in the background
       if (!this.options.style) {
         Leaflet.messages().tiles();
         return;
@@ -130,7 +131,7 @@ var Leaflet = function (_TileMap) {
         zoom: this.options.zoom,
         inertia: false
       });
-      this.map;
+
       this.tiles = L.tileLayer(this.options.style).addTo(this.map);
       this.tiles.on('tileload', function () {
         _this2.ready = true;
@@ -145,6 +146,7 @@ var Leaflet = function (_TileMap) {
 
       if (this.tiles) {
         this.tiles.options.opacity = this.options.opacity;
+        // Add this to documentation -> background color of the map.
         document.getElementsByClassName('leaflet-container')[0].style.background = this.options.backgroundColor;
       }
 
@@ -259,8 +261,8 @@ var StaticMap = function () {
   }
 
   _createClass(StaticMap, [{
-    key: 'latLng',
-    value: function latLng(lat, lng) {
+    key: 'latLngToPixel',
+    value: function latLngToPixel(lat, lng) {
       return {
         x: this.fromLngToPoint(lng) - this.fromLngToPoint(this.options.lng) + this.options.width / (2 / this.options.scale),
         y: this.fromLatToPoint(lat) - this.fromLatToPoint(this.options.lat) + this.options.height / (2 / this.options.scale)
@@ -336,8 +338,8 @@ var TileMap = function () {
       }
     }
   }, {
-    key: 'append',
-    value: function append(canvas) {
+    key: 'overlay',
+    value: function overlay(canvas) {
       var _this = this;
 
       this.scriptTag.onload = function () {
@@ -350,15 +352,15 @@ var TileMap = function () {
       };
     }
   }, {
-    key: 'latLng',
-    value: function latLng() {
+    key: 'latLngToPixel',
+    value: function latLngToPixel() {
       var pos = void 0;
       _typeof(arguments.length <= 0 ? undefined : arguments[0]) == 'object' ? pos = arguments.length <= 0 ? undefined : arguments[0] : pos = { lat: Number(arguments.length <= 0 ? undefined : arguments[0]), lng: Number(arguments.length <= 1 ? undefined : arguments[1]) };
       return this.fromLatLngtoPixel(pos);
     }
   }, {
-    key: 'point',
-    value: function point() {
+    key: 'pixelToLatLng',
+    value: function pixelToLatLng() {
       return this.fromPointToLatLng.apply(this, arguments);
     }
   }, {
@@ -562,6 +564,7 @@ Object.keys(_Tangram).forEach(function (key) {
 * https://github.com/cvalenzuela/p5.maps
 *
 * Cristóbal Valenzuela
+* cv965@nyu.edu
 * Google Summer of Code 2017
 */
 
@@ -674,9 +677,9 @@ var Google = function (_StaticMap) {
 
     var _this = _possibleConstructorReturn(this, (Google.__proto__ || Object.getPrototypeOf(Google)).call(this, options));
 
-    _this.url = 'https://maps.googleapis.com/maps/api/staticmap?';
+    _this.imgUrl = 'https://maps.googleapis.com/maps/api/staticmap?';
     _this.init();
-    _this.img = _this.createImage();
+    _this.createImage();
     return _this;
   }
 
@@ -708,10 +711,10 @@ var Google = function (_StaticMap) {
       !this.options.scale && (this.options.scale = 1);
 
       for (var option in this.options) {
-        Google.options().valid.indexOf(option) > -1 && (this.url += '&' + option + '=' + this.options[option]);
+        Google.options().valid.indexOf(option) > -1 && (this.imgUrl += '&' + option + '=' + this.options[option]);
       }
 
-      return this.url;
+      return this.imgUrl;
     }
   }], [{
     key: 'options',
@@ -773,9 +776,9 @@ var Mapbox = function (_StaticMap) {
 
     var _this = _possibleConstructorReturn(this, (Mapbox.__proto__ || Object.getPrototypeOf(Mapbox)).call(this, options));
 
-    _this.url = 'https://api.mapbox.com/styles/v1/';
+    _this.imgUrl = 'https://api.mapbox.com/styles/v1/';
     _this.init();
-    _this.img = _this.createImage();
+    _this.createImage();
     return _this;
   }
 
@@ -806,22 +809,22 @@ var Mapbox = function (_StaticMap) {
         Mapbox.messages().key();
         return;
       }
-      this.options.username != undefined ? this.url += this.options.username + '/' : this.url += 'mapbox/';
-      this.options.style != undefined ? this.url += this.options.style + '/' : this.url += 'streets-v10/';
-      this.url += 'static/';
-      this.options.overlay != undefined && (this.url += this.options.overlay + '/');
-      this.url += this.options.lng + ',' + this.options.lat + ',';
+      this.options.username != undefined ? this.imgUrl += this.options.username + '/' : this.imgUrl += 'mapbox/';
+      this.options.style != undefined ? this.imgUrl += this.options.style + '/' : this.imgUrl += 'streets-v10/';
+      this.imgUrl += 'static/';
+      this.options.overlay != undefined && (this.imgUrl += this.options.overlay + '/');
+      this.imgUrl += this.options.lng + ',' + this.options.lat + ',';
       this.options.auto == false || this.options.auto == undefined ? ['zoom', 'bearing', 'pitch'].forEach(function (e, i) {
-        _this2.options[e] != undefined ? _this2.url += _this2.options[e] : _this2.url += 0;
-        i < 2 && (_this2.url += ',');
-      }) : this.url += 'auto';
-      this.url += '/' + this.options.width + 'x' + this.options.height;
-      this.options.scale == 2 && (this.url += '@2x');
-      this.url += '?access_token=' + this.options.key;
-      this.options.attribution ? this.url += '&attribution=' + this.options.attribution : this.url += '&attribution=false';
-      this.options.logo ? this.url += '&logo=' + this.options.logo : this.url += '&logo=false';
-      this.options.before_layer ? this.url += '&before_layer=' + this.options.before_layer : this.url += '&before_layer=false';
-      return this.url;
+        _this2.options[e] != undefined ? _this2.imgUrl += _this2.options[e] : _this2.imgUrl += 0;
+        i < 2 && (_this2.imgUrl += ',');
+      }) : this.imgUrl += 'auto';
+      this.imgUrl += '/' + this.options.width + 'x' + this.options.height;
+      this.options.scale == 2 && (this.imgUrl += '@2x');
+      this.imgUrl += '?access_token=' + this.options.key;
+      this.options.attribution ? this.imgUrl += '&attribution=' + this.options.attribution : this.imgUrl += '&attribution=false';
+      this.options.logo ? this.imgUrl += '&logo=' + this.options.logo : this.imgUrl += '&logo=false';
+      this.options.before_layer ? this.imgUrl += '&before_layer=' + this.options.before_layer : this.imgUrl += '&before_layer=false';
+      return this.imgUrl;
     }
   }], [{
     key: 'options',
@@ -883,9 +886,9 @@ var Mapquest = function (_StaticMap) {
 
     var _this = _possibleConstructorReturn(this, (Mapquest.__proto__ || Object.getPrototypeOf(Mapquest)).call(this, options));
 
-    _this.url = 'https://www.mapquestapi.com/staticmap/v5/map?';
+    _this.imgUrl = 'https://www.mapquestapi.com/staticmap/v5/map?';
     _this.init();
-    _this.img = _this.createImage();
+    _this.createImage();
     return _this;
   }
 
@@ -920,10 +923,10 @@ var Mapquest = function (_StaticMap) {
       !this.options.center && (this.options.center = this.options.lat + ',' + this.options.lng);
 
       for (var option in this.options) {
-        Mapquest.options().valid.indexOf(option) > -1 && (this.url += '&' + option + '=' + this.options[option]);
+        Mapquest.options().valid.indexOf(option) > -1 && (this.imgUrl += '&' + option + '=' + this.options[option]);
       }
 
-      return this.url;
+      return this.imgUrl;
     }
   }], [{
     key: 'options',

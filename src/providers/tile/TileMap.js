@@ -26,7 +26,7 @@ class TileMap {
     }
   }
 
-  append(canvas){
+  overlay(canvas){
     this.scriptTag.onload = () => {
       let div = document.createElement('div');
       document.body.appendChild(div);
@@ -37,13 +37,13 @@ class TileMap {
     };
   }
 
-  latLng(...args){
+  latLngToPixel(...args){
     let pos;
     (typeof args[0] == 'object') ? pos = args[0] : pos = {lat: Number(args[0]), lng: Number(args[1])};
     return this.fromLatLngtoPixel(pos);
   }
 
-  point(...args){
+  pixelToLatLng(...args){
     return this.fromPointToLatLng(...args);
   }
 

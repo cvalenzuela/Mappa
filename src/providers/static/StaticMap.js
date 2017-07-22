@@ -9,7 +9,7 @@ class StaticMap  {
     this.options = options;
   }
 
-  latLng(lat, lng) {
+  latLngToPixel(lat, lng) {
     return {
       x: this.fromLngToPoint(lng) - this.fromLngToPoint(this.options.lng) + this.options.width/(2/this.options.scale),
       y: this.fromLatToPoint(lat) - this.fromLatToPoint(this.options.lat) + this.options.height/(2/this.options.scale)

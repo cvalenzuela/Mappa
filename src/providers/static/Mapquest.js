@@ -8,9 +8,9 @@ import { StaticMap } from './StaticMap';
 class Mapquest extends StaticMap {
   constructor(options){
     super(options);
-    this.url = 'https://www.mapquestapi.com/staticmap/v5/map?';
+    this.imgUrl = 'https://www.mapquestapi.com/staticmap/v5/map?';
     this.init();
-    this.img = this.createImage();
+    this.createImage();
   }
 
   init() {
@@ -41,10 +41,10 @@ class Mapquest extends StaticMap {
     !this.options.center && (this.options.center = this.options.lat + ',' + this.options.lng);
 
     for(let option in this.options){
-      (Mapquest.options().valid.indexOf(option) > -1) && (this.url += '&' + option + '=' + this.options[option]);
+      (Mapquest.options().valid.indexOf(option) > -1) && (this.imgUrl += '&' + option + '=' + this.options[option]);
     }
 
-    return this.url
+    return this.imgUrl
   }
 
   static options () {

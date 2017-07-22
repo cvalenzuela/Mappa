@@ -20,7 +20,7 @@ var dots;
 function setup(){
   canvas = createCanvas(800, 700, WEBGL);
   myMap = mappa.tileMap(options);
-  myMap.append(canvas);
+  myMap.overlay(canvas);
   dots = loadStrings('../../data/dots_shorter.csv');
 }
 
@@ -29,7 +29,7 @@ function draw(){
 
   for (var i = 1; i < dots.length; i++) {
     var data = dots[i].split(/,/);
-    pos = myMap.latLng(data[9], data[8]);
+    pos = myMap.latLngToPixel(data[9], data[8]);
 
     push();
     translate(pos.x, pos.y, 0);

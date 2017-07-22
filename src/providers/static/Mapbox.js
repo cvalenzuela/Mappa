@@ -8,9 +8,9 @@ import { StaticMap } from './StaticMap';
 class Mapbox extends StaticMap {
   constructor(options){
     super(options);
-    this.url = 'https://api.mapbox.com/styles/v1/';
+    this.imgUrl = 'https://api.mapbox.com/styles/v1/';
     this.init();
-    this.img = this.createImage();
+    this.createImage();
   }
 
   init() {
@@ -35,23 +35,23 @@ class Mapbox extends StaticMap {
       Mapbox.messages().key();
       return;
     }
-    (this.options.username != undefined) ? this.url += this.options.username + '/': this.url += 'mapbox/';
-    (this.options.style != undefined) ? this.url += this.options.style + '/': this.url += 'streets-v10/';
-    this.url += 'static/';
-    (this.options.overlay != undefined) && (this.url += this.options.overlay + '/');
-    this.url += this.options.lng + ',' + this.options.lat + ',';
+    (this.options.username != undefined) ? this.imgUrl += this.options.username + '/': this.imgUrl += 'mapbox/';
+    (this.options.style != undefined) ? this.imgUrl += this.options.style + '/': this.imgUrl += 'streets-v10/';
+    this.imgUrl += 'static/';
+    (this.options.overlay != undefined) && (this.imgUrl += this.options.overlay + '/');
+    this.imgUrl += this.options.lng + ',' + this.options.lat + ',';
     (this.options.auto == false || this.options.auto == undefined) ?
     ['zoom', 'bearing', 'pitch'].forEach((e,i) => {
-      (this.options[e] != undefined) ? this.url += this.options[e] : this.url += 0;
-      i < 2 && (this.url += ',');
-    }) : this.url += 'auto';
-    this.url += '/' + this.options.width + 'x' + this.options.height;
-    (this.options.scale == 2) && (this.url += '@2x');
-    this.url += '?access_token=' + this.options.key;
-    (this.options.attribution) ? this.url += '&attribution=' + this.options.attribution : this.url += '&attribution=false';
-    (this.options.logo) ? this.url += '&logo=' + this.options.logo : this.url += '&logo=false';
-    (this.options.before_layer) ? this.url += '&before_layer=' + this.options.before_layer : this.url += '&before_layer=false';
-    return this.url
+      (this.options[e] != undefined) ? this.imgUrl += this.options[e] : this.imgUrl += 0;
+      i < 2 && (this.imgUrl += ',');
+    }) : this.imgUrl += 'auto';
+    this.imgUrl += '/' + this.options.width + 'x' + this.options.height;
+    (this.options.scale == 2) && (this.imgUrl += '@2x');
+    this.imgUrl += '?access_token=' + this.options.key;
+    (this.options.attribution) ? this.imgUrl += '&attribution=' + this.options.attribution : this.imgUrl += '&attribution=false';
+    (this.options.logo) ? this.imgUrl += '&logo=' + this.options.logo : this.imgUrl += '&logo=false';
+    (this.options.before_layer) ? this.imgUrl += '&before_layer=' + this.options.before_layer : this.imgUrl += '&before_layer=false';
+    return this.imgUrl
   };
 
   static options(){
