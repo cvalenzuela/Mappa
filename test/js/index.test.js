@@ -13,6 +13,6 @@ describe('mappa', function () {
 
 describe('staticMap', function () {
   it('should be a valid url', function () {
-    expect(mappa.staticMap(0,0,0,100,100).url).to.be.a('string');
+    expect(mappa.staticMap(0,0,0,100,100).imgUrl).to.be.a('string');
   });
 });
