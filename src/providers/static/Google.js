@@ -9,7 +9,6 @@ class Google extends StaticMap {
   constructor(options){
     super(options);
     this.imgUrl = 'https://maps.googleapis.com/maps/api/staticmap?';
-    this.init();
     this.createImage();
   }
 

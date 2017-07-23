@@ -6,39 +6,38 @@
 import { TileMap } from './TileMap';
 
 class Leaflet extends TileMap {
-  constructor(options){
+  constructor(options) {
     super(options);
     this.script = 'https://unpkg.com/leaflet@1.0.3/dist/leaflet.js';
     this.style = 'https://unpkg.com/leaflet@1.0.3/dist/leaflet.css';
     this.constructor.name == 'Leaflet' && this.init();
   }
 
-  createMap () {
-    // Check this when not using a map in the background
-    if(!this.options.style){
-      Leaflet.messages().tiles();
-      return
-    }
-
+  createMap() {
     this.map = L.map('mappa', {
       center: [this.options.lat, this.options.lng],
       zoom: this.options.zoom,
       inertia: false,
     });
 
+    if (!this.options.style) {
+      Leaflet.messages().tiles();
+      this.ready = true;
+    } else {
     this.tiles = L.tileLayer(this.options.style).addTo(this.map);
-    this.tiles.on('tileload', () => { this.ready = true; });
+    this.tiles.on('tileload', () => {
+      this.ready = true;
+    });
+    }
 
     this.canvasOverlay();
   }
 
-  canvasOverlay () {
-    if(this.tiles){
+  canvasOverlay() {
+    if (this.tiles) {
       this.tiles.options.opacity = this.options.opacity;
-      // Add this to documentation -> background color of the map.
-      document.getElementsByClassName('leaflet-container')[0].style.background = this.options.backgroundColor;
     }
-
+    
     L.overlay = L.Layer.extend({
       onAdd: () => {
         let overlayPane = overlay.getPane();
@@ -60,24 +59,33 @@ class Leaflet extends TileMap {
   }
 
   fromLatLngtoPixel(position) {
-    if(this.ready){
+    if (this.ready) {
       let containerPoint = this.map.latLngToContainerPoint(position);
-      return {x:containerPoint.x, y:containerPoint.y};
-    } else{
-      return {x:-100, y:-100};
+      return {
+        x: containerPoint.x,
+        y: containerPoint.y
+      };
+    } else {
+      return {
+        x: -100,
+        y: -100
+      };
     }
   }
 
-  fromPointToLatLng(...args){
-    if(this.ready){
+  fromPointToLatLng(...args) {
+    if (this.ready) {
       return this.map.containerPointToLatLng(args);
-    } else{
-      return {lat:-100, lng:-100};
+    } else {
+      return {
+        lat: -100,
+        lng: -100
+      };
     }
   }
 
   getZoom() {
-    if(this.ready){
+    if (this.ready) {
       return this.map.getZoom()
     } else {
       return 0
@@ -85,21 +93,27 @@ class Leaflet extends TileMap {
   }
 
   onChange(callback) {
-    if(this.ready){
+    if (this.ready) {
       callback()
       this.map.on('move', () => {
         callback();
       })
     } else {
-      setTimeout(() => {this.onChange(callback)}, 200);
+      setTimeout(() => {
+        this.onChange(callback)
+      }, 200);
     }
   }
 
-  static messages(){
+  static messages() {
     return {
-      tiles: () => {console.warn('You need to include a style for your Leaflet map. Try with: http://{s}.tile.osm.org/{z}/{x}/{y}.png')}
+      tiles: () => {
+        console.warn('You are not using any tiles for your map. Try with: http://{s}.tile.osm.org/{z}/{x}/{y}.png')
+      }
     }
   }
 }
 
-export { Leaflet };
+export {
+  Leaflet
+};

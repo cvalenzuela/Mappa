@@ -111,13 +111,6 @@ var StaticMap = function () {
       !this.options.scale && (this.options.scale = 1);
       if (this.options.scale == 2) {
         this.options.pixels = 512;
-      } else {
-        if (this.options.width > 1280) {
-          this.options.width = 1280;
-        }
-        if (this.options.height > 1280) {
-          this.options.height = 1280;
-        }
       }
     }
   }, {
@@ -194,22 +187,21 @@ var Leaflet = function (_TileMap) {
     value: function createMap() {
       var _this2 = this;
 
-      // Check this when not using a map in the background
-      if (!this.options.style) {
-        Leaflet.messages().tiles();
-        return;
-      }
-
       this.map = L.map('mappa', {
         center: [this.options.lat, this.options.lng],
         zoom: this.options.zoom,
         inertia: false
       });
 
-      this.tiles = L.tileLayer(this.options.style).addTo(this.map);
-      this.tiles.on('tileload', function () {
-        _this2.ready = true;
-      });
+      if (!this.options.style) {
+        Leaflet.messages().tiles();
+        this.ready = true;
+      } else {
+        this.tiles = L.tileLayer(this.options.style).addTo(this.map);
+        this.tiles.on('tileload', function () {
+          _this2.ready = true;
+        });
+      }
 
       this.canvasOverlay();
     }
@@ -220,8 +212,6 @@ var Leaflet = function (_TileMap) {
 
       if (this.tiles) {
         this.tiles.options.opacity = this.options.opacity;
-        // Add this to documentation -> background color of the map.
-        document.getElementsByClassName('leaflet-container')[0].style.background = this.options.backgroundColor;
       }
 
       L.overlay = L.Layer.extend({
@@ -248,9 +238,15 @@ var Leaflet = function (_TileMap) {
     value: function fromLatLngtoPixel(position) {
       if (this.ready) {
         var containerPoint = this.map.latLngToContainerPoint(position);
-        return { x: containerPoint.x, y: containerPoint.y };
+        return {
+          x: containerPoint.x,
+          y: containerPoint.y
+        };
       } else {
-        return { x: -100, y: -100 };
+        return {
+          x: -100,
+          y: -100
+        };
       }
     }
   }, {
@@ -263,7 +259,10 @@ var Leaflet = function (_TileMap) {
 
         return this.map.containerPointToLatLng(args);
       } else {
-        return { lat: -100, lng: -100 };
+        return {
+          lat: -100,
+          lng: -100
+        };
       }
     }
   }, {
@@ -362,7 +361,7 @@ var TileMap = function () {
       this.scriptTag.onload = function () {
         var div = document.createElement('div');
         document.body.appendChild(div);
-        div.setAttribute('style', 'position:relative;width:' + canvas.width + 'px;height:' + canvas.height + 'px;top:0;left:0;z-index:999');
+        div.setAttribute('style', 'position:relative;width:' + canvas.width + 'px;height:' + canvas.height + 'px;top:0;left:0;z-index:10');
         div.setAttribute('id', 'mappa');
         _this.canvas = canvas;
         _this.createMap();
@@ -709,7 +708,6 @@ var Google = function (_StaticMap) {
     var _this = _possibleConstructorReturn(this, (Google.__proto__ || Object.getPrototypeOf(Google)).call(this, options));
 
     _this.imgUrl = 'https://maps.googleapis.com/maps/api/staticmap?';
-    _this.init();
     _this.createImage();
     return _this;
   }
@@ -808,7 +806,6 @@ var Mapbox = function (_StaticMap) {
     var _this = _possibleConstructorReturn(this, (Mapbox.__proto__ || Object.getPrototypeOf(Mapbox)).call(this, options));
 
     _this.imgUrl = 'https://api.mapbox.com/styles/v1/';
-    _this.init();
     _this.createImage();
     return _this;
   }
@@ -918,7 +915,6 @@ var Mapquest = function (_StaticMap) {
     var _this = _possibleConstructorReturn(this, (Mapquest.__proto__ || Object.getPrototypeOf(Mapquest)).call(this, options));
 
     _this.imgUrl = 'https://www.mapquestapi.com/staticmap/v5/map?';
-    _this.init();
     _this.createImage();
     return _this;
   }

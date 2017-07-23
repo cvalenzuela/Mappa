@@ -9,7 +9,6 @@ class Mapquest extends StaticMap {
   constructor(options){
     super(options);
     this.imgUrl = 'https://www.mapquestapi.com/staticmap/v5/map?';
-    this.init();
     this.createImage();
   }
 

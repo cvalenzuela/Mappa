@@ -9,7 +9,6 @@ class Mapbox extends StaticMap {
   constructor(options){
     super(options);
     this.imgUrl = 'https://api.mapbox.com/styles/v1/';
-    this.init();
     this.createImage();
   }
 

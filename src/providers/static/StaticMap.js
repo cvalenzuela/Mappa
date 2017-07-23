@@ -15,20 +15,13 @@ class StaticMap  {
     !this.options.scale && (this.options.scale = 1)
     if(this.options.scale == 2){
       this.options.pixels = 512
-    } else{
-      if (this.options.width > 1280){
-        this.options.width = 1280;
-      }
-      if (this.options.height > 1280){
-        this.options.height = 1280;
-      }
-    }
+    } 
   }
 
   latLngToPixel(lat, lng) {
     return {
-      x: this.fromLngToPoint(lng) - this.fromLngToPoint(this.options.lng) + this.options.width/(2/this.options.scale),
-      y: this.fromLatToPoint(lat) - this.fromLatToPoint(this.options.lat) + this.options.height/(2/this.options.scale)
+      x: this.fromLngToPoint(lng) - this.fromLngToPoint(this.options.lng) + this.options.width/(2 / this.options.scale),
+      y: this.fromLatToPoint(lat) - this.fromLatToPoint(this.options.lat) + this.options.height/(2 / this.options.scale)
     }
   };
 
