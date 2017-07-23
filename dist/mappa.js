@@ -295,7 +295,7 @@ var Leaflet = function (_TileMap) {
     value: function messages() {
       return {
         tiles: function tiles() {
-          console.warn('You need to include a style for your Leaflet map. Try with: http://{s}.tile.osm.org/{z}/{x}/{y}.png');
+          console.warn('You are not using any tiles for your map. Try with: http://{s}.tile.osm.org/{z}/{x}/{y}.png');
         }
       };
     }

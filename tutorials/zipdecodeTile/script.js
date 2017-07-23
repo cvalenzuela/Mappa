@@ -17,7 +17,7 @@ var canvas;
 var inputValue;
 
 function preload() {
-    zipcodes = loadStrings('zipcodes.tsv');
+    zipcodes = loadTable('zipcodes.tsv', 'tsv', 'header');
 }
 
 function setup() {
@@ -54,14 +54,13 @@ function inputEvent() {
 
 function drawZipcodes() {
     clear();
-    background(51, 51, 51);
-
+    background(51,51,51);
+    
     var re = new RegExp('^' + inputValue);
-    // Draw the zipcodes
-    for (var i = 1; i < zipcodes.length; i++) {
-        var zip = zipcodes[i].split(/	/);
+
+    for (var r = 0; r < zipcodes.getRowCount(); r++) {
         if (String(inputValue).length > 0) {
-            if (zip[2].match(re)) {
+            if (zipcodes.getString(r, 'zip').match(re)) {
                 fill(255, 255, 255, 255);
             } else {
                 fill(101, 102, 74, 255);
@@ -71,7 +70,7 @@ function drawZipcodes() {
         }
         var size = myMap.zoom();
         size = map(size, 1, 18, 1, 4);
-        var pos = myMap.latLngToPixel(zip[1], zip[0]);
+        var pos = myMap.latLngToPixel(zipcodes.getString(r, 'lat'), zipcodes.getString(r, 'lon'));
         rect(pos.x, pos.y, size, size);
     }
 }

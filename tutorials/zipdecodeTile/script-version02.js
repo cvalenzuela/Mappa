@@ -1,6 +1,6 @@
 /*
 An interpretation of Ben Fry’s zipdecode (http://benfry.com/zipdecode/)
-with p5.js and tile maps with leaflet or mapboxgl
+with p5.js and tile maps with mapboxgl
 */
 
 var key = 'pk.eyJ1IjoiY3ZhbGVuenVlbGEiLCJhIjoiY2l2ZzkweTQ3MDFuODJ5cDM2NmRnaG4wdyJ9.P_0JJXX6sD1oX2D0RQeWFA';

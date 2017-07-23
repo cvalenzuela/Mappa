@@ -70,7 +70,7 @@ If you are new to maps, check out [this complete tutorial]() and [this glossary 
 + [~~Basics~~](tutorials/basics)
 + [~~Using Data~~](tutorials/usingdata)
 + [Zipdecode](tutorials/zipdecode)
-+ [~~Zipdecode with Tiles~~](tutorials/zipdecodetiles)
++ [Zipdecode with Tiles](tutorials/zipdecodeTile)
 + [~~Particles moving across countries~~](tutorials/particles)
 + [~~Pollution Map~~](tutorials/pollution)
 
