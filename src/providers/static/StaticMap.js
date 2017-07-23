@@ -7,6 +7,22 @@ import { parseGeoJSON } from '../../utils/parseGeoJSON';
 class StaticMap  {
   constructor(options){
     this.options = options;
+    this.init();
+  }
+
+  init(){
+    this.options.pixels = 256;
+    !this.options.scale && (this.options.scale = 1)
+    if(this.options.scale == 2){
+      this.options.pixels = 512
+    } else{
+      if (this.options.width > 1280){
+        this.options.width = 1280;
+      }
+      if (this.options.height > 1280){
+        this.options.height = 1280;
+      }
+    }
   }
 
   latLngToPixel(lat, lng) {

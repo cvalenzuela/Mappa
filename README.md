@@ -66,7 +66,13 @@ If you are new to maps, check out [this complete tutorial]() and [this glossary 
   - TopoJSON ([Code](#) | [Demo](#))
 
 # Tutorials
-Soon!
+
++ [~~Basics~~](tutorials/basics)
++ [~~Using Data~~](tutorials/usingdata)
++ [Zipdecode](tutorials/zipdecode)
++ [~~Zipdecode with Tiles~~](tutorials/zipdecodetiles)
++ [~~Particles moving across countries~~](tutorials/particles)
++ [~~Pollution Map~~](tutorials/pollution)
 
 # Reference
 
@@ -74,8 +80,8 @@ Soon!
 + [staticMap()](#staticmapoptions)
 + [tileMap()](#tilemapoptions)
 + [overlay()](#overlaycanvas)
-+ [latLngToPixel()](#latLngToPixellat-lng)
-+ [pixelToLatlng()](#pixelToLatlngxy)
++ [latLngToPixel()](#latlngtopixellat-lng)
++ [pixelToLatlng()](#pixeltolatlngxy)
 + [zoom()](#zoom)
 + [onChange()](#onchangefunction)
 + [geoJSON()](#geojsondata-featuretype)

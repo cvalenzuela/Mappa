@@ -33,6 +33,8 @@ class Mappa {
       })
     };
     options.key = this.key;
+
+    this.provider == undefined && (this.provider = 'StaticMap');
     return new staticMap[this.provider](options);
   }
 
