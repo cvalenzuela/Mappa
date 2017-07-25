@@ -1,4 +1,4 @@
-Mapa
+Mappa
 ========
 
 [![travis build](https://img.shields.io/travis/cvalenzuela/Mappa.svg?style=flat-square)](https://travis-ci.org/cvalenzuela/Mappa)
