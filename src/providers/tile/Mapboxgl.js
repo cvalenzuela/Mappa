@@ -27,11 +27,10 @@ class Mapboxgl extends TileMap {
       renderWorldCopies: true && this.options.renderWorldCopies,
       maxBounds: this.options.maxBounds || undefined
     });
-    this.canvas.parent(this.map.getCanvasContainer());
-    this.canvas.elt.style.position = 'absolute';
 
+    this.map.getCanvasContainer().appendChild(this.canvas)
+    this.canvas.style.position = 'relative';
     this.options.opacity && (document.getElementsByClassName('mapboxgl-canvas')[0].style.opacity = this.options.opacity);
-
     this.map.on('load', () => { this.ready = true; });
   }
 

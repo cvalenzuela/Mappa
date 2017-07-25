@@ -32,7 +32,7 @@ class TileMap {
       document.body.appendChild(div);
       div.setAttribute('style', 'position:relative;width:'+ canvas.width + 'px;height:' + canvas.height + 'px;top:0;left:0;z-index:10');
       div.setAttribute('id', 'mappa');
-      this.canvas = canvas;
+      canvas.elt != undefined ? this.canvas = canvas.elt : this.canvas = canvas;
       this.createMap();
     };
   }

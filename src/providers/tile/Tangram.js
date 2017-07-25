@@ -16,7 +16,6 @@ class Tangram extends Leaflet {
   }
 
   createMap () {
-
     // Create a Tangram Map
     this.map = L.map('mappa');
     this.tangramScene = window.Tangram.leafletLayer({
@@ -25,9 +24,7 @@ class Tangram extends Leaflet {
     });
     this.tangramScene.addTo(this.map);
     this.map.setView([this.options.lat, this.options.lng], this.options.zoom);
-
     this.tangramScene.scene.subscribe({ load: () => { this.ready = true }});
-
     this.canvasOverlay();
   }
 

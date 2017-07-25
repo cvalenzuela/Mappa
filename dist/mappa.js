@@ -163,10 +163,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // -----------
-// Leaflet v1.0.3
-// Reference: http://leafletjs.com/reference-1.0.3.html
-// -----------
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // ----------- Leaflet v1.0.3 Reference:
+// http://leafletjs.com/reference-1.0.3.html -----------
 
 var Leaflet = function (_TileMap) {
   _inherits(Leaflet, _TileMap);
@@ -202,7 +200,6 @@ var Leaflet = function (_TileMap) {
           _this2.ready = true;
         });
       }
-
       this.canvasOverlay();
     }
   }, {
@@ -218,7 +215,7 @@ var Leaflet = function (_TileMap) {
         onAdd: function onAdd() {
           var overlayPane = overlay.getPane();
           var _container = L.DomUtil.create('div', 'leaflet-layer');
-          _container.appendChild(_this3.canvas.elt);
+          _container.appendChild(_this3.canvas);
           overlayPane.appendChild(_container);
         },
         drawLayer: function drawLayer() {}
@@ -227,7 +224,8 @@ var Leaflet = function (_TileMap) {
       var overlay = new L.overlay();
       this.map.addLayer(overlay);
 
-      var _canvas = this.canvas.elt.getContext('webgl') || this.canvas.elt.getContext('2d');
+      var _canvas = this.canvas.getContext('webgl') || this.canvas.getContext('2d');
+
       this.map.on('move', function () {
         var d = _this3.map.dragging._draggable;
         d._newPos && (_canvas.canvas.style.transform = 'translate(' + -d._newPos.x + 'px,' + -d._newPos.y + 'px)');
@@ -238,15 +236,9 @@ var Leaflet = function (_TileMap) {
     value: function fromLatLngtoPixel(position) {
       if (this.ready) {
         var containerPoint = this.map.latLngToContainerPoint(position);
-        return {
-          x: containerPoint.x,
-          y: containerPoint.y
-        };
+        return { x: containerPoint.x, y: containerPoint.y };
       } else {
-        return {
-          x: -100,
-          y: -100
-        };
+        return { x: -100, y: -100 };
       }
     }
   }, {
@@ -259,10 +251,7 @@ var Leaflet = function (_TileMap) {
 
         return this.map.containerPointToLatLng(args);
       } else {
-        return {
-          lat: -100,
-          lng: -100
-        };
+        return { lat: -100, lng: -100 };
       }
     }
   }, {
@@ -295,7 +284,7 @@ var Leaflet = function (_TileMap) {
     value: function messages() {
       return {
         tiles: function tiles() {
-          console.warn('You are not using any tiles for your map. Try with: http://{s}.tile.osm.org/{z}/{x}/{y}.png');
+          console.warn('You are not using any tiles for your map. Try with: http://{s}.tile.osm.org/{z}/' + '{x}/{y}.png');
         }
       };
     }
@@ -363,7 +352,7 @@ var TileMap = function () {
         document.body.appendChild(div);
         div.setAttribute('style', 'position:relative;width:' + canvas.width + 'px;height:' + canvas.height + 'px;top:0;left:0;z-index:10');
         div.setAttribute('id', 'mappa');
-        _this.canvas = canvas;
+        canvas.elt != undefined ? _this.canvas = canvas.elt : _this.canvas = canvas;
         _this.createMap();
       };
     }
@@ -1041,14 +1030,14 @@ var Google = function (_TileMap) {
       overlay.draw = function () {};
       overlay.setMap(this.map);
       overlay.onAdd = function () {
-        overlay.getPanes().overlayLayer.appendChild(_this2.canvas.elt);
+        overlay.getPanes().overlayLayer.appendChild(_this2.canvas);
       };
 
       google.maps.event.addListener(this.map, 'bounds_changed', function () {
         var center = overlay.getProjection().fromLatLngToDivPixel(_this2.map.getCenter());
-        var offsetX = -Math.round(_this2.canvas.width / 2 - center.x);
-        var offsetY = -Math.round(_this2.canvas.height / 2 - center.y);
-        var _canvas = _this2.canvas.elt.getContext('webgl') || _this2.canvas.elt.getContext('2d');
+        var offsetX = -Math.round(_this2.canvas.width / 4 - center.x);
+        var offsetY = -Math.round(_this2.canvas.height / 4 - center.y);
+        var _canvas = _this2.canvas.getContext('webgl') || _this2.canvas.getContext('2d');
         _canvas.canvas.style.transform = 'translate(' + offsetX + 'px,' + offsetY + 'px)';
       });
 
@@ -1260,11 +1249,10 @@ var Mapboxgl = function (_TileMap) {
         renderWorldCopies: true && this.options.renderWorldCopies,
         maxBounds: this.options.maxBounds || undefined
       });
-      this.canvas.parent(this.map.getCanvasContainer());
-      this.canvas.elt.style.position = 'absolute';
 
+      this.map.getCanvasContainer().appendChild(this.canvas);
+      this.canvas.style.position = 'relative';
       this.options.opacity && (document.getElementsByClassName('mapboxgl-canvas')[0].style.opacity = this.options.opacity);
-
       this.map.on('load', function () {
         _this2.ready = true;
       });
@@ -1467,11 +1455,9 @@ var Tangram = function (_Leaflet) {
       });
       this.tangramScene.addTo(this.map);
       this.map.setView([this.options.lat, this.options.lng], this.options.zoom);
-
       this.tangramScene.scene.subscribe({ load: function load() {
           _this2.ready = true;
         } });
-
       this.canvasOverlay();
     }
   }], [{

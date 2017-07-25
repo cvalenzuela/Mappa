@@ -29,14 +29,14 @@ class Google extends TileMap {
     overlay.draw = function(){}
     overlay.setMap(this.map);
     overlay.onAdd = () => {
-      overlay.getPanes().overlayLayer.appendChild(this.canvas.elt);
+      overlay.getPanes().overlayLayer.appendChild(this.canvas);
     }
 
     google.maps.event.addListener(this.map, 'bounds_changed', () => {
       let center = overlay.getProjection().fromLatLngToDivPixel(this.map.getCenter());
-      let offsetX = - Math.round(this.canvas.width / 2 - center.x);
-      let offsetY = - Math.round(this.canvas.height / 2 - center.y);
-      let _canvas = this.canvas.elt.getContext('webgl') || this.canvas.elt.getContext('2d');
+      let offsetX = - Math.round(this.canvas.width / 4 - center.x);
+      let offsetY = - Math.round(this.canvas.height / 4 - center.y);
+      let _canvas = this.canvas.getContext('webgl') || this.canvas.getContext('2d');
       _canvas.canvas.style.transform = 'translate(' + offsetX + 'px,' + offsetY + 'px)';
     })
 
