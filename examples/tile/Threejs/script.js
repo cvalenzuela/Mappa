@@ -54,7 +54,7 @@ function update() {
     var newPos = camera.position.clone().add(dir.multiplyScalar(distance));
     var zoom = myMap.zoom() * 2;
 
-    //torus.rotation.x += 0.01;
+    torus.rotation.x += 0.01;
     torus.position.set(newPos.x, newPos.y, newPos.z);
 }
 

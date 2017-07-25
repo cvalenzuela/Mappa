@@ -1,4 +1,4 @@
-![Mappa](examples/images/mappa.png)
+# Mapa
 
 [![travis build](https://img.shields.io/travis/cvalenzuela/Mappa.svg?style=flat-square)](https://travis-ci.org/cvalenzuela/Mappa)
 [![codecov coverage](https://img.shields.io/codecov/c/github/cvalenzuela/Mappa.svg?style=flat-square)](https://codecov.io/github/cvalenzuela/Mappa)
@@ -35,15 +35,15 @@ var key = 'abcd'
 // Create a new Mappa instance.
 var mappa = new Mappa('Map-Provider', key);
 ```
-Check [this guide]() to learn how to get an API and set proper permission depending on your map provider.
+Check [~~this guide~~]() to learn how to get an API and set proper permission depending on your map provider.
 
 For static maps, [Google Maps Static API](https://developers.google.com/maps/documentation/static-maps/), [Mapbox Static API](https://www.mapbox.com/api-documentation/#styles) and [Mapquest Static API](https://developer.mapquest.com/documentation/static-map-api/v5/) are supported.
 
 For tile maps, [Google Maps](https://developers.google.com/maps/documentation/javascript/), [Mapbox](https://www.mapbox.com/mapbox.js/api/v3.1.1/), [Mapbox-GL](https://www.mapbox.com/mapbox-gl-js/api/), [Mapzen](https://mapzen.com/documentation/mapzen-js/api-reference/), [Tangram](https://mapzen.com/documentation/tangram/Javascript-API/) and [Leaflet](http://leafletjs.com/) are supported.
 
-Not sure what map provider to use? Check out this [guide to picking a map library]().
+Not sure what map provider to use? Check out this [~~guide to picking a map library~~]().
 
-If you are new to maps, check out [this complete tutorial]() and [this glossary of terms]().
+If you are new to maps, check out [~~this complete tutorial~~]() and [~~this glossary of terms~~]().
 
 # Examples
 + Static Maps
@@ -59,11 +59,10 @@ If you are new to maps, check out [this complete tutorial]() and [this glossary 
   - Tangram ([Code](examples/tile/Tangram) | [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Tangram/))
   - Leaflet ([Code](examples/tile/Leaflet) | [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Leaflet/))
   - Using p5 in WEBGL mode ([Code](examples/tile/Webgl) | [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Webgl/))
-  - Using Three.js ([Code](#) | [Demo](#))
+  - Using Three.js ([Code](examples/tile/Threejs) | [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Threejs/))
 
 + Using Data
   - GeoJSON ([Code](#) | [Demo](#))
-  - TopoJSON ([Code](#) | [Demo](#))
 
 # Tutorials
 
