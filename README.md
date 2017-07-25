@@ -1,4 +1,5 @@
-# Mapa
+Mapa
+========
 
 [![travis build](https://img.shields.io/travis/cvalenzuela/Mappa.svg?style=flat-square)](https://travis-ci.org/cvalenzuela/Mappa)
 [![codecov coverage](https://img.shields.io/codecov/c/github/cvalenzuela/Mappa.svg?style=flat-square)](https://codecov.io/github/cvalenzuela/Mappa)
@@ -9,7 +10,7 @@
 
 Mappa is a [p5.js](https://github.com/processing/p5.js) addon to facilitate work between p5 and existing map libraries and APIs. It provides a set of tools for working with static maps, interactive tile maps and geo-data among other tools useful when building geolocation-based visual representations. Although Mappa was originally designed for [p5.js](https://github.com/processing/p5.js), it can also be used with other libraries that use the canvas element as the render object.
 
-# Usage
+### Usage
 
 Download the [full](dist/mappa.js), [minified](dist/mappa.min.js) or use the online version and add  it to the head section of the document. Mappa will automatically load the required map libraries when necessary.
 
@@ -45,7 +46,7 @@ Not sure what map provider to use? Check out this [~~guide to picking a map libr
 
 If you are new to maps, check out [~~this complete tutorial~~]() and [~~this glossary of terms~~]().
 
-# Examples
+### Examples
 + Static Maps
   - Google Maps ([Code](examples/static/Google) | [Demo](https://cvalenzuela.github.io/Mappa/examples/static/Google/))
   - Mapbox ([Code](examples/static/Mapbox) | [Demo](https://cvalenzuela.github.io/Mappa/examples/static/Mapbox/))
@@ -64,7 +65,7 @@ If you are new to maps, check out [~~this complete tutorial~~]() and [~~this glo
 + Using Data
   - GeoJSON ([Code](#) | [Demo](#))
 
-# Tutorials
+### Tutorials
 
 + [~~Basics~~](tutorials/basics)
 + [~~Using Data~~](tutorials/usingdata)
@@ -73,7 +74,7 @@ If you are new to maps, check out [~~this complete tutorial~~]() and [~~this glo
 + [~~Particles moving across countries~~](tutorials/particles)
 + [~~Pollution Map~~](tutorials/pollution)
 
-# Reference
+### Reference
 
 + [Mappa()](#mappaprovider-key)
 + [staticMap()](#staticmapoptions)
@@ -677,6 +678,6 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
 
   *Not implemented yet.*
 
-  # Licence
+### Licence
   MIT
 
