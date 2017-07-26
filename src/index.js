@@ -33,13 +33,12 @@ class Mappa {
       })
     };
     options.key = this.key;
-
     this.provider == undefined && (this.provider = 'StaticMap');
     return new staticMap[this.provider](options);
   }
 
   tileMap(...args){
-    let options;
+    let options = {};
 
     if(typeof args[0] == 'object'){
       options = Object.assign({}, args[0])

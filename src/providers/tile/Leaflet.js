@@ -1,5 +1,7 @@
-// ----------- Leaflet v1.0.3 Reference:
-// http://leafletjs.com/reference-1.0.3.html -----------
+// ----------- 
+// Leaflet v1.0.3 
+// Reference: http://leafletjs.com/reference-1.0.3.html 
+//-----------
 
 import { TileMap } from './TileMap';
 

@@ -71,6 +71,8 @@ If you are new to maps, check out [~~this complete tutorial~~]() and [~~this glo
 + [~~Using Data~~](tutorials/usingdata)
 + [Zipdecode](tutorials/zipdecode)
 + [Zipdecode with Tiles](tutorials/zipdecodeTile)
++ [~~Live Flights~~](tutorials/flights)
++ [Taxi Routes](tutorials/taxiroutes)
 + [~~Particles moving across countries~~](tutorials/particles)
 + [~~Pollution Map~~](tutorials/pollution)
 
@@ -89,7 +91,7 @@ If you are new to maps, check out [~~this complete tutorial~~]() and [~~this glo
 
 ---
 
-#### Mappa(provider, key)
+#### Mappa(provider, [key])
 
 > Constructor to initialize a new Mappa instance with a defined provider and key. Returns an object.
 
