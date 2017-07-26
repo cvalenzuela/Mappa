@@ -3,13 +3,13 @@
 
 This tutorial is based on the [taxitracker](https://github.com/chriswhong/nyctaxi) data visualization. The idea is to create a sketch that will show the route of a taxi during a day in New York. I will try to keep things as simple as possible in order to show how to use maps and p5.js to create visualizations.
 
-You can see the final result [here]().
+You can see the final result [here](https://cvalenzuela.github.io/Mappa/tutorials/taxiroutes/).
 
 ### Setup
 
-- In a new folder create `index.html` and `script.js` files.
+- In a new folder create an `index.html` and `script.js` files.
 - Download [`p5.js`](https://github.com/processing/p5.js/releases/download/0.5.11/p5.js) and  [`Mappa.js`](https://raw.githubusercontent.com/cvalenzuela/Mappa/master/dist/mappa.js) and save them in a folder call `libraries`
-- Download the [data for one taxi for one day](data/taxiday1.geojson) and save it in a folder called `data`.
+- Download the [data for one taxi for one day](https://raw.githubusercontent.com/cvalenzuela/Mappa/master/tutorials/taxiroutes/data/taxiday1.geojson) and save it in a folder called `data`.
 - In order to run this tutorial you will need a local server. There are many different ways to create a [local server](https://github.com/shiffman/The-Nature-of-Code-JTerm-2015/wiki/Local-Server-Tutorial). Here are some:
 
 If you use node and npm you can install `live-server`: 
@@ -39,6 +39,8 @@ By the end you should have this:
   - data
     + `taxiday1.geojson`
 
+And a running server serving the root of that folder.
+
 ### index.html
 
 Open the `index.html` file in any text editor and add references to the libraries and script to it. This is the only thing that needs to be done with this file.
@@ -50,7 +52,7 @@ Open the `index.html` file in any text editor and add references to the librarie
     <title>Taxi Routes</title>
 
     <!-- p5.js -->
-    <script src="libraries/p5.min.js"></script>
+    <script src="libraries/p5.js"></script>
 
     <!-- Mappa -->
     <script src="libraries/mappa.js"></script>
@@ -101,7 +103,8 @@ var myMap;
 
 function setup(){
   canvas = createCanvas(800,700);
-  myMap = mappa.tileMap(options); // This will import the Leaflet library into your sketch and create all necesary references
+  // This will import the Leaflet library into your sketch and create all necesary references
+  myMap = mappa.tileMap(options); 
 }
 ```
 Then, overlay the canvas on to the Leaflet map:
@@ -183,12 +186,25 @@ The actual file for the taxi routes looks like this:
       "pickuptime":"5/30/13 0:01",
       "dropofftime":"5/30/13 0:18",
       "nextpickuptime":"5/30/13 1:45",
-      "key":"0","hasfare":true},
-      "geometry": {
-        "type": "LineString",
-        "coordinates":[[-74.00232,40.73447],[-74.0024,40.73433],[-74.00278,40.7337],[-74.00282,40.73361],[-74.00305,40.7332],[-74.00329,40.73278] (...) 
+      "key":"0",
+      "hasfare":true
+      },
+    "geometry": {
+      "type": "LineString",
+      "coordinates":[
+        [-74.00232,40.73447], 
+        [-74.0024,40.73433], 
+        [-74.00278,40.7337], 
+        (...) 
+      ]
+    }
+  } 
+  (...)
+  ]
+}
+
 ```
-You can see it contains a lot of informationa about the trips a taxi makes in a day. There is one object for every trip recorded with information about the fare, the number of passengers, pick up time and location. For now, we are just interested in using the coordinates of the taxi during its differents trips. So for each trip in the `features` array we need the `properties.geometry.coordinates` array. This contains a series of arrays with the latitude and longitude position we need.
+You can see it contains a lot of information about the trips a taxi makes in a day in New York. There is one object for every trip recorded with information about the fare, the number of passengers, pick up time and location among other things. For now, we are just interested in using the coordinates of the taxi during its differents trips. So for each trip in the `features` array we need the `geometry.coordinates` array. This contains a series of arrays with the latitude and longitude position we need.
 
 To load the data add a `preload` function before your `setup` and load the file as a JSON file:
 
@@ -201,7 +217,8 @@ function preload(){
 
 ...
 ```
-Since we are interested in using the latitude and longitude of the file we can loop over the array of `features` and then loop again over the array of `coordinates` in the `properties.geometry` object and then again over each array containing the latitude and longitud. Fortunately, there is a Mappa method to get all properties of a GeoJSON file and store them in an variable.
+
+Since we are interested in using the latitude and longitude of the file we can loop over the array of `features` and then loop again over the array of `coordinates` in the `geometry` object and then again over each array containing the latitude and longitud. Fortunately, there is a Mappa method to get all properties of a GeoJSON file and store them in an variable.
 
 Create a variable called `tripsCoordinates` and initilized it to an array of all `LineString` types in your `setup`.
 
@@ -242,9 +259,9 @@ function setup(){
   ...
 
   tripsCoordinates.forEach(function(trip){
-	  trip.forEach(function(coordinate){
-		  allCoordinates.push(coordinate)
-	  })
+    trip.forEach(function(coordinate){
+      allCoordinates.push(coordinate)
+    })
   });
 }
 ```
@@ -252,8 +269,7 @@ function setup(){
 Now `allCoordinates` holds 5530 pairs of latitudes and longitudes describing the taxi's whole route in one day. The first element is the longitud and the second is the latitude
 
 ```javascript
-(5530) [[-74.00232, 40.73447], [-74.0024, 40.73433], [-74.00278, 
-40.7337] (...) ]
+(5530) [[-74.00232, 40.73447], [-74.0024, 40.73433], (...) ]
 ```
 
 
@@ -265,7 +281,8 @@ function draw(){
   noStroke();
   fill(255);
   for(var i = 0; i < allCoordinates.length; i++){
-    var pos = myMap.latLngToPixel(allCoordinates[i][1], allCoordinates[i][0]) // The first element is the latitud and the second the longitud
+    // The first element is the latitud and the second the longitud
+    var pos = myMap.latLngToPixel(allCoordinates[i][1], allCoordinates[i][0]) 
     ellipse(pos.x, pos.y, 5, 5);
   }
 }
@@ -316,10 +333,11 @@ function draw(){
 }
 ```
 
-That will output a map where you can move/pan/zoom and see all of the taxi's registered positions overlay into the map:
+This will show a map where you can move and zoom and see all of the taxi's registered positions overlay into the map:
+
 ![02](imgs/02.png)
 
-One thing you can notice is that this may get a little bit slow after a while. This is because the sketch is computing 5530 arrays every frame. Since we still want to keep the dots sync to the map we can just compute them everytime the map moves and not every frame. For that we can use the `onChange` method. Create a new function called `drawPoints` and move the loop to visualize the dots from `draw` to `drawPoints`:
+One thing you can notice is that this may get a little bit slow after a while. This is because the sketch is computing 5530 arrays every frame, 60FPS. Since we still want to keep the dots sync to the map we can just compute them everytime the map moves and not every frame. For that we can use the `onChange` method. Create a new function called `drawPoints` and move the loop to visualize the dots from `draw` to `drawPoints`:
 
 ```javascript
 function drawPoints(){
