@@ -1,12 +1,13 @@
-// -----------
-// Google Maps Static API Demo
-// -----------
+/* -----------
+Google Maps Static API demo.
+Visualizing 45,716 Meteorite Landings. Data from NASA's Open Data Portal.(https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh) 
+----------- */
 
-// Import API key
-var key = 'AIzaSyAGz9IlglBq-gWCSzCWVC11autdr1LLhbM'
+// API Key for Google Maps. Get one here: https://developers.google.com/maps/web/
+var key = 'AIzaSyCdmGJ7JWNWkmmxSdvNiu1Qo6BMn56eTSE'
 
-// Create a new instance of Google
-var mappa = new Mappa('Google', key);
+// Create an instance of Google.
+var mappa = new Mappa('Google', key); 
 
 // Options for map
 var options = {
@@ -14,37 +15,41 @@ var options = {
   lng: 0,
   zoom: 2,
   width: 640,
-  height: 640,
+  height: 500,
   scale: 1,
   format: 'PNG',
   language: 'en',
-  maptype: 'hybrid'
+  maptype: 'satellite'
 }
 
-// Create a Static Map
-//var myMap = mappa.staticMap(40.782, -73.967, 10, 600, 600);
+// Create the static map reference.
 var myMap = mappa.staticMap(options);
 
 var img;
-var dots;
+var meteorites;
 
 function preload(){
-  // Load the image from the mappa instance
+  // Load the image
   img = loadImage(myMap.imgUrl);
-  dots = loadStrings('../../data/dots.csv');
+  // Load the data
+  meteorites = loadTable('../../data/Meteorite_Landings.csv', 'csv', 'header');
 }
 
 function setup(){
-  createCanvas(800,500);
+  createCanvas(640,500);
   noStroke();
-  fill(255);
 
+  // Display the image
   image(img, 0, 0);
 
-  for (var i = 1; i < dots.length; i++) {
-    var data = dots[i].split(/,/);
-
-    pos = myMap.latLngToPixel(data[9], data[8]);
-    ellipse(pos.x, pos.y, 3, 3);
+  // Show the Meteorites Landings
+  for (var i = 0; i < meteorites.getRowCount(); i++) {
+    // Get the lat/lng of each meteorite
+    var pos = myMap.latLngToPixel(meteorites.getString(i, 'reclat'), meteorites.getString(i, 'reclong'));
+    // Get the size of the meteorite and map it. 60000000 is the mass of the largest meteorite (https://en.wikipedia.org/wiki/Hoba_meteorite)
+    var size = meteorites.getString(i, 'mass (g)');
+    size = map(size, 0, 60000000, 3, 25);
+    fill(random(0,255), random(0,255),random(0,255));
+    ellipse(pos.x, pos.y, size, size);
   }
-}
+} 

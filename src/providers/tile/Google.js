@@ -26,16 +26,16 @@ class Google extends TileMap {
     });
 
     let overlay = new google.maps.OverlayView();
-    overlay.draw = function(){}
-    overlay.setMap(this.map);
     overlay.onAdd = () => {
       overlay.getPanes().overlayLayer.appendChild(this.canvas);
     }
-
+    overlay.draw = function(){}
+    overlay.setMap(this.map);
+ 
     google.maps.event.addListener(this.map, 'bounds_changed', () => {
       let center = overlay.getProjection().fromLatLngToDivPixel(this.map.getCenter());
-      let offsetX = - Math.round(this.canvas.width / 4 - center.x);
-      let offsetY = - Math.round(this.canvas.height / 4 - center.y);
+      let offsetX = - Math.round(this.canvas.width / 2 - center.x);
+      let offsetY = - Math.round(this.canvas.height / 2 - center.y);
       let _canvas = this.canvas.getContext('webgl') || this.canvas.getContext('2d');
       _canvas.canvas.style.transform = 'translate(' + offsetX + 'px,' + offsetY + 'px)';
     })

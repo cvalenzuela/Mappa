@@ -47,6 +47,7 @@ Not sure what map provider to use? Check out this [~~guide to picking a map libr
 If you are new to maps, check out [~~this complete tutorial~~]() and [~~this glossary of terms~~]().
 
 ### Examples
+All of the following examples are visualizing 45,716 Meteorite Landings. Data from [NASA's Open Data Portal.](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh)
 + Static Maps
   - Google Maps ([Code](examples/static/Google) | [Demo](https://cvalenzuela.github.io/Mappa/examples/static/Google/))
   - Mapbox ([Code](examples/static/Mapbox) | [Demo](https://cvalenzuela.github.io/Mappa/examples/static/Mapbox/))
@@ -62,19 +63,17 @@ If you are new to maps, check out [~~this complete tutorial~~]() and [~~this glo
   - Using p5 in WEBGL mode ([Code](examples/tile/Webgl) | [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Webgl/))
   - Using Three.js ([Code](examples/tile/Threejs) | [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Threejs/))
 
-+ Using Data
-  - GeoJSON ([Code](#) | [Demo](#))
-
 ### Tutorials
 
-+ [~~Basics~~](tutorials/basics)
-+ [~~Using Data~~](tutorials/usingdata)
-+ [Zipdecode](tutorials/zipdecode)
-+ [Zipdecode with Tiles](tutorials/zipdecodeTile)
-+ [~~Live Flights~~](tutorials/flights)
-+ [Taxi Routes](tutorials/taxiroutes)
-+ [~~Particles moving across countries~~](tutorials/particles)
-+ [~~Pollution Map~~](tutorials/pollution)
++ ~~Basics~~ ([Tutorial](examples/tutorials/basics) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/basics))
++ ~~Using Data~~ ([Tutorial](examples/tutorials/usingdata) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/usingdata))
++ Zipdecode ([Tutorial](examples/tutorials/zipdecode) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/zipdecode))
++ Zipdecode with Tiles ([Tutorial](examples/tutorials/zipdecodeTile) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/zipdecodeTile))
++ ~~Live Flights~~ ([Tutorial](examples/tutorials/zipdecode) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/zipdecode))
++ Taxi Routes ([Tutorial](examples/tutorials/taxiroutes) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/taxiroutes))
++ ~~Animated Meteorite Landings~~ ([Tutorial](examples/tutorials/meteorites) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/meteorites))
++ ~~Particles moving across countries~~ ([Tutorial](examples/tutorials/particles) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/particles))
++ ~~Pollution Map~~ ([Tutorial](examples/tutorials/pollution) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/pollution))
 
 ### Reference
 
@@ -87,7 +86,6 @@ If you are new to maps, check out [~~this complete tutorial~~]() and [~~this glo
 + [zoom()](#zoom)
 + [onChange()](#onchangefunction)
 + [geoJSON()](#geojsondata-featuretype)
-+ [~~geoCoding~~](#geocoding)
 
 ---
 
@@ -671,14 +669,6 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
 
   ![google_geojson](examples/images/geoJSON.png)
 
-
-  #### geoCoding()
-
-  > Convert addresses into latitude and longitude coordinates.
-
-  `geoCoding()`
-
-  *Not implemented yet.*
 
 ### Licence
   MIT
