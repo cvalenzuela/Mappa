@@ -124,12 +124,12 @@ var StaticMap = function () {
   }, {
     key: 'fromLatToPoint',
     value: function fromLatToPoint(l) {
-      return this.options.pixels / PI * pow(2, this.options.zoom) * (PI - log(tan(PI / 4 + radians(l) / 2)));
+      return this.options.pixels / Math.PI * Math.pow(2, this.options.zoom) * (Math.PI - Math.log(Math.tan(Math.PI / 4 + l * Math.PI / 180 / 2)));
     }
   }, {
     key: 'fromLngToPoint',
     value: function fromLngToPoint(l) {
-      return this.options.pixels / PI * pow(2, this.options.zoom) * (radians(l) + PI);
+      return this.options.pixels / Math.PI * Math.pow(2, this.options.zoom) * (l * Math.PI / 180 + Math.PI);
     }
   }, {
     key: 'geoJSON',
@@ -1024,20 +1024,23 @@ var Google = function (_TileMap) {
         center: { lat: this.options.lat, lng: this.options.lng },
         zoom: this.options.zoom || 6,
         mapTypeId: this.options.maptype || 'terrain',
-        styles: this.options.styles || ''
+        styles: this.options.styles || '',
+        minZoom: 1 || this.options.minZoom
       });
 
       var overlay = new google.maps.OverlayView();
-      overlay.draw = function () {};
-      overlay.setMap(this.map);
       overlay.onAdd = function () {
         overlay.getPanes().overlayLayer.appendChild(_this2.canvas);
       };
+      overlay.draw = function () {};
+      overlay.setMap(this.map);
 
       google.maps.event.addListener(this.map, 'bounds_changed', function () {
         var center = overlay.getProjection().fromLatLngToDivPixel(_this2.map.getCenter());
-        var offsetX = -Math.round(_this2.canvas.width / 4 - center.x);
-        var offsetY = -Math.round(_this2.canvas.height / 4 - center.y);
+        var pixels = void 0;
+        window.devicePixelRatio >= 2 ? pixels = 4 : pixels = 2;
+        var offsetX = -Math.round(_this2.canvas.width / pixels - center.x);
+        var offsetY = -Math.round(_this2.canvas.height / pixels - center.y);
         var _canvas = _this2.canvas.getContext('webgl') || _this2.canvas.getContext('2d');
         _canvas.canvas.style.transform = 'translate(' + offsetX + 'px,' + offsetY + 'px)';
       });

@@ -23,6 +23,7 @@ class Google extends TileMap {
       zoom: this.options.zoom || 6,
       mapTypeId: this.options.maptype || 'terrain',
       styles: this.options.styles || '',
+      minZoom: 1 || this.options.minZoom
     });
 
     let overlay = new google.maps.OverlayView();
@@ -31,11 +32,13 @@ class Google extends TileMap {
     }
     overlay.draw = function(){}
     overlay.setMap(this.map);
- 
+
     google.maps.event.addListener(this.map, 'bounds_changed', () => {
       let center = overlay.getProjection().fromLatLngToDivPixel(this.map.getCenter());
-      let offsetX = - Math.round(this.canvas.width / 2 - center.x);
-      let offsetY = - Math.round(this.canvas.height / 2 - center.y);
+      let pixels;
+      (window.devicePixelRatio >= 2) ? pixels = 4 : pixels = 2;
+      let offsetX = - Math.round(this.canvas.width / pixels - center.x);
+      let offsetY = - Math.round(this.canvas.height / pixels - center.y);
       let _canvas = this.canvas.getContext('webgl') || this.canvas.getContext('2d');
       _canvas.canvas.style.transform = 'translate(' + offsetX + 'px,' + offsetY + 'px)';
     })

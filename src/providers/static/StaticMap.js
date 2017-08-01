@@ -26,11 +26,11 @@ class StaticMap  {
   };
 
   fromLatToPoint(l){
-    return (((this.options.pixels) / PI) * pow(2, this.options.zoom)) * (PI - log(tan(PI / 4 + radians(l) / 2)));
+    return (((this.options.pixels) / Math.PI) * Math.pow(2, this.options.zoom)) * (Math.PI - Math.log(Math.tan(Math.PI / 4 + (l* Math.PI / 180) / 2)));
   }
 
   fromLngToPoint(l){
-    return (((this.options.pixels) / PI) * pow(2, this.options.zoom)) * (radians(l) + PI);
+    return (((this.options.pixels) / Math.PI) * Math.pow(2, this.options.zoom)) * ((l* Math.PI / 180) + Math.PI);
   }
 
   geoJSON(...args){

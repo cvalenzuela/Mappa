@@ -21,7 +21,7 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(800, 680);
+    createCanvas(windowWidth, windowHeight);
     noStroke();
 
     // Instructions paragraph

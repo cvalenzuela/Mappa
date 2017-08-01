@@ -21,7 +21,7 @@ function preload() {
 }
 
 function setup() {
-    canvas = createCanvas(800, 640);
+    canvas = createCanvas(windowWidth, windowHeight);
     myMap = mappa.tileMap(options);
     myMap.overlay(canvas);
     myMap.onChange(drawZipcodes);

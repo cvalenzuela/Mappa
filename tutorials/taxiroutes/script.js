@@ -15,21 +15,22 @@ var destinationVector;
 var taxiPosition;
 
 var visitedRoutes = []; // A new array to hold all visited positions
+var key = 'AIzaSyCdmGJ7JWNWkmmxSdvNiu1Qo6BMn56eTSE';
 
 var options = {
   lat: 40.73447,
   lng: -74.00232,
   zoom: 13,
-  style: 'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
+  styles: style
 }
-var mappa = new Mappa('Leaflet');
+var mappa = new Mappa('Google', key);
 
 function preload() {
   data = loadJSON('./data/taxiday1.geojson');
 }
 
 function setup() {
-  canvas = createCanvas(800, 700);
+  canvas = createCanvas(windowWidth, windowHeight);
   myMap = mappa.tileMap(options);
   myMap.overlay(canvas); 
   tripsCoordinates = myMap.geoJSON(data, "LineString");

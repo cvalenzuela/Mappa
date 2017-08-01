@@ -46,7 +46,7 @@ Not sure what map provider to use? Check out this [~~guide to picking a map libr
 
 If you are new to maps, check out [~~this complete tutorial~~]() and [~~this glossary of terms~~]().
 
-### Examples
+### Demos
 All of the following examples are visualizing the 5000 largest Meteorite Landings. Data from [NASA's Open Data Portal.](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh)
 + Static Maps
   - Google Maps ([Code](examples/static/Google) | [Demo](https://cvalenzuela.github.io/Mappa/examples/static/Google/))
@@ -63,17 +63,18 @@ All of the following examples are visualizing the 5000 largest Meteorite Landing
   - Using p5 in WEBGL mode ([Code](examples/tile/Webgl) | [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Webgl/))
   - Using Three.js ([Code](examples/tile/Threejs) | [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Threejs/))
 
-### Tutorials
+### Tutorials and Examples
 
-+ ~~Basics~~ ([Tutorial](examples/tutorials/basics) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/basics))
-+ ~~Using Data~~ ([Tutorial](examples/tutorials/usingdata) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/usingdata))
-+ Zipdecode ([Tutorial](examples/tutorials/zipdecode) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/zipdecode))
-+ Zipdecode with Tiles ([Tutorial](examples/tutorials/zipdecodeTile) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/zipdecodeTile))
-+ ~~Live Flights~~ ([Tutorial](examples/tutorials/zipdecode) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/zipdecode))
-+ Taxi Routes ([Tutorial](examples/tutorials/taxiroutes) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/taxiroutes))
-+ ~~Animated Meteorite Landings~~ ([Tutorial](examples/tutorials/meteorites) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/meteorites))
-+ ~~Particles moving across countries~~ ([Tutorial](examples/tutorials/particles) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/particles))
-+ ~~Pollution Map~~ ([Tutorial](examples/tutorials/pollution) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/pollution))
++ ~~Basics~~ ([Tutorial](tutorials/basics) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/basics))
++ ~~Using Data~~ ([Tutorial](tutorials/usingdata) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/usingdata))
++ Zipdecode ([Tutorial](tutorials/zipdecode) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/zipdecode))
++ Zipdecode with Tiles ([Tutorial](tutorials/zipdecodeTile) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/zipdecodeTile))
++ Taxi Routes ([Tutorial](tutorials/taxiroutes) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/taxiroutes))
++ Animated Meteorite Landings ([Tutorial](tutorials/meteorites) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/meteorites))
++ CO2 Pollution Map ([Tutorial](tutorials/pollutionmap) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/pollutionmap))
++ ~~Particles moving across countries~~ ([Tutorial](tutorials/particles) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/particles))
++ ~~Live Flights~~ ([Tutorial](tutorials/zipdecode) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/zipdecode))
+
 
 ### Reference
 
