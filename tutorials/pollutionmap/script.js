@@ -3,7 +3,6 @@ var pollutionMap;
 var mappa = new Mappa();
 var canvas;
 var smokeInTheWorld;
-
 var options = {
   lat: 0,
   lng: 0,
