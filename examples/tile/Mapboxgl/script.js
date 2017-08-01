@@ -58,7 +58,7 @@ function drawMeteorites() {
     // Get the size of the meteorite and map it. 60000000 is the mass of the largest
     // meteorite (https://en.wikipedia.org/wiki/Hoba_meteorite)
     var size = meteorites.getString(i, 'mass (g)');
-    size = map(size, 0, 60000000, 1, 25) + myMap.zoom();
+    size = map(size, 558, 60000000, 1, 25) + myMap.zoom();
     ellipse(pos.x, pos.y, size, size);
 
   }

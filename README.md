@@ -47,7 +47,7 @@ Not sure what map provider to use? Check out this [~~guide to picking a map libr
 If you are new to maps, check out [~~this complete tutorial~~]() and [~~this glossary of terms~~]().
 
 ### Examples
-All of the following examples are visualizing 45,716 Meteorite Landings. Data from [NASA's Open Data Portal.](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh)
+All of the following examples are visualizing the 5000 largest Meteorite Landings. Data from [NASA's Open Data Portal.](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh)
 + Static Maps
   - Google Maps ([Code](examples/static/Google) | [Demo](https://cvalenzuela.github.io/Mappa/examples/static/Google/))
   - Mapbox ([Code](examples/static/Mapbox) | [Demo](https://cvalenzuela.github.io/Mappa/examples/static/Mapbox/))

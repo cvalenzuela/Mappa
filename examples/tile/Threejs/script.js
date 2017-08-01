@@ -19,8 +19,8 @@ d3.csv("../../data/Meteorite_Landings.csv", function(d) {
 }, function(data) {
     meteorites = data;
     for (var i = 0; i < 100; i++){
-        var radius = convertRange(data[i].size, [0, 60000000], [2, 25]);
-        var tube = convertRange(data[i].size, [0, 60000000], [1, 40]);
+        var radius = convertRange(data[i].size, [558, 60000000], [2, 15]);
+        var tube = convertRange(data[i].size, [558, 60000000], [0.4, 4]);
         var geometry = new THREE.TorusGeometry( radius, tube, 16, 100 );
         meshes.push(new THREE.Mesh(geometry, material));
     }

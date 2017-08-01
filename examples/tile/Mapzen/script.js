@@ -10,9 +10,9 @@ var key = 'mapzen-oAmqh5K'
 
 // Options for map
 var options = {
-  lat: 40.7828647,
-  lng: -73.9675438,
-  zoom: 7,
+  lat: 0,
+  lng: 0,
+  zoom: 5,
   BasemapStyles: true,
   scene: 'Zinc'
 }
@@ -63,7 +63,7 @@ function drawMeteorites() {
       // Get the size of the meteorite and map it. 60000000 is the mass of the largest
       // meteorite (https://en.wikipedia.org/wiki/Hoba_meteorite)
       var size = meteorites.getString(i, 'mass (g)');
-      size = map(size, 0, 60000000, 1, 25) + myMap.zoom();
+      size = map(size, 558, 60000000, 1, 25) + myMap.zoom();
       ellipse(pos.x, pos.y, size, size);
     }
   }

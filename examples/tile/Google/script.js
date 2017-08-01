@@ -228,8 +228,8 @@ function setup() {
   // Only redraw the meteorites when the map change and not every frame.
   myMap.onChange(drawMeteorites);
 
-  fill(64, 255, 251);
-  stroke(100);
+  fill(207, 204, 0);
+  noStroke();
 }
 
 // The draw loop is fully functional but we are not using it for now.
@@ -238,7 +238,7 @@ function draw() {}
 function drawMeteorites() {
   // Clear the canvas
   clear();
-
+  
   for (var i = 0; i < meteorites.getRowCount(); i++) {
     // Get the lat/lng of each meteorite 
     var latitude = Number(meteorites.getString(i, 'reclat'));
@@ -254,7 +254,7 @@ function drawMeteorites() {
       // Get the size of the meteorite and map it. 60000000 is the mass of the largest
       // meteorite (https://en.wikipedia.org/wiki/Hoba_meteorite)
       var size = meteorites.getString(i, 'mass (g)');
-      size = map(size, 0, 60000000, 1, 25) + myMap.zoom();
+      size = map(size, 558, 60000000, 1, 25) + myMap.zoom();
       ellipse(pos.x, pos.y, size, size);
     }
   }
