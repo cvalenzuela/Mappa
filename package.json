@@ -2,7 +2,7 @@
   "name": "mappa-mundi",
   "version": "0.0.1",
   "description": "An addon to facilitate work between p5 and existing map libraries and APIs.",
-  "main": "dist/index.js",
+  "main": "dist/mappa.js",
   "directories": {
     "example": "examples",
     "lib": "lib",

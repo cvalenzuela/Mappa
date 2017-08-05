@@ -10,7 +10,7 @@ You can see the final result [here](https://cvalenzuela.github.io/Mappa/tutorial
 - In a new folder create an `index.html` and `script.js` files.
 - Download [`p5.js`](https://github.com/processing/p5.js/releases/download/0.5.11/p5.js) and  [`Mappa.js`](https://raw.githubusercontent.com/cvalenzuela/Mappa/master/dist/mappa.js) and save them in a folder call `libraries`
 - Download the [data for one taxi for one day](https://raw.githubusercontent.com/cvalenzuela/Mappa/master/tutorials/taxiroutes/data/taxiday1.geojson) and save it in a folder called `data`.
-- In order to run this tutorial you will need a local server. There are many different ways to create a [local server](https://github.com/shiffman/The-Nature-of-Code-JTerm-2015/wiki/Local-Server-Tutorial). Here are some:
+- In order to run this tutorial you will need a local server. There are many different ways to create a [local server](https://github.com/processing/p5.js/wiki/Local-server). Here are some:
 
 If you use node and npm you can install `live-server`: 
 ```zsh

@@ -6,7 +6,7 @@ Data from NASA's Open Data Portal.(https://data.nasa.gov/Space-Science/Meteorite
 
 // API Key for Mapboxgl. Get one here:
 // https://www.mapbox.com/studio/account/tokens/
-var key = 'pk.eyJ1IjoibWFwcGF1c2VyIiwiYSI6ImNqNXNrbXIyZDE2a2cyd3J4Ym53YWxieXgifQ.JENDJqKE1SLISxL3Q_T22w'
+var key = 'pk.eyJ1IjoibWFwcGF1c2VyIiwiYSI6ImNqNXNrbXIyZDE2a2cyd3J4Ym53YWxieXgifQ.JENDJqKE1SLISxL3Q_T22w';
 
 // Options for map
 var options = {
