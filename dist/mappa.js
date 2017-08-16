@@ -580,7 +580,7 @@ Object.keys(_Tangram).forEach(function (key) {
 "use strict";
 /*
 * Mappa: A library to work with maps and p5.js
-* https://github.com/cvalenzuela/p5.maps
+* https://github.com/cvalenzuela/mappa
 *
 * Cristóbal Valenzuela
 * cv965@nyu.edu

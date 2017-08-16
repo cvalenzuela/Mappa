@@ -42,9 +42,9 @@ For static maps, [Google Maps Static API](https://developers.google.com/maps/doc
 
 For tile maps, [Google Maps](https://developers.google.com/maps/documentation/javascript/), [Mapbox](https://www.mapbox.com/mapbox.js/api/v3.1.1/), [Mapbox-GL](https://www.mapbox.com/mapbox-gl-js/api/), [Mapzen](https://mapzen.com/documentation/mapzen-js/api-reference/), [Tangram](https://mapzen.com/documentation/tangram/Javascript-API/) and [Leaflet](http://leafletjs.com/) are supported.
 
-Not sure what map provider to use? Check out this [~~guide to picking a map library~~]().
+Not sure what map provider to use? Check out this [guide to picking a map library](tutorials/pickingAMapProvider.md).
 
-If you are new to maps, check out [~~this complete tutorial~~]() and [~~this glossary of terms~~]().
+If you are new to maps, check out [this basic tutorial](tutorials/basics) and [this glossary of terms](tutorials/glossary.md).
 
 ### tl;dr
 ```javascript
@@ -88,15 +88,14 @@ All of the following examples are visualizing the 5000 largest Meteorite Landing
 
 ### Tutorials and Examples
 
-+ ~~Basics~~ ([Tutorial](tutorials/basics) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/basics))
-+ ~~Using Data~~ ([Tutorial](tutorials/usingdata) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/usingdata))
++ Basics ([Tutorial](tutorials/basics) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/basics))
++ Using Data ([Tutorial](tutorials/usingData) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/usingData))
 + Zipdecode ([Tutorial](tutorials/zipdecode) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/zipdecode))
 + Zipdecode with Tiles ([Tutorial](tutorials/zipdecodeTile) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/zipdecodeTile))
 + Taxi Routes ([Tutorial](tutorials/taxiroutes) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/taxiroutes))
 + Animated Meteorite Landings ([Tutorial](tutorials/meteorites) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/meteorites))
 + CO2 Pollution Map ([Tutorial](tutorials/pollutionmap) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/pollutionmap))
 + ~~Particles moving across countries~~ ([Tutorial](tutorials/particles) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/particles))
-+ ~~Live Flights~~ ([Tutorial](tutorials/zipdecode) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/zipdecode))
 
 
 ### Reference

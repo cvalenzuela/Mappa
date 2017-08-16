@@ -4,8 +4,8 @@
   "description": "An addon to facilitate work between p5 and existing map libraries and APIs.",
   "main": "dist/mappa.js",
   "directories": {
-    "example": "examples",
-    "lib": "lib",
+    "examples": "examples",
+    "dist": "dist",
     "test": "test"
   },
   "scripts": {
@@ -13,7 +13,7 @@
     "check-coverage": "nyc check-coverage --statements 0 --branch 0 --functions 0 --lines 0",
     "report-coverage": "nyc report --reporter=lcov > coverage.lcov && codecov",
     "watch:test": "npm t -- -w",
-    "test": "mocha test/js/index.test.js --compilers js:babel-register",
+    "test": "mocha test/index.test.js --compilers js:babel-register",
     "cover": "nyc npm t",
     "prebuild": "rimraf dist",
     "build": "npm-run-all --parallel build:*",
@@ -42,12 +42,15 @@
     "babel-preset-stage-2": "6.24.1",
     "babel-register": "6.24.1",
     "chai": "4.0.2",
+    "chai-as-promised": "7.1.1",
     "codecov": "2.2.0",
     "commitizen": "2.9.6",
     "cz-conventional-changelog": "2.0.0",
     "ghooks": "2.0.0",
     "html-loader": "0.4.5",
     "istanbul": "0.4.5",
+    "jsdom": "11.1.0",
+    "jsdom-global": "3.0.2",
     "json-loader": "0.5.4",
     "mocha": "3.4.2",
     "npm-run-all": "4.0.2",
@@ -75,6 +78,5 @@
       "es2015",
       "stage-2"
     ]
-  },
-  "dependencies": {}
+  }
 }
