@@ -83,9 +83,7 @@ class Google extends TileMap {
   onChange(callback) {
     if(this.ready){
       callback()
-      google.maps.event.addListener(this.map, 'bounds_changed', () => {
-        callback();
-      })
+      google.maps.event.addListener(this.map, 'bounds_changed', callback);
     } else {
       setTimeout(() => {this.onChange(callback)}, 200);
     }

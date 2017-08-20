@@ -95,7 +95,6 @@ All of the following examples are visualizing the 5000 largest Meteorite Landing
 + Taxi Routes ([Tutorial](tutorials/taxiroutes) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/taxiroutes))
 + Animated Meteorite Landings ([Tutorial](tutorials/meteorites) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/meteorites))
 + CO2 Pollution Map ([Tutorial](tutorials/pollutionmap) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/pollutionmap))
-+ ~~Particles moving across countries~~ ([Tutorial](tutorials/particles) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/particles))
 
 
 ### Reference

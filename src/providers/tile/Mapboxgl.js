@@ -61,9 +61,7 @@ class Mapboxgl extends TileMap {
   onChange(callback) {
     if(this.ready){
       callback()
-      this.map.on('render', () => {
-        callback();
-      })
+      this.map.on('render', callback);
     } else {
       setTimeout(() => {this.onChange(callback)}, 200);
     }

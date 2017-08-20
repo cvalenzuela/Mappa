@@ -2,6 +2,6 @@
 // All tests
 // ----------
 
-import './static/Google.test';
+// import './static/Google.test';
 import './tile/Google.test';
-import './tile/Mapbox.test';
+// import './tile/Mapbox.test';

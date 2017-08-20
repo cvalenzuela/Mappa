@@ -4,7 +4,7 @@
 // -----------
 
 import '../browser';
-import { expect } from 'chai';
+import { expect, should, assert } from 'chai';
 import Mappa from '../../src/index';
 
 var googleTileKey = 'abcd'
@@ -27,10 +27,11 @@ describe('Google tile instance', function () {
 describe('The canvas with Google Maps', function () {
   var canvas = document.createElement('canvas');
   document.body.appendChild(canvas);
-  googleTileMap.overlay(canvas);
-
-  it('should overlay over google maps', function () {
-    expect(true).to.be.true;
+  it('should overlay over google maps', function (done) {
+    googleTileMap.overlay(canvas, function() {
+      done();
+    });
+    done() // This is NOT Working. the done() should be called from inside not here!
   });
 });
 

@@ -26,7 +26,7 @@ class TileMap {
     }
   }
 
-  overlay(canvas){
+  overlay(canvas, callback){
     this.scriptTag.onload = () => {
       let div = document.createElement('div');
       document.body.appendChild(div);
@@ -34,6 +34,7 @@ class TileMap {
       div.setAttribute('id', 'mappa');
       canvas.elt != undefined ? this.canvas = canvas.elt : this.canvas = canvas;
       this.createMap();
+      callback();
     };
   }
 

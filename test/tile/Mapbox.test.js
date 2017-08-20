@@ -23,12 +23,12 @@ describe('Mapbox tile instance', function () {
   });
 });
 
-describe('The canvas with Mapbox', function () {
+describe('The canvas', function () {
   var canvas = document.createElement('canvas');
   document.body.appendChild(canvas);
   mapboxTileMap.overlay(canvas);
 
-  it('should overlay over the mapbox map', function () {
+  it('should overlayed over the mapbox map', function () {
     expect(true).to.be.true;
   });
 });

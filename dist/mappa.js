@@ -272,9 +272,7 @@ var Leaflet = function (_TileMap) {
 
       if (this.ready) {
         callback();
-        this.map.on('move', function () {
-          callback();
-        });
+        this.map.on('move', callback);
       } else {
         setTimeout(function () {
           _this4.onChange(callback);
@@ -346,7 +344,7 @@ var TileMap = function () {
     }
   }, {
     key: 'overlay',
-    value: function overlay(canvas) {
+    value: function overlay(canvas, callback) {
       var _this = this;
 
       this.scriptTag.onload = function () {
@@ -356,6 +354,10 @@ var TileMap = function () {
         div.setAttribute('id', 'mappa');
         canvas.elt != undefined ? _this.canvas = canvas.elt : _this.canvas = canvas;
         _this.createMap();
+        //callback();
+      };
+      this.scriptTag.onload = function (callback) {
+        callback();
       };
     }
   }, {
@@ -1093,9 +1095,7 @@ var Google = function (_TileMap) {
 
       if (this.ready) {
         callback();
-        google.maps.event.addListener(this.map, 'bounds_changed', function () {
-          callback();
-        });
+        google.maps.event.addListener(this.map, 'bounds_changed', callback);
       } else {
         setTimeout(function () {
           _this3.onChange(callback);
@@ -1299,9 +1299,7 @@ var Mapboxgl = function (_TileMap) {
 
       if (this.ready) {
         callback();
-        this.map.on('render', function () {
-          callback();
-        });
+        this.map.on('render', callback);
       } else {
         setTimeout(function () {
           _this3.onChange(callback);

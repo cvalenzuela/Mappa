@@ -24,7 +24,7 @@ function setup() {
 
   // Create a tile map and overlay the canvas on top.
   myMap = mappa.tileMap(options);
-  myMap.overlay(canvas);
+  myMap.overlay(canvas, function(){console.log('ready')});
 
   // Load the data
   meteorites = loadTable('../../data/Meteorite_Landings.csv', 'csv', 'header');

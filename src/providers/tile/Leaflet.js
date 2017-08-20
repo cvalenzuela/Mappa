@@ -87,13 +87,11 @@ class Leaflet extends TileMap {
 
   onChange(callback) {
     if (this.ready) {
-      callback()
-      this.map.on('move', () => {
-        callback();
-      })
+      callback();
+      this.map.on('move', callback);
     } else {
       setTimeout(() => {
-        this.onChange(callback)
+        this.onChange(callback);
       }, 200);
     }
   }
