@@ -96,6 +96,10 @@ class Leaflet extends TileMap {
     }
   }
 
+  removeOnChange(callback){
+    this.map.off('move', callback);
+  }
+
   static messages() {
     return {
       tiles: () => {

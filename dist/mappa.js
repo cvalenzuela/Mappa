@@ -279,6 +279,11 @@ var Leaflet = function (_TileMap) {
         }, 200);
       }
     }
+  }, {
+    key: 'removeOnChange',
+    value: function removeOnChange(callback) {
+      this.map.off('move', callback);
+    }
   }], [{
     key: 'messages',
     value: function messages() {
@@ -354,10 +359,7 @@ var TileMap = function () {
         div.setAttribute('id', 'mappa');
         canvas.elt != undefined ? _this.canvas = canvas.elt : _this.canvas = canvas;
         _this.createMap();
-        //callback();
-      };
-      this.scriptTag.onload = function (callback) {
-        callback();
+        callback && callback();
       };
     }
   }, {
@@ -1011,6 +1013,7 @@ var Google = function (_TileMap) {
     _this.options.key && (_this.script += '?key=' + _this.options.key);
     _this.options.language && (_this.script += '&language=' + _this.options.language);
     _this.options.region && (_this.script += '&region=' + _this.options.region);
+    _this.onChangeMetods = {};
     _this.init();
     return _this;
   }
@@ -1095,12 +1098,17 @@ var Google = function (_TileMap) {
 
       if (this.ready) {
         callback();
-        google.maps.event.addListener(this.map, 'bounds_changed', callback);
+        this.onChangeMetods[callback] = google.maps.event.addListener(this.map, 'bounds_changed', callback);
       } else {
         setTimeout(function () {
           _this3.onChange(callback);
         }, 200);
       }
+    }
+  }, {
+    key: 'removeOnChange',
+    value: function removeOnChange(callback) {
+      google.maps.event.removeListener(this.onChangeMetods[callback]);
     }
   }], [{
     key: 'messages',
@@ -1305,6 +1313,11 @@ var Mapboxgl = function (_TileMap) {
           _this3.onChange(callback);
         }, 200);
       }
+    }
+  }, {
+    key: 'removeOnChange',
+    value: function removeOnChange(callback) {
+      this.map.off('render', callback);
     }
   }], [{
     key: 'messages',

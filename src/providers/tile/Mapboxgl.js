@@ -67,6 +67,10 @@ class Mapboxgl extends TileMap {
     }
   }
 
+  removeOnChange(callback){
+    this.map.off('render', callback);
+  }
+
   static messages(){
     return {
       key: () => {console.warn('Please provide a Mapbox-gl API key. Get one here: https://www.mapbox.com/mapbox-gl-js/api/')}

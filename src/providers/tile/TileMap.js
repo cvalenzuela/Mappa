@@ -34,7 +34,7 @@ class TileMap {
       div.setAttribute('id', 'mappa');
       canvas.elt != undefined ? this.canvas = canvas.elt : this.canvas = canvas;
       this.createMap();
-      callback();
+      callback && callback();
     };
   }
 

@@ -12,6 +12,7 @@ class Google extends TileMap {
     this.options.key && (this.script += '?key=' + this.options.key);
     this.options.language && (this.script += '&language=' + this.options.language);
     this.options.region && (this.script += '&region=' + this.options.region);
+    this.onChangeMetods = {};
     this.init();
   }
 
@@ -83,10 +84,14 @@ class Google extends TileMap {
   onChange(callback) {
     if(this.ready){
       callback()
-      google.maps.event.addListener(this.map, 'bounds_changed', callback);
+      this.onChangeMetods[callback] = google.maps.event.addListener(this.map, 'bounds_changed', callback);
     } else {
       setTimeout(() => {this.onChange(callback)}, 200);
     }
+  }
+
+  removeOnChange(callback){
+    google.maps.event.removeListener(this.onChangeMetods[callback]);
   }
 
   static messages(){
