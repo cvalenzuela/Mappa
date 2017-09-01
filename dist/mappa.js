@@ -328,6 +328,7 @@ var TileMap = function () {
 
     this.options = options;
     this.scriptTag;
+    this.mappaDiv = null;
   }
 
   _createClass(TileMap, [{
@@ -353,10 +354,10 @@ var TileMap = function () {
       var _this = this;
 
       this.scriptTag.onload = function () {
-        var div = document.createElement('div');
-        document.body.appendChild(div);
-        div.setAttribute('style', 'position:relative;width:' + canvas.width + 'px;height:' + canvas.height + 'px;top:0;left:0;z-index:10');
-        div.setAttribute('id', 'mappa');
+        _this.mappaDiv = document.createElement('div');
+        document.body.appendChild(_this.mappaDiv);
+        _this.mappaDiv.setAttribute('style', 'position:relative;width:' + canvas.width + 'px;height:' + canvas.height + 'px;top:0;left:0;z-index:10');
+        _this.mappaDiv.setAttribute('id', 'mappa');
         canvas.elt != undefined ? _this.canvas = canvas.elt : _this.canvas = canvas;
         _this.createMap();
         callback && callback();

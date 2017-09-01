@@ -8,6 +8,7 @@ class TileMap {
   constructor(options){
     this.options = options;
     this.scriptTag;
+    this.mappaDiv = null;
   }
 
   init() {
@@ -28,10 +29,10 @@ class TileMap {
 
   overlay(canvas, callback){
     this.scriptTag.onload = () => {
-      let div = document.createElement('div');
-      document.body.appendChild(div);
-      div.setAttribute('style', 'position:relative;width:'+ canvas.width + 'px;height:' + canvas.height + 'px;top:0;left:0;z-index:10');
-      div.setAttribute('id', 'mappa');
+      this.mappaDiv = document.createElement('div');
+      document.body.appendChild(this.mappaDiv);
+      this.mappaDiv.setAttribute('style', 'position:relative;width:'+ canvas.width + 'px;height:' + canvas.height + 'px;top:0;left:0;z-index:10');
+      this.mappaDiv.setAttribute('id', 'mappa');
       canvas.elt != undefined ? this.canvas = canvas.elt : this.canvas = canvas;
       this.createMap();
       callback && callback();

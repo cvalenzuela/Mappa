@@ -70,31 +70,30 @@ function draw(){
 ```
 
 ### Demos
-All of the following examples are visualizing the 5000 largest Meteorite Landings. Data from [NASA's Open Data Portal.](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh)
+All of the following examples are visualizing the 5000 largest meteorite landings in the world. Data from [NASA's Open Data Portal.](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh)
 + Static Maps
-  - Google Maps ([Code](examples/static/Google) | [Demo](https://cvalenzuela.github.io/Mappa/examples/static/Google/))
-  - Mapbox ([Code](examples/static/Mapbox) | [Demo](https://cvalenzuela.github.io/Mappa/examples/static/Mapbox/))
-  - Mapquest ([Code](examples/static/Mapquest) | [Demo](https://cvalenzuela.github.io/Mappa/examples/static/Mapquest/))
+  - Google Maps ([Code](examples/static/Google) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/static/Google/))
+  - Mapbox ([Code](examples/static/Mapbox) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/static/Mapbox/))
+  - Mapquest ([Code](examples/static/Mapquest) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/static/Mapquest/))
 
 + Tile Maps
-  - Google Maps ([Code](examples/tile/Google) | [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Google/))
-  - Mapbox ([Code](examples/tile/Mapbox) | [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Mapbox/))
-  - Mapbox Gl ([Code](examples/tile/Mapboxgl) | [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Mapboxgl/))
-  - Mapzen ([Code](examples/tile/Mapzen) | [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Mapzen/))
-  - Tangram ([Code](examples/tile/Tangram) | [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Tangram/))
-  - Leaflet ([Code](examples/tile/Leaflet) | [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Leaflet/))
-  - Using p5 in WEBGL mode ([Code](examples/tile/Webgl) | [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Webgl/))
-  - Using Three.js ([Code](examples/tile/Threejs) | [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Threejs/))
+  - Google Maps ([Code](examples/tile/Google) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Google/))
+  - Mapbox ([Code](examples/tile/Mapbox) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Mapbox/))
+  - Mapbox Gl ([Code](examples/tile/Mapboxgl) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Mapboxgl/))
+  - Mapzen ([Code](examples/tile/Mapzen) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Mapzen/))
+  - Tangram ([Code](examples/tile/Tangram) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Tangram/))
+  - Leaflet ([Code](examples/tile/Leaflet) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Leaflet/))
+  - Using p5 in WEBGL mode ([Code](examples/tile/Webgl) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Webgl/))
+  - Using Three.js ([Code](examples/tile/Threejs) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Threejs/))
 
 ### Tutorials and Examples
 
-+ Basics ([Tutorial](tutorials/basics) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/basics))
-+ Using Data ([Tutorial](tutorials/usingData) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/usingData))
-+ Zipdecode ([Tutorial](tutorials/zipdecode) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/zipdecode))
-+ Zipdecode with Tiles ([Tutorial](tutorials/zipdecodeTile) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/zipdecodeTile))
-+ Taxi Routes ([Tutorial](tutorials/taxiroutes) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/taxiroutes))
-+ Animated Meteorite Landings ([Tutorial](tutorials/meteorites) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/meteorites))
-+ CO2 Pollution Map ([Tutorial](tutorials/pollutionmap) | [Demo](https://cvalenzuela.github.io/Mappa/tutorials/pollutionmap))
++ Basics ([Tutorial](tutorials/basics) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/basics))
++ Zipdecode ([Tutorial](tutorials/zipdecode) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/zipdecode))
++ Zipdecode with Tiles ([Tutorial](tutorials/zipdecodeTile) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/zipdecodeTile))
++ Taxi Routes ([Tutorial](tutorials/taxiroutes) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/taxiroutes))
++ Animated Meteorite Landings ([Tutorial](tutorials/meteorites) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/meteorites))
++ CO2 Pollution Map ([Tutorial](tutorials/pollutionmap) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/pollutionmap))
 
 
 ### Reference
@@ -180,7 +179,7 @@ var options = {
 var myMap = mappa.staticMap(options)
 ```
 
-The resulting URL of the image will be stored inside the `imgUrl` value of the myMap variable. To load the image in p5 use [`loadImage()`](https://p5js.org/reference/#/p5/loadImage) in [`preload()`](https://p5js.org/reference/#/p5/preload) as with any other p5 image:
+The resulting URL of the image will be stored inside the `imgUrl` value of the `myMap` variable. To load the image in p5 use [`loadImage()`](https://p5js.org/reference/#/p5/loadImage) in [`preload()`](https://p5js.org/reference/#/p5/preload) as with any other p5 image:
 
 ```javascript
 var img;
@@ -189,8 +188,6 @@ function preload(){
   img = loadImage(myMap.imgUrl);
 }
 ```
-
-to use it into other elements just refer to `myMap.imgUrl`.
 
 Required parameters:
 + `lat`: latitude for the center of the image.
