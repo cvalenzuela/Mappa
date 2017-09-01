@@ -83,3 +83,10 @@ describe('Google staticMap imgUrl', function () {
     expect(googleStaticMap.imgUrl).to.include('key=' + googleStaticKey);
   });
 });
+
+describe('Static Methods', function () {
+  it('should be a valid latlng', function () {
+    expect(googleStaticMap.latLngToPixel(0,0)).to.have.property('x').that.is.a('number');
+    expect(googleStaticMap.latLngToPixel(0,0)).to.have.property('y').that.is.a('number');
+  });
+});
