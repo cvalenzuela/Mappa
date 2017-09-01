@@ -325,12 +325,12 @@ Optional:
 
 + Mapbox-GL:
   - `style`: map style. Defaults to `mapbox://styles/mapbox/satellite-streets-v10`.
-  - minZoom: map min zoom. Defaults to `0`.
-  - maxZoom: map max zoom. Defaults to `22`.
-  - bearing: rotation of the map around its center. Defaults to `0`.
-  - pitch: tilts the map. Defaults to `0`.
-  - renderWorldCopies: render multiple copies of the map. Defaults to `true`.
-  - maxBounds: maps max bounds. Defaults to `undefined`.
+  - `minZoom`: map min zoom. Defaults to `0`.
+  - `maxZoom`: map max zoom. Defaults to `22`.
+  - `bearing`: rotation of the map around its center. Defaults to `0`.
+  - `pitch`: tilts the map. Defaults to `0`.
+  - `renderWorldCopies`: render multiple copies of the map. Defaults to `true`.
+  - `maxBounds`: maps max bounds. Defaults to `undefined`.
 
   For a complete reference visit [Mapbox GL Documentation](https://www.mapbox.com/mapbox-gl-js/api/).
 
@@ -373,7 +373,7 @@ function setup(){
 }
 ```
 
-Once `overlay()` is used, a complete access to the base map library and its original properties and methods can be found in `map`. This allows to call any of the maps original properties or methods.
+Once `overlay()` is used, a complete access to the base map library and its original properties and methods can be found in the `map` method. This allows to call any of the maps original properties or methods.
 
 For example, calling [flyTo](http://leafletjs.com/reference-1.0.0.html#flyToBounds) in a Leaflet Map:
 
