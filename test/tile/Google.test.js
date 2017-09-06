@@ -38,8 +38,8 @@ describe('The canvas with Google Maps', function () {
 describe('The methods of Google Maps', function () {
   var googleTileMapPos = googleTileMap.latLngToPixel(0, 0);
   it('latLngToPixel should return a pixel position', function () {
-    expect(googleTileMapPos).to.have.property('x', -100);
-    expect(googleTileMapPos).to.have.property('y', -100);
+    expect(googleTileMap.latLngToPixel(0,0)).to.have.property('x').that.is.a('number');
+    expect(googleTileMap.latLngToPixel(0,0)).to.have.property('y').that.is.a('number');
   });
 
   var googleTileMapZoom = googleTileMap.zoom();
@@ -47,10 +47,9 @@ describe('The methods of Google Maps', function () {
     expect(googleTileMapZoom).to.equal(0)
   });
 
-  var googleTileMapPoint = googleTileMap.fromPointToLatLng(0,0);
   it('fromPointToLatLng should return a lat/lng position', function () {
-    expect(googleTileMapPoint).to.have.property('lat', -100);
-    expect(googleTileMapPoint).to.have.property('lng', -100);
+    expect(googleTileMap.fromPointToLatLng(0,0)).to.have.property('lat').that.is.a('number');
+    expect(googleTileMap.fromPointToLatLng(0,0)).to.have.property('lng').that.is.a('number');
   });
 });
 
