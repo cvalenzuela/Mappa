@@ -16,9 +16,9 @@
     "test": "mocha test/index.test.js --compilers js:babel-register",
     "cover": "nyc npm t",
     "prebuild": "rimraf dist",
-    "build": "npm-run-all --parallel build:*",
+    "build": "npm-run-all build:*",
     "build:main": "webpack --output-filename mappa.js",
-    "build:min": "webpack --output-filename mappa.min.js -p",
+    "build:min": "uglifyjs dist/mappa.js -o dist/mappa.min.js",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
@@ -58,6 +58,7 @@
     "raw-loader": "0.5.1",
     "rimraf": "2.6.1",
     "semantic-release": "6.3.6",
+    "uglify-es": "3.0.28",
     "webpack": "2.6.1",
     "webpack-dev-server": "2.4.5"
   },

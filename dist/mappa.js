@@ -1495,4 +1495,3 @@ exports.Tangram = Tangram;
 /***/ })
 /******/ ]);
 });
-//# sourceMappingURL=mappa.js.map
