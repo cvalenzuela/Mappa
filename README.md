@@ -624,19 +624,25 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
 
   ##### Complete Example:
   ```javascript
+  // Your Google Maps API Key
   var key = 'abcd';
 
+  // Options for map
   var options = {
-    lat: 40.896905,
-    lng: -74.0423,
-    zoom: 3,
-    BasemapStyles: true,
-    scene: 'Zinc'
+    lat: 0,
+    lng: 0,
+    zoom: 2,
+    width: 940,
+    height: 800,
+    scale: 1,
+    format: 'PNG',
+    language: 'en',
+    maptype: 'satellite'
   }
 
   var colors = ["#fff7fb", "#ece7f2", "#d0d1e6", "#a6bddb", "#74a9cf", "#3690c0", "#0570b0", "#045a8d", "#023858"];
 
-  var mappa = new Mappa('Mapzen', key);
+  var mappa = new Mappa('Google', key);
   var myMap = mappa.staticMap(options);
 
   var data;
@@ -646,7 +652,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
   function preload(){
     img = loadImage(myMap.imgUrl);
     // A geoJSON file with world coordinates for all countries.
-    data = loadJSON('world.geojson');
+    data = loadJSON('data/world.geojson');
   }
 
   function setup(){
@@ -668,7 +674,7 @@ myMap.map.flyTo([-33.448890, -70.669265], 9)
       endShape();
     }
 
-    // For all multiPolygons loop through the array and create a new Shape.
+  // For all multiPolygons loop through the array and create a new Shape.
     for(var i = 0; i < multiPolygons.length; i++){
       for(var k = 0; k < multiPolygons[i].length; k++){
         beginShape();
