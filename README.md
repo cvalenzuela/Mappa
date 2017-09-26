@@ -6,9 +6,7 @@ Mappa
 ![version](https://img.shields.io/npm/v/mappa-mundi.svg?style=flat-square)
 
 
-**_This project is currently in development._**
-
-Mappa is a [p5.js](https://github.com/processing/p5.js) addon to facilitate work between p5 and existing map libraries and APIs. It provides a set of tools for working with static maps, interactive tile maps and geo-data among other tools useful when building geolocation-based visual representations. Although Mappa was originally designed for [p5.js](https://github.com/processing/p5.js), it can also be used with other libraries that use the canvas element as the render object.
+Mappa is a library to facilitate work between the  `<canvas>` element and existing map libraries and APIs. It provides a set of tools for working with static maps, interactive tile maps and geo-data among other tools useful when building geolocation-based visual representations. Mappa was originally designed for [p5.js](https://github.com/processing/p5.js), but it can be used with plain javascript or with other libraries that use the canvas element as the render object.
 
 ### Usage
 
@@ -42,11 +40,11 @@ For static maps, [Google Maps Static API](https://developers.google.com/maps/doc
 
 For tile maps, [Google Maps](https://developers.google.com/maps/documentation/javascript/), [Mapbox](https://www.mapbox.com/mapbox.js/api/v3.1.1/), [Mapbox-GL](https://www.mapbox.com/mapbox-gl-js/api/), [Mapzen](https://mapzen.com/documentation/mapzen-js/api-reference/), [Tangram](https://mapzen.com/documentation/tangram/Javascript-API/) and [Leaflet](http://leafletjs.com/) are supported.
 
-Not sure what map provider to use? Check out this [guide to picking a map library](tutorials/pickingAMapProvider.md).
+Not sure what map provider to use? Check out this [~~guide to picking a map library~~](tutorials/pickingAMapProvider.md).
 
-If you are new to maps, check out [this basic tutorial](tutorials/basics) and [this glossary of terms](tutorials/glossary.md).
+If you are new to maps, check out [~~this basic tutorial~~](tutorials/basics) and [~~this glossary of terms~~](tutorials/glossary.md).
 
-### tl;dr
+### tl;dr with p5
 ```javascript
 
 // Your Mapboxgl API Key
@@ -85,15 +83,16 @@ All of the following examples are visualizing the 5000 largest meteorite landing
   - Leaflet ([Code](examples/tile/Leaflet) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Leaflet/))
   - Using p5 in WEBGL mode ([Code](examples/tile/Webgl) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Webgl/))
   - Using Three.js ([Code](examples/tile/Threejs) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Threejs/))
+  - Raw Canvas ([~~Code~~](examples/tile/rawCanvas) | [~~Live Demo~~](https://cvalenzuela.github.io/Mappa/examples/tile/rawCanvas/))
 
 ### Tutorials and Examples
 
-+ Basics ([Tutorial](tutorials/basics) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/basics))
-+ Zipdecode ([Tutorial](tutorials/zipdecode) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/zipdecode))
-+ Zipdecode with Tiles ([Tutorial](tutorials/zipdecodeTile) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/zipdecodeTile))
++ Basics ([~~Tutorial~~](tutorials/basics) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/basics))
++ Zipdecode ([~~Tutorial~~](tutorials/zipdecode) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/zipdecode))
++ Zipdecode with Tiles ([~~Tutorial~~](tutorials/zipdecodeTile) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/zipdecodeTile))
 + Taxi Routes ([Tutorial](tutorials/taxiroutes) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/taxiroutes))
-+ Animated Meteorite Landings ([Tutorial](tutorials/meteorites) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/meteorites))
-+ CO2 Pollution Map ([Tutorial](tutorials/pollutionmap) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/pollutionmap))
++ Animated Meteorite Landings ([~~Tutorial~~](tutorials/meteorites) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/meteorites))
++ CO2 Pollution Map ([~~Tutorial~~](tutorials/pollutionmap) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/pollutionmap))
 
 
 ### Reference
