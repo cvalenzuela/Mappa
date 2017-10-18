@@ -34,17 +34,14 @@ var key = 'abcd'
 // Create a new Mappa instance.
 var mappa = new Mappa('Map-Provider', key);
 ```
-Check [~~this guide~~]() to learn how to get an API and set proper permission depending on your map provider.
+
+If you are new to web maps, check out the [Introduction to Web Maps](tutorials/introduction), the [Basic Tutorial](tutorials/basic) and the [~~this glossary of terms~~](tutorials/glossary.md).
 
 For static maps, [Google Maps Static API](https://developers.google.com/maps/documentation/static-maps/), [Mapbox Static API](https://www.mapbox.com/api-documentation/#styles) and [Mapquest Static API](https://developer.mapquest.com/documentation/static-map-api/v5/) are supported.
 
 For tile maps, [Google Maps](https://developers.google.com/maps/documentation/javascript/), [Mapbox](https://www.mapbox.com/mapbox.js/api/v3.1.1/), [Mapbox-GL](https://www.mapbox.com/mapbox-gl-js/api/), [Mapzen](https://mapzen.com/documentation/mapzen-js/api-reference/), [Tangram](https://mapzen.com/documentation/tangram/Javascript-API/) and [Leaflet](http://leafletjs.com/) are supported.
 
-Not sure what map provider to use? Check out this [~~guide to picking a map library~~](tutorials/pickingAMapProvider.md).
-
-If you are new to maps, check out [~~this basic tutorial~~](tutorials/basics) and [~~this glossary of terms~~](tutorials/glossary.md).
-
-### tl;dr with p5
+### tl;dr with p5.js
 ```javascript
 
 // Your Mapboxgl API Key
@@ -68,7 +65,7 @@ function draw(){
 ```
 
 ### Demos
-All of the following examples are visualizing the 5000 largest meteorite landings in the world. Data from [NASA's Open Data Portal.](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh)
+All of the following examples are visualizing the 5000 largest meteorite landings in the world with p5.js. Data from [NASA's Open Data Portal.](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh)
 + Static Maps
   - Google Maps ([Code](examples/static/Google) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/static/Google/))
   - Mapbox ([Code](examples/static/Mapbox) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/static/Mapbox/))
@@ -85,15 +82,15 @@ All of the following examples are visualizing the 5000 largest meteorite landing
   - Using Three.js ([Code](examples/tile/Threejs) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Threejs/))
   - Raw Canvas ([~~Code~~](examples/tile/rawCanvas) | [~~Live Demo~~](https://cvalenzuela.github.io/Mappa/examples/tile/rawCanvas/))
 
-### Tutorials and Examples
+### Tutorials
 
-+ Basics ([~~Tutorial~~](tutorials/basics) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/basics))
-+ Zipdecode ([~~Tutorial~~](tutorials/zipdecode) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/zipdecode))
-+ Zipdecode with Tiles ([~~Tutorial~~](tutorials/zipdecodeTile) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/zipdecodeTile))
-+ Taxi Routes ([Tutorial](tutorials/taxiroutes) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/taxiroutes))
-+ Animated Meteorite Landings ([~~Tutorial~~](tutorials/meteorites) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/meteorites))
-+ CO2 Pollution Map ([~~Tutorial~~](tutorials/pollutionmap) | [Live Demo](https://cvalenzuela.github.io/Mappa/tutorials/pollutionmap))
-
++ [An Introduction to Web Maps](tutorials/introduction)
++ [Basic Tutorial](tutorials/basic)
++ [Zipdecode](tutorials/zipdecode)
++ [Zipdecode with Tiles](tutorials/zipdecodeTile)
++ [Taxi Routes](tutorials/taxiroutes)
++ [Animated Meteorite Landings](tutorials/meteorites)
++ [CO2 Pollution Map](tutorials/pollutionmap)
 
 ### Reference
 
