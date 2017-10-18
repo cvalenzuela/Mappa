@@ -6,25 +6,33 @@ Contributions are welcomed!
 
 Index of contents:
 
- - [A very quick history of web maps](#mapprojections)
- - [Map Projections](#mapprojections)
- - [Types of Web Maps](#tilemaps)
+ - [A very quick history of web maps](#a-very-quick-history-of-web-maps)
+    - [Map Providers](#map-providers)
+    - [Map Projections](#map-projections)
+    - [Web Map Libraries](#web-map-libraries)
+ - [Custom Maps](#custom-maps)
+ - [Overlaying things on a Map](#overlaying-things-on-a-map)
+ - [What's next](#whats-next)
+ - [References and Further Readings](#references-and-further-readings)
 
 ## A very quick history of web maps
 
 In 1996 a company called [Mapquest](http://www.mapquest.com/) introduced a web service for displaying maps on the web. The service allowed people to zoom and pan over a map. Every map was constructed of a single image created by a server. That meant that everytime you requested a new zoom level or moved the map in any direction, you would have to request a new image to the server. 
 
 ![Mapquest](images/mapquest.gif)
+
 © 1998 MapQuest.com, Inc. (formerly GeoSystems Global Corp.) All rights reserved.
 
 In 2005 [Google Maps](https://en.wikipedia.org/wiki/Google_Maps) came and revolutionzed web mapping. Originally designed as a desktop service until Google bought the company behind it, Google Maps used a different technique to render maps on the web: [Tile Maps](). Tile Maps are collections of small images that are stitch together to create a complete map view. Together with [AJAX](https://developer.mozilla.org/en-US/docs/AJAX/Getting_Started), this techinique allows users to zoom and move while keeping most of the tiles that are still relevant and only fetching new ones. 
 
-![Mapquest](images/loadingGooglemaps.gif)
+
+![Google Maps tile map](images/loadingGooglemaps.gif)
+
 Slow-mo of Google Maps loading a set of tiles
 
 Today most web maps are tile maps. Although a lot of map providers are shifting towards a different technique called [Vector Tile Maps](https://en.wikipedia.org/wiki/Vector_tiles). Instead of sending grids of images to the client, Vector Tile maps sends packets of information about a tile and then the client renders in real-time those packets in the browser to make a map. This allows for a more smooth experience since the client is rendering and fetching data during runtime.
 
-## Map Providers
+## Map Providers
 
 So at the end, web maps are just collections of images (or data about how to render those maps) that are stich together. The next question is well, how do we get those images and use them.
 
@@ -39,6 +47,7 @@ Since the earth is a sphere and your screen is a flat 2D surface, a [Map Project
 There are [different map projections](https://en.wikipedia.org/wiki/List_of_map_projections) used for different purpuses and cases. Today, most web map providers use the [Mercator Projection](https://en.wikipedia.org/wiki/Mercator_projection). Originally designed for nautical purposes, the Mercator has become one of the standars for web maps. One important thing to consider is that the Mercator Projection disorts the plane towards the poles, showing them far more bigger than what they really are. This make things look much more bigger than what they really are.
 
 ![mercator](images/tissot_mercator.png)
+
 Mercator disortion towards the poles
 
 Map Projections are a very hot topic because of how they dissort information. To learn more:
@@ -104,6 +113,7 @@ Results in this:
 One thing you will notice is that this are static images that are fixed to a specific location in the map. You can move and zoom around and the markers will stay in position. But what if you want to do something more interactive? Perhaps add movement and sound to it? You can create and build you own overlay's for each map provider or ... use [Mappa](). Mappa allows you to attach a `<canvas>` object on top of a tile map for almost all map providers. This means you can overlay a [p5.js](https://github.com/processing/p5.js) sketch in top of a map and bind them together, just as with the marker. This allows you to create more interactive experiences:
 
 ![Tradeflow](images/tradeflow.gif)
+
 Gif from [TradeFlow](http://tradeflow.3laab.com/), built with Mappa and p5.
 
 ## What's next?
