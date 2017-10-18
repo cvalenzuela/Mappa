@@ -35,7 +35,7 @@ var key = 'abcd'
 var mappa = new Mappa('Map-Provider', key);
 ```
 
-If you are new to web maps, check out the [Introduction to Web Maps](tutorials/introduction), the [Basic Tutorial](tutorials/basic) and the [~~this glossary of terms~~](tutorials/glossary.md).
+If you are new to web maps, check out the [Introduction to Web Maps](tutorials/introduction) and the [Basic Tutorial](tutorials/basic).
 
 For static maps, [Google Maps Static API](https://developers.google.com/maps/documentation/static-maps/), [Mapbox Static API](https://www.mapbox.com/api-documentation/#styles) and [Mapquest Static API](https://developer.mapquest.com/documentation/static-map-api/v5/) are supported.
 
@@ -68,7 +68,7 @@ function draw(){
 
 + [An Introduction to Web Maps](tutorials/introduction)
 + [Basic Tutorial](tutorials/basic)
-+ [Animated Meteorite Landings](tutorials/meteorites/#)
++ [Animated Meteorite Landings](tutorials/basic#5000-points)
 + [Zipdecode](tutorials/zipdecode)
 + [Zipdecode with Tiles](tutorials/zipdecodeTile)
 + [Taxi Routes](tutorials/taxiroutes)
