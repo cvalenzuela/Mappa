@@ -64,33 +64,33 @@ function draw(){
 
 ```
 
-### Demos
-All of the following examples are visualizing the 5000 largest meteorite landings in the world with p5.js. Data from [NASA's Open Data Portal.](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh)
-+ Static Maps
-  - Google Maps ([Code](examples/static/Google) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/static/Google/))
-  - Mapbox ([Code](examples/static/Mapbox) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/static/Mapbox/))
-  - Mapquest ([Code](examples/static/Mapquest) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/static/Mapquest/))
-
-+ Tile Maps
-  - Google Maps ([Code](examples/tile/Google) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Google/))
-  - Mapbox ([Code](examples/tile/Mapbox) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Mapbox/))
-  - Mapbox Gl ([Code](examples/tile/Mapboxgl) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Mapboxgl/))
-  - Mapzen ([Code](examples/tile/Mapzen) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Mapzen/))
-  - Tangram ([Code](examples/tile/Tangram) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Tangram/))
-  - Leaflet ([Code](examples/tile/Leaflet) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Leaflet/))
-  - Using p5 in WEBGL mode ([Code](examples/tile/Webgl) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Webgl/))
-  - Using Three.js ([Code](examples/tile/Threejs) | [Live Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Threejs/))
-  - Raw Canvas ([~~Code~~](examples/tile/rawCanvas) | [~~Live Demo~~](https://cvalenzuela.github.io/Mappa/examples/tile/rawCanvas/))
-
 ### Tutorials
 
 + [An Introduction to Web Maps](tutorials/introduction)
 + [Basic Tutorial](tutorials/basic)
++ [Animated Meteorite Landings](tutorials/meteorites/#)
 + [Zipdecode](tutorials/zipdecode)
 + [Zipdecode with Tiles](tutorials/zipdecodeTile)
 + [Taxi Routes](tutorials/taxiroutes)
-+ [Animated Meteorite Landings](tutorials/meteorites)
 + [CO2 Pollution Map](tutorials/pollutionmap)
+
+### Demos
+All of the following examples are visualizing the 5000 largest meteorite landings in the world with p5.js. Data from [NASA's Open Data Portal.](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh)
++ Static Maps
+  - [Google Maps](examples/static/Google)
+  - [Mapbox](examples/static/Mapbox)
+  - [Mapquest](examples/static/Mapquest)
+
++ Tile Maps
+  - [Google Maps](examples/tile/Google) 
+  - [Mapbox](examples/tile/Mapbox) 
+  - [Mapbox GL](examples/tile/Mapboxgl) 
+  - [Mapzen](examples/tile/Mapzen) 
+  - [Tangram](examples/tile/Tangram) 
+  - [Leaflet](examples/tile/Leaflet) 
+  - [Using p5 in WEBGL mode](examples/tile/Webgl) 
+  - [Using Three.js](examples/tile/Threejs)
+  - [~~Raw Canvas~~](examples/tile/rawCanvas)
 
 ### Reference
 
