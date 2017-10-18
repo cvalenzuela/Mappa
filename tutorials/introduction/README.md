@@ -21,18 +21,14 @@ In 1996 a company called [Mapquest](http://www.mapquest.com/) introduced a web s
 
 ![Mapquest](images/mapquest.gif)
 
-© 1998 MapQuest.com, Inc. (formerly GeoSystems Global Corp.) All rights reserved.
-
 In 2005 [Google Maps](https://en.wikipedia.org/wiki/Google_Maps) came and revolutionzed web mapping. Originally designed as a desktop service until Google bought the company behind it, Google Maps used a different technique to render maps on the web: [Tile Maps](). Tile Maps are collections of small images that are stitch together to create a complete map view. Together with [AJAX](https://developer.mozilla.org/en-US/docs/AJAX/Getting_Started), this techinique allows users to zoom and move while keeping most of the tiles that are still relevant and only fetching new ones. 
 
 
-![Google Maps tile map](images/loadingGooglemaps.gif)
-
-Slow-mo of Google Maps loading a set of tiles
+![googleMapsTile](images/loadingGoogleMaps.gif)
 
 Today most web maps are tile maps. Although a lot of map providers are shifting towards a different technique called [Vector Tile Maps](https://en.wikipedia.org/wiki/Vector_tiles). Instead of sending grids of images to the client, Vector Tile maps sends packets of information about a tile and then the client renders in real-time those packets in the browser to make a map. This allows for a more smooth experience since the client is rendering and fetching data during runtime.
 
-## Map Providers
+#### Map Providers
 
 So at the end, web maps are just collections of images (or data about how to render those maps) that are stich together. The next question is well, how do we get those images and use them.
 
@@ -118,7 +114,7 @@ Gif from [TradeFlow](http://tradeflow.3laab.com/), built with Mappa and p5.
 
 ## What's next?
 
-Now that you understand the basics concepts around web maps, try and follow the [Basic Example]() to build a sample example.
+Now that you understand the basics concepts around web maps, try and follow the [Basic Example](../basic) to build a sample example.
 
 ## References and Further Readings
 
