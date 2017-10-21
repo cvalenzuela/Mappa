@@ -1,10 +1,13 @@
 # Meteorites Landing
 
+Animated visualization showing the 5000 largest Meteorites landed on Earth.
 
-Visualizing the 5000 largest Meteorites Landing on Earth.
+## Final Resutl
 
 You can see the final result [here](https://cvalenzuela.github.io/Mappa/tutorials/meteorites/).
 
-### Setup
+## Setup
 
-todo
+## Loading the Data
+
+## Reference

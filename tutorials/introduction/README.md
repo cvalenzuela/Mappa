@@ -1,5 +1,7 @@
 # An Introduction to Web Maps 
 
+** This is still a draft
+
 This guide is intended to provide a quick overview of some of the main concepts when working with web maps. Maps and web maps are extensive topics and this guide is not intended to go over all concepts. Instead, this page will serve as an introductory lesson for people that have little to no  experience working with maps on the web.
 
 Contributions are welcome! 

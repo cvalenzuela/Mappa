@@ -67,19 +67,15 @@ function draw(){
 ### Tutorials
 
 + [An Introduction to Web Maps](tutorials/introduction)
-+ [Basic Tutorial](tutorials/basic)
-+ [Animated Meteorite Landings](tutorials/basic#5000-points)
-+ [Zipdecode](tutorials/zipdecode)
-+ [Zipdecode with Tiles](tutorials/zipdecodeTile)
++ [Basic Tutorial: Meteorite Landings](tutorials/basic)
 + [Taxi Routes](tutorials/taxiroutes)
++ [Animated Meteorite Landings](tutorials/meteorites)
++ [Zipdecode with Static Maps](tutorials/zipdecode)
++ [Zipdecode with Tiles](tutorials/zipdecodeTile)
 + [CO2 Pollution Map](tutorials/pollutionmap)
 
 ### Demos
-All of the following examples are visualizing the 5000 largest meteorite landings in the world with p5.js. Data from [NASA's Open Data Portal.](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh)
-+ Static Maps
-  - [Google Maps](examples/static/Google)
-  - [Mapbox](examples/static/Mapbox)
-  - [Mapquest](examples/static/Mapquest)
+The following examples are visualizing the 5000 largest meteorite landings in the world. Data from [NASA's Open Data Portal.](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh)
 
 + Tile Maps
   - [Google Maps](examples/tile/Google) 
@@ -91,6 +87,11 @@ All of the following examples are visualizing the 5000 largest meteorite landing
   - [Using p5 in WEBGL mode](examples/tile/Webgl) 
   - [Using Three.js](examples/tile/Threejs)
   - [~~Raw Canvas~~](examples/tile/rawCanvas)
+
++ Static Maps
+  - [Google Maps](examples/static/Google)
+  - [Mapbox](examples/static/Mapbox)
+  - [Mapquest](examples/static/Mapquest)
 
 ### Reference
 

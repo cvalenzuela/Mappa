@@ -3,6 +3,8 @@
 
 This tutorial is based on the [taxitracker](https://github.com/chriswhong/nyctaxi) data visualization. The idea is to create a sketch that will show the route of a taxi during a day in New York. I will try to keep things as simple as possible in order to show how to use maps and p5.js to create visualizations.
 
+## Final Resutl
+
 You can see the final result [here](https://cvalenzuela.github.io/Mappa/tutorials/taxiroutes/).
 
 ### Setup

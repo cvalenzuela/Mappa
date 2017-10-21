@@ -1,8 +1,10 @@
 # Basic Tutorial
 
-This tutorial will go over the basics of building a simple web page using [Mappa](https://github.com/cvalenzuela/Mappa), [p5.js](https://github.com/processing/p5.js) and [Leaflet](http://leafletjs.com/). If this is your first time working with web maps, you should check this [Introduction to Web Maps](../introduction). 
+This tutorial will go over the basics of building a simple web page using [Mappa](https://github.com/cvalenzuela/Mappa), [p5.js](https://github.com/processing/p5.js) and [Leaflet](http://leafletjs.com/) to visualize meteorite landings data points. If this is your first time working with web maps, you should check this [Introduction to Web Maps](../introduction). 
 
 This tutorial uses [p5.js](https://github.com/processing/p5.js), but the same principles can be applied to any other graphics library. 
+
+## Final Result:
 
 Here is the final result: [Meteorite Landings](https://cvalenzuela.github.io/Mappa/tutorials/basic/)
 
@@ -258,7 +260,7 @@ var options = {
   lat: 0,
   lng: 0,
   zoom: 4,
-  style: "http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
+  style: "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png"
 }
 
 function setup(){
