@@ -1,0 +1,597 @@
+<html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Tutorial: Taxi Routes · Mappa.js</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="Tutorial: Taxi Routes · Mappa.js"/><meta property="og:type" content="website"/><meta property="og:url" content="https://cvalenzuela.github.io/Mappa/index.html"/><meta property="og:description" content="This tutorial is based on the [taxitracker](https://github.com/chriswhong/nyctaxi) data visualization. The idea is to create a sketch that will show the route of a taxi during a day in New York. I will try to keep things as simple as possible in order to show how to use maps and p5.js to create visualizations."/><link rel="shortcut icon" href="/Mappa/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/dracula.min.css"/><script type="text/javascript" src="/Mappa/js/stars.js"></script><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/p5.min.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/addons/p5.dom.min.js"></script><script type="text/javascript" src="https://unpkg.com/mappa-mundi/dist/mappa.min.js"></script><link rel="stylesheet" href="/Mappa/css/main.css"/></head><body class="sideNavVisible"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/Mappa/"><img class="logo" src="/Mappa/img/logo.png"/><h2 class="headerTitle">Mappa.js</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li><a href="/Mappa/docs/getting-started.html" target="_self">Getting Started</a></li><li><a href="/Mappa/docs/api-mappa.html" target="_self">API Reference</a></li><li><a href="/Mappa/docs/examples-google-maps.html" target="_self">Examples</a></li><li><a href="/Mappa/docs/introduction-to-web-maps.html" target="_self">Tutorials</a></li><li><a href="https://github.com/cvalenzuela/Mappa" target="_self">Star</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Tutorials</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>Getting Started</h3><ul><li class="navListItem"><a class="navItem" href="/Mappa/docs/getting-started.html">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/simple-map.html">Simple Map</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/tldr-p5.html">tl;dr with p5.js</a></li></ul></div><div class="navGroup navGroupActive"><h3>Examples</h3><ul><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-google-maps.html">Google Maps</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-mapbox.html">Mapbox</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-mapboxgl.html">Mapboxgl</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-leaflet.html">Leaflet</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-p5-in-webgl.html">P5.js in WebGL Mode</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-three-js.html">Three.js</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-raw-canvas.html">Raw Canvas</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-google-maps-static.html">Static Google Maps</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-mapbox-static.html">Static Mapbox</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-mapquest-static.html">Static Mapquest</a></li></ul></div><div class="navGroup navGroupActive"><h3>Tutorials</h3><ul><li class="navListItem"><a class="navItem" href="/Mappa/docs/introduction-to-web-maps.html">Introduction to Web Maps</a></li><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/Mappa/docs/taxi-routes.html">Taxi Routes</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/animated-meteorite-landings.html">Animated Meteorite Landings</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/zipdecode-with-static-maps.html">Zipdecode with Static Maps</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/zipdecode-with-tile-maps.html">Zipdecode with Tie Maps</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/co2-pollution-map.html">CO2 Pollution Map</a></li></ul></div></div></section></div><script>
+          var toggler = document.getElementById('navToggler');
+          var nav = document.getElementById('docsNav');
+          toggler.onclick = function() {
+            nav.classList.toggle('docsSliderActive');
+          };
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>Tutorial: Taxi Routes</h1></header><article><div><span><p>This tutorial is based on the <a href="https://github.com/chriswhong/nyctaxi">taxitracker</a> data visualization. The idea is to create a sketch that will show the route of a taxi during a day in New York. I will try to keep things as simple as possible in order to show how to use maps and p5.js to create visualizations.</p>
+<h2><a class="anchor" aria-hidden="true" name="final-result"></a><a href="#final-result" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Final Result</h2>
+<p>You can see the final result <a href="https://cvalenzuela.github.io/Mappa/tutorials/taxiroutes/">here</a>.</p>
+<p>The code is <a href="https://github.com/cvalenzuela/Mappa/tree/master/tutorials/taxiroutes">here</a>.</p>
+<h2><a class="anchor" aria-hidden="true" name="setup"></a><a href="#setup" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Setup</h2>
+<ul>
+<li>In a new folder create an <code>index.html</code> and <code>script.js</code> files.</li>
+<li>Download <a href="https://github.com/processing/p5.js/releases/download/0.5.11/p5.js"><code>p5.js</code></a> and  <a href="https://raw.githubusercontent.com/cvalenzuela/Mappa/master/dist/mappa.js"><code>Mappa.js</code></a> and save them in a folder called <code>libraries</code></li>
+<li>Download the <a href="https://raw.githubusercontent.com/cvalenzuela/Mappa/master/tutorials/taxiroutes/data/taxiday1.geojson">data for one taxi for one day</a> and save it in a folder called <code>data</code>.</li>
+</ul>
+<p>Your folder structure should look like this:</p>
+<pre><code class="hljs css bash">root
+├── index.html
+├── script.js
+├── libraries
+│   └── p5.js
+│   └── mappa.js
+├── data
+│   └── taxiday1.geojson
+</code></pre>
+<p>*In order to run this tutorial you will need a <a href="https://github.com/processing/p5.js/wiki/Local-server">local server</a>. There are many different ways to create a <a href="https://github.com/processing/p5.js/wiki/Local-server">local server</a>. Here are some:</p>
+<p>If you use node and npm you can install <code>live-server</code>:</p>
+<pre><code class="hljs css zsh">npm install -g live-server
+</code></pre>
+<p>And then run from the root:</p>
+<pre><code class="hljs">live-<span class="hljs-keyword">server</span>
+</code></pre>
+<p>If you use python 2:</p>
+<pre><code class="hljs css zsh">python -m SimpleHTTPServer
+</code></pre>
+<p>In python 3</p>
+<pre><code class="hljs">python3 -m http<span class="hljs-selector-class">.server</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" name="indexhtml"></a><a href="#indexhtml" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>index.html</h2>
+<p>Open the <code>index.html</code> file in any text editor and add references to the libraries and to the <code>script.js</code> file. This are the only things needed in <code>index.html</code> file.</p>
+<pre><code class="hljs css html"><span class="hljs-meta">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Taxi Routes<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+
+    <span class="hljs-comment">&lt;!-- p5.js --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"libraries/p5.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+
+    <span class="hljs-comment">&lt;!-- Mappa --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"libraries/mappa.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-comment">&lt;!-- Your script --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"script.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
+
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" name="the-basics"></a><a href="#the-basics" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>The Basics</h2>
+<p>Open <code>script.js</code> and create a basic p5.js sketch:</p>
+<pre><code class="hljs css javascript"><span class="hljs-keyword">let</span> canvas;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setup</span>(<span class="hljs-params"></span>)</span>{
+  canvas = createCanvas(<span class="hljs-number">800</span>,<span class="hljs-number">700</span>);
+}
+</code></pre>
+<p>Add a Mappa instance, with Leaflet as the only argument, at the top of the sketch:</p>
+<pre><code class="hljs css javascript"><span class="hljs-keyword">const</span> mappa = <span class="hljs-keyword">new</span> Mappa(<span class="hljs-string">'Leaflet'</span>);
+</code></pre>
+<p>Create an object holding the origin, zoom and a reference to the basemap style. You can use any basemap you want. For now we will use CartoDB:</p>
+<pre><code class="hljs css javascript"><span class="hljs-keyword">const</span> options = {
+  <span class="hljs-attr">lat</span>: <span class="hljs-number">40.73447</span>,
+  <span class="hljs-attr">lng</span>: <span class="hljs-number">-74.00232</span>,
+  <span class="hljs-attr">zoom</span>: <span class="hljs-number">13</span>,
+  <span class="hljs-attr">style</span>: <span class="hljs-string">'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'</span>
+}
+</code></pre>
+<p>Create a new variable called <code>myMap</code> and inside the <code>setup</code> function initialize that variable as an instance of  <code>mappa.tileMap</code> with <code>options</code> as the only argument:</p>
+<pre><code class="hljs css javascript"><span class="hljs-keyword">let</span> myMap;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setup</span>(<span class="hljs-params"></span>)</span>{
+  canvas = createCanvas(<span class="hljs-number">800</span>,<span class="hljs-number">700</span>);
+  <span class="hljs-comment">// This will import the Leaflet library into your sketch</span>
+  <span class="hljs-comment">// and create all necessary references</span>
+  myMap = mappa.tileMap(options); 
+}
+</code></pre>
+<p>Then, overlay the canvas on to the Leaflet map:</p>
+<pre><code class="hljs css javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setup</span>(<span class="hljs-params"></span>)</span>{
+  canvas = createCanvas(<span class="hljs-number">800</span>,<span class="hljs-number">700</span>);
+  myMap = mappa.tileMap(options); 
+  myMap.overlay(canvas); <span class="hljs-comment">// Overlay the canvas on top of the map.</span>
+}
+</code></pre>
+<p>By now you should have something like this:</p>
+<pre><code class="hljs css javascript"><span class="hljs-keyword">let</span> canvas;
+<span class="hljs-keyword">let</span> myMap;
+
+<span class="hljs-keyword">const</span> options = {
+  <span class="hljs-attr">lat</span>: <span class="hljs-number">40.73447</span>,
+  <span class="hljs-attr">lng</span>: <span class="hljs-number">-74.00232</span>,
+  <span class="hljs-attr">zoom</span>: <span class="hljs-number">13</span>,
+  <span class="hljs-attr">style</span>: <span class="hljs-string">'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'</span>
+}
+
+<span class="hljs-keyword">const</span> mappa = <span class="hljs-keyword">new</span> Mappa(<span class="hljs-string">'Leaflet'</span>);
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setup</span>(<span class="hljs-params"></span>)</span>{
+  canvas = createCanvas(<span class="hljs-number">800</span>,<span class="hljs-number">700</span>);
+  myMap = mappa.tileMap(options); 
+  myMap.overlay(canvas); 
+}
+</code></pre>
+<p>If it is not already running, run your local server and open the page (something like <code>localhost:3000</code> or <code>localhost:8080</code>). You should see this:</p>
+<p><img src="/Mappa/docs/assets/img/taxi-routes/01.png" alt="black map"></p>
+<p>A black map centered in New York.</p>
+<h2><a class="anchor" aria-hidden="true" name="the-data"></a><a href="#the-data" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>The data</h2>
+<p>The data for this project is taken from the <a href="https://github.com/andresmh/nyctaxitrips">2013 NYC Taxi Trip Data</a>. This is the same data set used in the <a href="https://github.com/chriswhong/nyctaxi">taxitracker</a> data visualization. It is in <a href="http://geojson.org/">GeoJson</a> format. GeoJSON is a format for encoding a variety of geographic data structures. It looks like this:</p>
+<pre><code class="hljs css javascript">{
+  <span class="hljs-string">"type"</span>: <span class="hljs-string">"Feature"</span>,
+  <span class="hljs-string">"geometry"</span>: {
+    <span class="hljs-string">"type"</span>: <span class="hljs-string">"Point"</span>,
+    <span class="hljs-string">"coordinates"</span>: [<span class="hljs-number">125.6</span>, <span class="hljs-number">10.1</span>]
+  },
+  <span class="hljs-string">"properties"</span>: {
+    <span class="hljs-string">"name"</span>: <span class="hljs-string">"Dinagat Islands"</span>
+  }
+}
+</code></pre>
+<p>From <a href="http://geojson.org/">geojson.org</a>:</p>
+<blockquote>
+<p>GeoJSON supports the following geometry types: Point, LineString, Polygon, MultiPoint, MultiLineString, and MultiPolygon. Geometric objects with additional properties are Feature objects. Sets of features are contained by FeatureCollection objects.</p>
+</blockquote>
+<p>The actual file for the taxi routes looks like this:</p>
+<pre><code class="hljs css javascript">{
+  <span class="hljs-string">"type"</span>: <span class="hljs-string">"FeatureCollection"</span>,
+  <span class="hljs-string">"features"</span>: [{ 
+    <span class="hljs-string">"type"</span>: <span class="hljs-string">"Feature"</span>,
+    <span class="hljs-string">"properties"</span>: {
+      <span class="hljs-string">"medallion"</span>: <span class="hljs-string">"21B98CAC5B31414B9446D381D38EEC7F"</span>,
+      <span class="hljs-string">"passengers"</span>: <span class="hljs-string">"3"</span>,
+      <span class="hljs-string">"fare"</span>:<span class="hljs-string">"18"</span>,
+      <span class="hljs-string">"paymenttype"</span>:<span class="hljs-string">"CSH"</span>,
+      <span class="hljs-string">"surcharge"</span>:<span class="hljs-string">"0.5"</span>,
+      <span class="hljs-string">"mtatax"</span>:<span class="hljs-string">"0.5"</span>,
+      <span class="hljs-string">"tip"</span>:<span class="hljs-string">"0"</span>,
+      <span class="hljs-string">"tolls"</span>:<span class="hljs-string">"0"</span>,
+      <span class="hljs-string">"total"</span>:<span class="hljs-string">"19"</span>,
+      <span class="hljs-string">"pickuptime"</span>:<span class="hljs-string">"5/30/13 0:01"</span>,
+      <span class="hljs-string">"dropofftime"</span>:<span class="hljs-string">"5/30/13 0:18"</span>,
+      <span class="hljs-string">"nextpickuptime"</span>:<span class="hljs-string">"5/30/13 1:45"</span>,
+      <span class="hljs-string">"key"</span>:<span class="hljs-string">"0"</span>,
+      <span class="hljs-string">"hasfare"</span>:<span class="hljs-literal">true</span>
+      },
+    <span class="hljs-string">"geometry"</span>: {
+      <span class="hljs-string">"type"</span>: <span class="hljs-string">"LineString"</span>,
+      <span class="hljs-string">"coordinates"</span>:[
+        [<span class="hljs-number">-74.00232</span>,<span class="hljs-number">40.73447</span>], 
+        [<span class="hljs-number">-74.0024</span>,<span class="hljs-number">40.73433</span>], 
+        [<span class="hljs-number">-74.00278</span>,<span class="hljs-number">40.7337</span>], 
+        (...) 
+      ]
+    }
+  } 
+  (...)
+  ]
+}
+
+</code></pre>
+<p>You can see it contains a lot of information about the trips a taxi makes in a day in New York. There is one object for every trip recorded with information about the fare, the number of passengers, pick-up time and location among other things. For now, we are just interested in using the coordinates of the taxi during its different trips. So for each trip in the <code>features</code> array we need the <code>geometry.coordinates</code> array. This contains a series of arrays with the latitude and longitude position we need.</p>
+<p>Load the data add on p5.js's <code>preload</code> function (before your <code>setup</code>) and load the file as a JSON file:</p>
+<pre><code class="hljs css javascript"><span class="hljs-keyword">var</span> data;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">preload</span>(<span class="hljs-params"></span>)</span>{
+  data = loadJSON(<span class="hljs-string">'./data/taxiday1.geojson'</span>);
+}
+
+<span class="hljs-comment">// ...</span>
+</code></pre>
+<p>Since we are interested in using the latitude and longitude of the file we can loop over the array of <code>features</code> and then loop again over the array of <code>coordinates</code> in the <code>geometry</code> object and then again over each array containing the latitude and longitude. Fortunately, there is a Mappa method to get all properties of a GeoJSON file and store them in an variable.</p>
+<p>Create a variable called <code>tripsCoordinates</code> and initialized it to an array of all <code>LineString</code> types in your <code>setup</code>.</p>
+<pre><code class="hljs css javascript"><span class="hljs-keyword">let</span> tripsCoordinates;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setup</span>(<span class="hljs-params"></span>)</span>{
+  <span class="hljs-comment">// ...</span>
+
+  tripsCoordinates = myMap.geoJSON(data, <span class="hljs-string">"LineString"</span>);
+}
+</code></pre>
+<p>This will create an array holding one array for each trip. Each trip is represented by an series of latitude and longitude coordinates.</p>
+<pre><code class="hljs css javascript">[<span class="hljs-built_in">Array</span>(<span class="hljs-number">220</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">188</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">165</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">178</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">564</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">225</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">90</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">114</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">150</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">9</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">62</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">5</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">168</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">37</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">27</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">211</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">28</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">159</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">89</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">3</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">119</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">9</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">177</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">11</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">25</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">26</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">30</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">4</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">84</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">6</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">13</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">26</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">60</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">6</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">64</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">7</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">31</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">4</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">10</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">4</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">153</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">17</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">15</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">13</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">264</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">8</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">110</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">9</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">104</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">144</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">41</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">39</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">181</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">55</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">42</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">10</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">230</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">43</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">215</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">2</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">102</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">19</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">52</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">2</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">82</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">42</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">19</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">17</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">79</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">13</span>)]
+</code></pre>
+<p>For example, the 10th trip holds 9 tracked positions:</p>
+<pre><code class="hljs css javascript">[<span class="hljs-built_in">Array</span>(<span class="hljs-number">2</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">2</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">2</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">2</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">2</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">2</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">2</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">2</span>), <span class="hljs-built_in">Array</span>(<span class="hljs-number">2</span>)]
+</code></pre>
+<p>Where each position is a latitude and longitude. Here's the first location for the 10th trip:</p>
+<pre><code class="hljs css javascript">[<span class="hljs-number">-73.98021</span>, <span class="hljs-number">40.74747</span>]
+</code></pre>
+<p>There are many ways to loop over this array of locations. Here, we'll create a new variable holding just all locations together.</p>
+<p>Create a new empty array called <code>allCoordinates</code> and in your <code>setup</code> loop through every object in the <code>tripsCoordinates</code> array:</p>
+<pre><code class="hljs css javascript"><span class="hljs-keyword">let</span> allCoordinates = [];
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setup</span>(<span class="hljs-params"></span>)</span>{
+  <span class="hljs-comment">// ...</span>
+
+  tripsCoordinates.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">trip</span>)</span>{
+    trip.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">coordinate</span>)</span>{
+      allCoordinates.push(coordinate)
+    })
+  });
+}
+</code></pre>
+<p>Now <code>allCoordinates</code> holds 5530 pairs of latitudes and longitudes describing the taxi's whole route in one day. The first element is the longitude and the second is the latitude</p>
+<pre><code class="hljs css javascript">(<span class="hljs-number">5530</span>) [[<span class="hljs-number">-74.00232</span>, <span class="hljs-number">40.73447</span>], [<span class="hljs-number">-74.0024</span>, <span class="hljs-number">40.73433</span>], (...) ]
+</code></pre>
+<p>Lets display the data! In your <code>draw</code> function draw a circle for every location in the <code>allCoordinates</code> array. Use the <code>latLngtoPixel</code> method to transform latitude and longitude positions into pixel positions.</p>
+<pre><code class="hljs css javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">draw</span>(<span class="hljs-params"></span>)</span>{
+  clear() <span class="hljs-comment">// Clear the canvas at every frame so we see the map when moved.</span>
+  noStroke();
+  fill(<span class="hljs-number">255</span>);
+  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; allCoordinates.length; i++){
+    <span class="hljs-comment">// The first element is the latitude and the second the longitude</span>
+    <span class="hljs-keyword">let</span> pos = myMap.latLngToPixel(allCoordinates[i][<span class="hljs-number">1</span>], allCoordinates[i][<span class="hljs-number">0</span>]) 
+    ellipse(pos.x, pos.y, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>);
+  }
+}
+</code></pre>
+<p>You should have something like this until now:</p>
+<pre><code class="hljs css javascript"><span class="hljs-keyword">let</span> canvas;
+<span class="hljs-keyword">let</span> myMap;
+<span class="hljs-keyword">let</span> tripsCoordinates;
+<span class="hljs-keyword">let</span> allCoordinates = [];
+<span class="hljs-keyword">let</span> data;
+
+<span class="hljs-keyword">const</span> options = {
+  <span class="hljs-attr">lat</span>: <span class="hljs-number">40.73447</span>,
+  <span class="hljs-attr">lng</span>: <span class="hljs-number">-74.00232</span>,
+  <span class="hljs-attr">zoom</span>: <span class="hljs-number">13</span>,
+  <span class="hljs-attr">style</span>: <span class="hljs-string">'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'</span>
+}
+<span class="hljs-keyword">const</span> mappa = <span class="hljs-keyword">new</span> Mappa(<span class="hljs-string">'Leaflet'</span>);
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">preload</span>(<span class="hljs-params"></span>) </span>{
+  data = loadJSON(<span class="hljs-string">'./data/taxiday1.geojson'</span>);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setup</span>(<span class="hljs-params"></span>) </span>{
+  canvas = createCanvas(<span class="hljs-number">800</span>, <span class="hljs-number">700</span>);
+  myMap = mappa.tileMap(options);
+  myMap.overlay(canvas); 
+  tripsCoordinates = myMap.geoJSON(data, <span class="hljs-string">"LineString"</span>);
+
+  tripsCoordinates.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">trip</span>) </span>{
+    trip.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">coordinate</span>) </span>{
+        allCoordinates.push(coordinate)
+      })
+  });
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">draw</span>(<span class="hljs-params"></span>)</span>{
+  clear() 
+  noStroke();
+  fill(<span class="hljs-number">255</span>);
+  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; allCoordinates.length; i++){
+    <span class="hljs-keyword">let</span> pos = myMap.latLngToPixel(allCoordinates[i][<span class="hljs-number">1</span>], allCoordinates[i][<span class="hljs-number">0</span>])
+    ellipse(pos.x, pos.y, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>);
+  }
+}
+</code></pre>
+<p>This will show a map where you can move and zoom and see all of the taxi's registered positions overlay on the map:</p>
+<p><img src="/Mappa/docs/assets/img/taxi-routes/02.png" alt="02"></p>
+<p>One thing you can notice is that this may get a little bit slow after a while. This is because the sketch is computing 5530 arrays every frame, 60FPS. Since we still want to keep the dots synchronized to the map, we can just compute them every time the map moves and not every frame. For that we can use the <code>onChange</code> method.</p>
+<p>Create a new function called <code>drawPoints</code> and move the loop to visualize the dots from <code>draw</code> to <code>drawPoints</code>:</p>
+<pre><code class="hljs css javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">drawPoints</span>(<span class="hljs-params"></span>)</span>{
+  clear() 
+  noStroke();
+  fill(<span class="hljs-number">255</span>);
+  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; allCoordinates.length; i++){
+    <span class="hljs-keyword">let</span> pos = myMap.latLngToPixel(allCoordinates[i][<span class="hljs-number">1</span>], allCoordinates[i][<span class="hljs-number">0</span>])
+    ellipse(pos.x, pos.y, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>);
+  }
+}
+</code></pre>
+<p>And in the <code>setup</code> function, link it to the map:</p>
+<pre><code class="hljs css javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setup</span>(<span class="hljs-params"></span>)</span>{
+  <span class="hljs-comment">// ...</span>
+
+  myMap.onChange(drawPoints)
+}
+</code></pre>
+<p>Now it will run more smoothly.</p>
+<h2><a class="anchor" aria-hidden="true" name="moving-the-taxi"></a><a href="#moving-the-taxi" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Moving the Taxi</h2>
+<p>We now have all we need to animate the taxi route. So far the sketch looks like this:</p>
+<pre><code class="hljs css javascript"><span class="hljs-keyword">let</span> canvas;
+<span class="hljs-keyword">let</span> myMap;
+<span class="hljs-keyword">let</span> tripsCoordinates;
+<span class="hljs-keyword">let</span> allCoordinates = [];
+<span class="hljs-keyword">let</span> data;
+
+<span class="hljs-keyword">const</span> options = {
+  <span class="hljs-attr">lat</span>: <span class="hljs-number">40.73447</span>,
+  <span class="hljs-attr">lng</span>: <span class="hljs-number">-74.00232</span>,
+  <span class="hljs-attr">zoom</span>: <span class="hljs-number">13</span>,
+  <span class="hljs-attr">style</span>: <span class="hljs-string">'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'</span>
+}
+
+<span class="hljs-keyword">const</span> mappa = <span class="hljs-keyword">new</span> Mappa(<span class="hljs-string">'Leaflet'</span>);
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">preload</span>(<span class="hljs-params"></span>) </span>{
+  data = loadJSON(<span class="hljs-string">'./data/taxiday1.geojson'</span>);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setup</span>(<span class="hljs-params"></span>) </span>{
+  canvas = createCanvas(<span class="hljs-number">800</span>, <span class="hljs-number">700</span>);
+  myMap = mappa.tileMap(options);
+  myMap.overlay(canvas); 
+  tripsCoordinates = myMap.geoJSON(data, <span class="hljs-string">"LineString"</span>);
+
+  tripsCoordinates.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">trip</span>) </span>{
+    trip.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">coordinate</span>) </span>{
+        allCoordinates.push(coordinate)
+      })
+  });
+  myMap.onChange(drawPoints);
+}
+
+<span class="hljs-comment">// We are not using the draw function for now</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">draw</span>(<span class="hljs-params"></span>)</span>{
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">drawPoints</span>(<span class="hljs-params"></span>)</span>{
+  clear() 
+  noStroke();
+  fill(<span class="hljs-number">255</span>);
+  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; allCoordinates.length; i++){
+    <span class="hljs-keyword">let</span> pos = myMap.latLngToPixel(allCoordinates[i][<span class="hljs-number">1</span>], allCoordinates[i][<span class="hljs-number">0</span>])
+    ellipse(pos.x, pos.y, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>);
+  }
+}
+</code></pre>
+<p>In order to move the taxi over each position we need to create a couple of new variables.</p>
+<p>At the top of your sketch add the following:</p>
+<pre><code class="hljs css javascript"><span class="hljs-comment">// This will allow to move from one position to another</span>
+<span class="hljs-keyword">let</span> delta = <span class="hljs-number">0</span>;
+<span class="hljs-comment">// The current coordinate in the allCoordinates array </span>
+<span class="hljs-comment">// that will tell the origin and destination</span>
+<span class="hljs-keyword">let</span> coordinate = <span class="hljs-number">0</span>;
+
+<span class="hljs-comment">// Pixel position of the origin</span>
+<span class="hljs-keyword">let</span> origin;
+<span class="hljs-comment">// Vector representation of the origin</span>
+<span class="hljs-keyword">let</span> originVector;
+<span class="hljs-comment">// Pixel position of the destination</span>
+<span class="hljs-keyword">let</span> destination;
+<span class="hljs-comment">// Vector representation of the destination</span>
+<span class="hljs-keyword">let</span> destinationVector;
+<span class="hljs-comment">// The current position of the taxi</span>
+<span class="hljs-keyword">let</span> taxiPosition;
+
+<span class="hljs-comment">// ...</span>
+
+</code></pre>
+<p>We are going to transform all origins and destinations of the taxi into a <a href="https://p5js.org/reference/#/p5.Vector">Vector</a> and calculate the distance between the two with <a href="https://p5js.org/reference/#/p5.Vector/lerp">lerp</a>. The taxi will move from one position(origin with x1, y1) to the next position(destination with x2,y2) in the array. <a href="https://p5js.org/reference/#/p5.Vector/lerp">Lerp</a> will return a linear interpolation between this two. Every destination, besides the first one, will become an origin for the next one.</p>
+<p>First, comment the line to visualize all the positions:</p>
+<pre><code class="hljs css javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setup</span>(<span class="hljs-params"></span>)</span>{
+  <span class="hljs-comment">// ...</span>
+  
+  <span class="hljs-comment">//myMap.onChange(drawPoints);</span>
+}
+</code></pre>
+<p>Now, inside the <code>draw</code> loop add the following:</p>
+<pre><code class="hljs css javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">draw</span>(<span class="hljs-params"></span>) </span>{
+  clear(); <span class="hljs-comment">// Clear the canvas at every frame</span>
+  <span class="hljs-keyword">if</span>(delta &lt; <span class="hljs-number">1</span>){
+    <span class="hljs-comment">// Delta holds the current distance between the origin and the destination. </span>
+    <span class="hljs-comment">// 0 means is all the way in the origin and 1 that it's in the destination. </span>
+    <span class="hljs-comment">// We'll increase this value by 0.2 each frame.</span>
+    delta += <span class="hljs-number">0.2</span>; 
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-comment">// Reset the value once it hits the destination</span>
+    delta = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// Move one coordinate in the allCoordinates array.</span>
+    coordinate ++;
+  }
+
+  <span class="hljs-comment">// Get the Lat/Lng position of the origin and </span>
+  <span class="hljs-comment">// transform it into pixel position at every frame</span>
+  origin = myMap.latLngToPixel(allCoordinates[coordinate][<span class="hljs-number">1</span>], allCoordinates[coordinate][<span class="hljs-number">0</span>]); 
+
+  <span class="hljs-comment">// A vector representation of the origin. Holds x and y.</span>
+  originVector = createVector(origin.x, origin.y);
+
+  <span class="hljs-comment">// Get the Lat/Lng position of the destination and </span>
+  <span class="hljs-comment">// transform it into pixel position at every frame. </span>
+  <span class="hljs-comment">// The destination is one element in front of the current coordinate</span>
+  destination = myMap.latLngToPixel(allCoordinates[coordinate + <span class="hljs-number">1</span>][<span class="hljs-number">1</span>], allCoordinates[coordinate + <span class="hljs-number">1</span>][<span class="hljs-number">0</span>]); 
+
+  <span class="hljs-comment">// A vector representation of the destination.</span>
+  destinationVector = createVector(destination.x, destination.y);  Holds x and y
+
+  <span class="hljs-comment">// The current position of the taxi will be determined</span>
+  <span class="hljs-comment">// by the distance between the origin and the </span>
+  <span class="hljs-comment">// destination that delta contains.</span>
+  position = originVector.lerp(destinationVector, delta); 
+  
+  fill(<span class="hljs-number">255</span>,<span class="hljs-number">255</span>,<span class="hljs-number">0</span>);
+  <span class="hljs-comment">// Draw the taxi in the current position</span>
+  ellipse(position.x, position.y, <span class="hljs-number">7</span>, <span class="hljs-number">7</span>);
+}
+
+</code></pre>
+<p>Your code should look like this:</p>
+<pre><code class="hljs css javascript"><span class="hljs-keyword">let</span> canvas;
+<span class="hljs-keyword">let</span> myMap;
+<span class="hljs-keyword">let</span> tripsCoordinates;
+<span class="hljs-keyword">let</span> allCoordinates = [];
+<span class="hljs-keyword">let</span> data;
+
+<span class="hljs-keyword">let</span> delta = <span class="hljs-number">0</span>; 
+<span class="hljs-keyword">let</span> coordinate = <span class="hljs-number">0</span>; 
+
+<span class="hljs-keyword">let</span> origin; 
+<span class="hljs-keyword">let</span> originVector;  
+<span class="hljs-keyword">let</span> destination; 
+<span class="hljs-keyword">let</span> destinationVector;
+
+<span class="hljs-keyword">let</span> taxiPosition;
+
+<span class="hljs-keyword">const</span> options = {
+  <span class="hljs-attr">lat</span>: <span class="hljs-number">40.73447</span>,
+  <span class="hljs-attr">lng</span>: <span class="hljs-number">-74.00232</span>,
+  <span class="hljs-attr">zoom</span>: <span class="hljs-number">13</span>,
+  <span class="hljs-attr">style</span>: <span class="hljs-string">'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'</span>
+}
+<span class="hljs-keyword">const</span> mappa = <span class="hljs-keyword">new</span> Mappa(<span class="hljs-string">'Leaflet'</span>);
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">preload</span>(<span class="hljs-params"></span>) </span>{
+  data = loadJSON(<span class="hljs-string">'./data/taxiday1.geojson'</span>);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setup</span>(<span class="hljs-params"></span>) </span>{
+  canvas = createCanvas(<span class="hljs-number">800</span>, <span class="hljs-number">700</span>);
+  myMap = mappa.tileMap(options);
+  myMap.overlay(canvas); 
+  tripsCoordinates = myMap.geoJSON(data, <span class="hljs-string">"LineString"</span>);
+
+  tripsCoordinates.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">trip</span>) </span>{
+    trip.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">coordinate</span>) </span>{
+        allCoordinates.push(coordinate)
+      })
+  });
+
+  <span class="hljs-comment">//myMap.onChange(drawPoints);</span>
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">draw</span>(<span class="hljs-params"></span>)</span>{
+  clear();
+  <span class="hljs-keyword">if</span>(delta &lt; <span class="hljs-number">1</span>){
+    delta += <span class="hljs-number">0.2</span>; 
+  } <span class="hljs-keyword">else</span> {
+    delta = <span class="hljs-number">0</span>; 
+    coordinate ++; 
+  }
+
+  origin = myMap.latLngToPixel(allCoordinates[coordinate][<span class="hljs-number">1</span>], allCoordinates[coordinate][<span class="hljs-number">0</span>]); 
+  originVector = createVector(origin.x, origin.y); 
+  destination = myMap.latLngToPixel(allCoordinates[coordinate + <span class="hljs-number">1</span>][<span class="hljs-number">1</span>], allCoordinates[coordinate + <span class="hljs-number">1</span>][<span class="hljs-number">0</span>]);  
+  destinationVector = createVector(destination.x, destination.y);
+
+  taxiPosition = originVector.lerp(destinationVector, delta);
+  fill(<span class="hljs-number">255</span>,<span class="hljs-number">255</span>,<span class="hljs-number">0</span>);
+  ellipse(taxiPosition.x, taxiPosition.y, <span class="hljs-number">7</span>, <span class="hljs-number">7</span>);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">drawPoints</span>(<span class="hljs-params"></span>)</span>{
+  clear() 
+  noStroke();
+  fill(<span class="hljs-number">255</span>);
+  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; allCoordinates.length; i++){
+    <span class="hljs-keyword">let</span> pos = myMap.latLngToPixel(allCoordinates[i][<span class="hljs-number">1</span>], allCoordinates[i][<span class="hljs-number">0</span>])
+    ellipse(pos.x, pos.y, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>);
+  }
+}
+</code></pre>
+<p>And the output should look like this:</p>
+<p><img src="/Mappa/docs/assets/img/taxi-routes/03.gif" alt="03"></p>
+<p>Now lets add a trail for the taxi.</p>
+<pre><code class="hljs css javascript">
+<span class="hljs-keyword">let</span> canvas;
+<span class="hljs-keyword">let</span> myMap;
+<span class="hljs-keyword">let</span> tripsCoordinates;
+<span class="hljs-keyword">let</span> allCoordinates = [];
+<span class="hljs-keyword">let</span> data;
+
+<span class="hljs-keyword">let</span> delta = <span class="hljs-number">0</span>; 
+<span class="hljs-keyword">let</span> coordinate = <span class="hljs-number">0</span>; 
+
+<span class="hljs-keyword">let</span> origin; 
+<span class="hljs-keyword">let</span> originVector;  
+<span class="hljs-keyword">let</span> destination; 
+<span class="hljs-keyword">let</span> destinationVector;
+
+<span class="hljs-keyword">let</span> taxiPosition;
+
+<span class="hljs-keyword">let</span> visitedRoutes = []; <span class="hljs-comment">// A new array to hold all visited positions</span>
+
+<span class="hljs-keyword">const</span> options = {
+  <span class="hljs-attr">lat</span>: <span class="hljs-number">40.73447</span>,
+  <span class="hljs-attr">lng</span>: <span class="hljs-number">-74.00232</span>,
+  <span class="hljs-attr">zoom</span>: <span class="hljs-number">13</span>,
+  <span class="hljs-attr">style</span>: <span class="hljs-string">'http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'</span>
+}
+<span class="hljs-keyword">const</span> mappa = <span class="hljs-keyword">new</span> Mappa(<span class="hljs-string">'Leaflet'</span>);
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">preload</span>(<span class="hljs-params"></span>) </span>{
+  data = loadJSON(<span class="hljs-string">'./data/taxiday1.geojson'</span>);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setup</span>(<span class="hljs-params"></span>) </span>{
+  canvas = createCanvas(<span class="hljs-number">800</span>, <span class="hljs-number">700</span>);
+  myMap = mappa.tileMap(options);
+  myMap.overlay(canvas); 
+  tripsCoordinates = myMap.geoJSON(data, <span class="hljs-string">"LineString"</span>);
+
+  tripsCoordinates.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">trip</span>) </span>{
+    trip.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">coordinate</span>) </span>{
+        allCoordinates.push(coordinate)
+      })
+  });
+  <span class="hljs-comment">//myMap.onChange(drawPoints);</span>
+
+  <span class="hljs-comment">// Every time the map is zoomed or moved update the route</span>
+  myMap.onChange(drawRoute); 
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">draw</span>(<span class="hljs-params"></span>)</span>{
+  <span class="hljs-comment">// clear() can be commented since drawRoute() will handle clearing the canvas</span>
+  <span class="hljs-comment">// clear();</span>
+
+  <span class="hljs-keyword">if</span>(delta &lt; <span class="hljs-number">1</span>){
+    delta += <span class="hljs-number">0.2</span>; 
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-comment">// Once it has arrived at its destination, add the origin as a visited location</span>
+    visitedRoutes.push(allCoordinates[coordinate]) 
+    delta = <span class="hljs-number">0</span>; 
+    coordinate ++;
+    <span class="hljs-comment">// Call the drawRoute to update the route</span>
+    drawRoute(); 
+  }
+
+  origin = myMap.latLngToPixel(allCoordinates[coordinate][<span class="hljs-number">1</span>], allCoordinates[coordinate][<span class="hljs-number">0</span>]); 
+  originVector = createVector(origin.x, origin.y); 
+  destination = myMap.latLngToPixel(allCoordinates[coordinate + <span class="hljs-number">1</span>][<span class="hljs-number">1</span>], allCoordinates[coordinate + <span class="hljs-number">1</span>][<span class="hljs-number">0</span>]);  
+  destinationVector = createVector(destination.x, destination.y);
+
+  taxiPosition = originVector.lerp(destinationVector, delta);
+
+  <span class="hljs-comment">// remove the stroke from the route</span>
+  noStroke();
+  fill(<span class="hljs-number">255</span>,<span class="hljs-number">255</span>,<span class="hljs-number">0</span>);
+  ellipse(taxiPosition.x, taxiPosition.y, <span class="hljs-number">7</span>, <span class="hljs-number">7</span>);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">drawPoints</span>(<span class="hljs-params"></span>)</span>{
+  clear() 
+  noStroke();
+  fill(<span class="hljs-number">255</span>);
+  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; allCoordinates.length; i++){
+    <span class="hljs-keyword">var</span> pos = myMap.latLngToPixel(allCoordinates[i][<span class="hljs-number">1</span>], allCoordinates[i][<span class="hljs-number">0</span>])
+    ellipse(pos.x, pos.y, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>);
+  }
+}
+
+<span class="hljs-comment">// This functions draws a line with n-vertices where n = visited routes;</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">drawRoute</span>(<span class="hljs-params"></span>)</span>{
+  clear();
+  <span class="hljs-comment">// stroke color and width to see the route line</span>
+  stroke(<span class="hljs-number">255</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>, <span class="hljs-number">40</span>);
+  strokeWeight(<span class="hljs-number">5</span>);
+  <span class="hljs-keyword">if</span>(visitedRoutes.length &gt; <span class="hljs-number">0</span>){
+    noFill();
+    beginShape();
+    visitedRoutes.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
+        <span class="hljs-keyword">var</span> pos = myMap.latLngToPixel(e[<span class="hljs-number">1</span>], e[<span class="hljs-number">0</span>]);
+        vertex(pos.x, pos.y);
+    })
+    endShape()
+  }
+}
+
+</code></pre>
+<p>And you should get something like this:</p>
+<p><img src="/Mappa/docs/assets/img/taxi-routes/04.gif" alt="04"></p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="introduction-to-web-maps.html">← Introduction to Web Maps</a><a class="docs-next button" href="animated-meteorite-landings.html">Animated Meteorite Landings →</a></div></div></div></div></div></body></html>
