@@ -45,7 +45,7 @@ For tile maps, [Google Maps](https://developers.google.com/maps/documentation/ja
 ```javascript
 
 // Your Mapboxgl API Key
-var key = 'abcd'
+var key = 'abcd' 
 
 // Create a new Mappa instance using Mapboxgl.
 var mappa = new Mappa('Mapboxgl', key);

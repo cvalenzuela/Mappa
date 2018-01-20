@@ -1,0 +1,47 @@
+{
+  "examples": {
+    "Getting Started": [
+      "getting-started",
+      "simple-map",
+      "tldr-p5"
+    ],
+    "Examples": [
+      "examples-google-maps",
+      "examples-mapbox",
+      "examples-mapboxgl",
+      "examples-leaflet",
+      "examples-p5-in-webgl",
+      "examples-three-js",
+      "examples-raw-canvas",
+      "examples-google-maps-static",
+      "examples-mapbox-static",
+      "examples-mapquest-static"
+    ],
+    "Tutorials": [
+      "introduction-to-web-maps",
+      "taxi-routes",
+      "animated-meteorite-landings",
+      "zipdecode-with-static-maps",
+      "zipdecode-with-tile-maps",
+      "co2-pollution-map"
+    ]
+  },
+  "docs": {
+    "Constructor": [
+      "api-mappa"
+    ],
+    "Methods": [
+      "api-staticMap",
+      "api-tileMap",
+      "api-overlay",
+      "api-latLngToPixel",
+      "api-pixelToLatlng",
+      "api-zoom",
+      "api-onChange",
+      "api-geoJSON"
+    ],
+    "Properties": [
+      "api-provider"
+    ]
+  }
+}
