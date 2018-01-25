@@ -1,8 +1,147 @@
-<html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Animated Meteorite Landings · Mappa.js</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="Animated Meteorite Landings · Mappa.js"/><meta property="og:type" content="website"/><meta property="og:url" content="https://cvalenzuela.github.io/Mappa/index.html"/><meta property="og:description" content="Animated Meteorite Landings"/><link rel="shortcut icon" href="/Mappa/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/dracula.min.css"/><script type="text/javascript" src="/Mappa/js/stars.js"></script><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/p5.min.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/addons/p5.dom.min.js"></script><script type="text/javascript" src="https://unpkg.com/mappa-mundi/dist/mappa.min.js"></script><link rel="stylesheet" href="/Mappa/css/main.css"/></head><body class="sideNavVisible"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/Mappa/"><img class="logo" src="/Mappa/img/logo.png"/><h2 class="headerTitle">Mappa.js</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li><a href="/Mappa/docs/getting-started.html" target="_self">Getting Started</a></li><li><a href="/Mappa/docs/api-mappa.html" target="_self">API Reference</a></li><li><a href="/Mappa/docs/examples-google-maps.html" target="_self">Examples</a></li><li><a href="/Mappa/docs/introduction-to-web-maps.html" target="_self">Tutorials</a></li><li><a href="https://github.com/cvalenzuela/Mappa" target="_self">Star</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Tutorials</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>Getting Started</h3><ul><li class="navListItem"><a class="navItem" href="/Mappa/docs/getting-started.html">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/simple-map.html">Simple Map</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/tldr-p5.html">tl;dr with p5.js</a></li></ul></div><div class="navGroup navGroupActive"><h3>Examples</h3><ul><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-google-maps.html">Google Maps</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-mapbox.html">Mapbox</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-mapboxgl.html">Mapboxgl</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-leaflet.html">Leaflet</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-p5-in-webgl.html">P5.js in WebGL Mode</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-three-js.html">Three.js</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-raw-canvas.html">Raw Canvas</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-google-maps-static.html">Static Google Maps</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-mapbox-static.html">Static Mapbox</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-mapquest-static.html">Static Mapquest</a></li></ul></div><div class="navGroup navGroupActive"><h3>Tutorials</h3><ul><li class="navListItem"><a class="navItem" href="/Mappa/docs/introduction-to-web-maps.html">Introduction to Web Maps</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/taxi-routes.html">Taxi Routes</a></li><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/Mappa/docs/animated-meteorite-landings.html">Animated Meteorite Landings</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/zipdecode-with-static-maps.html">Zipdecode with Static Maps</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/zipdecode-with-tile-maps.html">Zipdecode with Tie Maps</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/co2-pollution-map.html">CO2 Pollution Map</a></li></ul></div></div></section></div><script>
+<html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Animated Meteorite Landings · Mappa.js</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="Animated Meteorite Landings · Mappa.js"/><meta property="og:type" content="website"/><meta property="og:url" content="https://cvalenzuela.github.io/Mappa/index.html"/><meta property="og:description" content="This tutorial will go over the basics of building a simple web page using [Mappa](https://github.com/cvalenzuela/Mappa), [p5.js](https://github.com/processing/p5.js) and [Leaflet](http://leafletjs.com/) to visualize meteorite landings."/><link rel="shortcut icon" href="/Mappa/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/dracula.min.css"/><script type="text/javascript" src="/Mappa/js/stars.js"></script><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/p5.min.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/addons/p5.dom.min.js"></script><script type="text/javascript" src="/Mappa/js/mappa.min.js"></script><link rel="stylesheet" href="/Mappa/css/main.css"/></head><body class="sideNavVisible"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/Mappa/"><img class="logo" src="/Mappa/img/logo.png"/><h2 class="headerTitle">Mappa.js</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li><a href="/Mappa/docs/getting-started.html" target="_self">Getting Started</a></li><li><a href="/Mappa/docs/api-mappa.html" target="_self">API Reference</a></li><li><a href="/Mappa/docs/examples-google-maps.html" target="_self">Examples</a></li><li><a href="/Mappa/docs/introduction-to-web-maps.html" target="_self">Tutorials</a></li><li><a href="https://github.com/cvalenzuela/Mappa" target="_self">Star</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Tutorials</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>Getting Started</h3><ul><li class="navListItem"><a class="navItem" href="/Mappa/docs/getting-started.html">Getting Started</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/simple-map.html">Simple Map</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/using-data.html">Using Data</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/tldr-p5.html">tl;dr with p5.js</a></li></ul></div><div class="navGroup navGroupActive"><h3>Examples</h3><ul><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-google-maps.html">Google Maps</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-mapbox.html">Mapbox</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-mapboxGL.html">MapboxGL</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-leaflet.html">Leaflet</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-three-js.html">Three.js</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-raw-canvas.html">Raw Canvas</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-google-maps-static.html">Static Google Maps</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-mapbox-static.html">Static Mapbox</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/examples-mapquest-static.html">Static Mapquest</a></li></ul></div><div class="navGroup navGroupActive"><h3>Tutorials</h3><ul><li class="navListItem"><a class="navItem" href="/Mappa/docs/introduction-to-web-maps.html">Introduction to Web Maps</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/taxi-routes.html">Taxi Routes</a></li><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/Mappa/docs/animated-meteorite-landings.html">Animated Meteorite Landings</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/zipdecode-with-static-maps.html">Zipdecode with Static Maps</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/zipdecode-with-tile-maps.html">Zipdecode with Tie Maps</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/co2-pollution-map.html">CO2 Pollution Map</a></li></ul></div></div></section></div><script>
           var toggler = document.getElementById('navToggler');
           var nav = document.getElementById('docsNav');
           toggler.onclick = function() {
             nav.classList.toggle('docsSliderActive');
           };
-        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>Animated Meteorite Landings</h1></header><article><div><span><p>Animated Meteorite Landings</p>
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>Animated Meteorite Landings</h1></header><article><div><span><p>This tutorial will go over the basics of building a simple web page using <a href="https://github.com/cvalenzuela/Mappa">Mappa</a>, <a href="https://github.com/processing/p5.js">p5.js</a> and <a href="http://leafletjs.com/">Leaflet</a> to visualize meteorite landings.</p>
+<p>This tutorial uses <a href="https://github.com/processing/p5.js">p5.js</a>, but the same principles can be applied to any other graphics library.</p>
+<h2><a class="anchor" aria-hidden="true" name="final-result"></a><a href="#final-result" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Final Result:</h2>
+<div class="example">
+  <div id="canvasHolder"></div>
+  <script src="assets/scripts/examples-animated-meteorite-landings.js"></script>
+</div>
+<h2><a class="anchor" aria-hidden="true" name="setup"></a><a href="#setup" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Setup</h2>
+<p>TODO: <a href="https://github.com/cvalenzuela/mappa/issues">want to help?</a></p>
+<h2><a class="anchor" aria-hidden="true" name="code"></a><a href="#code" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Code</h2>
+<pre><code class="hljs css javascript"><span class="hljs-keyword">let</span> canvas;
+<span class="hljs-keyword">let</span> myMap;
+<span class="hljs-keyword">let</span> data;
+<span class="hljs-keyword">let</span> meteorites;
+<span class="hljs-keyword">let</span> currentMeteorite = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">let</span> white;
+<span class="hljs-keyword">let</span> orange;
+
+<span class="hljs-keyword">const</span> w = <span class="hljs-number">600</span>;
+<span class="hljs-keyword">const</span> h = <span class="hljs-number">500</span>;
+<span class="hljs-keyword">const</span> key = <span class="hljs-string">'xyz'</span>;
+
+<span class="hljs-keyword">const</span> options = {
+  <span class="hljs-attr">lat</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-attr">lng</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-attr">zoom</span>: <span class="hljs-number">1.4</span>,
+  <span class="hljs-attr">style</span>: <span class="hljs-string">'mapbox://styles/mapbox/dark-v9'</span>,
+  <span class="hljs-attr">pitch</span>: <span class="hljs-number">10</span>,
+};
+
+<span class="hljs-keyword">const</span> mappa = <span class="hljs-keyword">new</span> Mappa(<span class="hljs-string">'MapboxGL'</span>, key);
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">preload</span>(<span class="hljs-params"></span>) </span>{
+  data = loadTable(<span class="hljs-string">'assets/data/Meteorite_Landings.csv'</span>, <span class="hljs-string">'csv'</span>, <span class="hljs-string">'header'</span>);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setup</span>(<span class="hljs-params"></span>) </span>{
+  canvas = createCanvas(w, h).parent(<span class="hljs-string">'canvasHolder'</span>);
+  myMap = mappa.tileMap(options);
+  myMap.overlay(canvas); 
+
+  meteorites = <span class="hljs-keyword">new</span> MeteoriteSystem();
+  noStroke();
+  white = color(<span class="hljs-number">255</span>, <span class="hljs-number">255</span>, <span class="hljs-number">255</span>);
+  orange = color(<span class="hljs-number">255</span>, <span class="hljs-number">170</span>, <span class="hljs-number">37</span>, <span class="hljs-number">170</span>);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">draw</span>(<span class="hljs-params"></span>) </span>{
+  clear();
+  meteorites.destroyTheEarth();
+  meteorites.showLanded();
+
+  <span class="hljs-keyword">if</span> (random() &gt; <span class="hljs-number">0.7</span>) {
+    meteorites.addMeteorite(data.getString(currentMeteorite, <span class="hljs-string">'reclat'</span>), data.getString(currentMeteorite, <span class="hljs-string">'reclong'</span>), data.getString(currentMeteorite, <span class="hljs-string">'mass (g)'</span>));
+    currentMeteorite++;
+  }
+}
+
+<span class="hljs-comment">// Meteorite class</span>
+<span class="hljs-keyword">const</span> Meteorite = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">lat, lng, size</span>) </span>{
+  <span class="hljs-keyword">this</span>.origin = createVector(random(<span class="hljs-number">0</span>, w) , h + random(<span class="hljs-number">500</span>,<span class="hljs-number">1000</span>));
+  <span class="hljs-keyword">this</span>.destination =  createVector(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+  <span class="hljs-keyword">this</span>.size = map(size, <span class="hljs-number">558</span>, <span class="hljs-number">60000000</span>, <span class="hljs-number">3</span>, <span class="hljs-number">25</span>);
+  <span class="hljs-keyword">this</span>.lat = lat;
+  <span class="hljs-keyword">this</span>.lng = lng;
+  <span class="hljs-keyword">this</span>.delta = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">this</span>.trail = [];
+};
+
+Meteorite.prototype.run = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">this</span>.update();
+  <span class="hljs-keyword">this</span>.showTrail();
+  <span class="hljs-keyword">this</span>.display();
+};
+
+Meteorite.prototype.update = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+  <span class="hljs-keyword">this</span>.pixelPos = myMap.latLngToPixel(<span class="hljs-keyword">this</span>.lat, <span class="hljs-keyword">this</span>.lng);
+  <span class="hljs-keyword">this</span>.destination.x = <span class="hljs-keyword">this</span>.pixelPos.x;
+  <span class="hljs-keyword">this</span>.destination.y = <span class="hljs-keyword">this</span>.pixelPos.y;
+  <span class="hljs-keyword">this</span>.position = <span class="hljs-keyword">this</span>.origin.lerp(<span class="hljs-keyword">this</span>.destination, <span class="hljs-keyword">this</span>.delta); 
+  <span class="hljs-keyword">this</span>.delta &gt; <span class="hljs-number">0.15</span> ? <span class="hljs-keyword">this</span>.delta += <span class="hljs-number">0.05</span> : <span class="hljs-keyword">this</span>.delta += <span class="hljs-number">0.001</span>;
+};
+
+Meteorite.prototype.display = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+  strokeWeight(<span class="hljs-number">2</span>);
+  fill(orange);
+  ellipse(<span class="hljs-keyword">this</span>.position.x, <span class="hljs-keyword">this</span>.position.y, <span class="hljs-keyword">this</span>.size, <span class="hljs-keyword">this</span>.size);
+};
+
+Meteorite.prototype.showTrail = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+  <span class="hljs-keyword">this</span>.trail.push(<span class="hljs-keyword">this</span>.position.copy())
+  <span class="hljs-keyword">this</span>.trail.length &gt; <span class="hljs-number">10</span> &amp;&amp; (<span class="hljs-keyword">this</span>.trail.splice(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>));
+  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-keyword">this</span>.trail.length; i++){
+      <span class="hljs-keyword">var</span> pos = <span class="hljs-keyword">this</span>.trail[i];
+      fill(<span class="hljs-number">255</span>, <span class="hljs-number">170</span>, <span class="hljs-number">37</span>, <span class="hljs-number">100</span>);
+      ellipse(pos.x, pos.y, <span class="hljs-keyword">this</span>.size, <span class="hljs-keyword">this</span>.size);
+  }
+}
+
+Meteorite.prototype.landed = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.delta &gt; <span class="hljs-number">1</span>) {
+    <span class="hljs-comment">// Explossion</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> e = <span class="hljs-number">11</span>; e &gt; <span class="hljs-number">1</span>; e--){
+      fill(lerpColor(orange, white, e/<span class="hljs-number">11</span>));
+      ellipse(<span class="hljs-keyword">this</span>.position.x, <span class="hljs-keyword">this</span>.position.y, <span class="hljs-keyword">this</span>.size + e/<span class="hljs-number">2</span> , <span class="hljs-keyword">this</span>.size + e/<span class="hljs-number">2</span>);
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  }
+};
+
+<span class="hljs-keyword">var</span> MeteoriteSystem = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">this</span>.meteorites = [];
+  <span class="hljs-keyword">this</span>.landedMeteorites = [];
+};
+
+MeteoriteSystem.prototype.addMeteorite = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">lat, lng, size</span>) </span>{
+  <span class="hljs-keyword">this</span>.meteorites.push(<span class="hljs-keyword">new</span> Meteorite(lat, lng, size));
+};
+
+MeteoriteSystem.prototype.showLanded = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">lat, lng, size</span>) </span>{
+  <span class="hljs-keyword">this</span>.landedMeteorites.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">meteorite</span>)</span>{
+    <span class="hljs-keyword">var</span> p = myMap.latLngToPixel(meteorite[<span class="hljs-number">0</span>], meteorite[<span class="hljs-number">1</span>]);
+    fill(<span class="hljs-number">255</span>, <span class="hljs-number">170</span>, <span class="hljs-number">37</span>, <span class="hljs-number">100</span>);
+    ellipse(p.x, p.y, meteorite[<span class="hljs-number">2</span>], meteorite[<span class="hljs-number">2</span>]);
+  })
+};
+
+MeteoriteSystem.prototype.destroyTheEarth = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-keyword">this</span>.meteorites.length - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+    <span class="hljs-keyword">var</span> m = <span class="hljs-keyword">this</span>.meteorites[i];
+    m.run();
+    <span class="hljs-keyword">if</span> (m.landed()) {
+      <span class="hljs-keyword">this</span>.landedMeteorites.push([m.lat, m.lng, m.size]);
+      <span class="hljs-keyword">this</span>.meteorites.splice(i, <span class="hljs-number">1</span>);
+    }
+  }
+};
+</code></pre>
 </span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="taxi-routes.html">← Tutorial: Taxi Routes</a><a class="docs-next button" href="zipdecode-with-static-maps.html">Zipdecode with Static Maps →</a></div></div></div></div></div></body></html>
