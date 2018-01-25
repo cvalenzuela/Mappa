@@ -3,14 +3,14 @@
     "Getting Started": [
       "getting-started",
       "simple-map",
+      "using-data",
       "tldr-p5"
     ],
     "Examples": [
       "examples-google-maps",
       "examples-mapbox",
-      "examples-mapboxgl",
+      "examples-mapboxGL",
       "examples-leaflet",
-      "examples-p5-in-webgl",
       "examples-three-js",
       "examples-raw-canvas",
       "examples-google-maps-static",

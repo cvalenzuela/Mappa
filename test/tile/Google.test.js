@@ -16,7 +16,7 @@ describe('Google tile instance', function () {
     expect(googleTileMappa).to.include.all.keys('provider', 'key');
   });
   it('should return a script key with the correct google map api url', function () {
-    expect(googleTileMap.script).to.include('key='+googleTileKey);
+    expect(googleTileMap.scriptSrc).to.include('key='+googleTileKey);
   });
   it('should inject the url into the document', function () {
     var provider = !!document.getElementById('Google');

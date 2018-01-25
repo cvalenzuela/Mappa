@@ -34,8 +34,8 @@ var key = 'abcd'
 var mappa = new Mappa('Map-Provider', key);
 ```
 
-If you are new to web maps, check out the [Introduction to Web Maps](tutorials/introduction) and the [Basic Tutorial](tutorials/basic).
+If you are new to web maps, check out the [Introduction to Web Maps](tutorials-introduction-to-web-maps.md) and the [Simple Map Tutorial](tutorials-simple-map.md).
 
-For static maps, [Google Maps Static API](https://developers.google.com/maps/documentation/static-maps/), [Mapbox Static API](https://www.mapbox.com/api-documentation/#styles) and [Mapquest Static API](https://developer.mapquest.com/documentation/static-map-api/v5/) are supported.
+For tile maps you can use [Google Maps](https://developers.google.com/maps/documentation/javascript/), [Mapbox](https://www.mapbox.com/mapbox.js/api/v3.1.1/), [Mapbox GL](https://www.mapbox.com/mapbox-gl-js/api/) and [Leaflet](http://leafletjs.com/) with any set of custom tiles.
 
-For tile maps, [Google Maps](https://developers.google.com/maps/documentation/javascript/), [Mapbox](https://www.mapbox.com/mapbox.js/api/v3.1.1/), [Mapbox-GL](https://www.mapbox.com/mapbox-gl-js/api/) and [Leaflet](http://leafletjs.com/) are supported.
+For static maps, [Google Maps Static API](https://developers.google.com/maps/documentation/static-maps/), [Mapbox Static API](https://www.mapbox.com/help/define-static-api/) and [Mapquest Static API](https://developer.mapquest.com/documentation/static-map-api/v5/) are supported.

@@ -4,45 +4,23 @@ sidebar_label: onChange
 title: onChange Method
 ---
 
-Mappa consists of only one class that has multiple methods and attributes. You first need to create a `Mappa` instance in order to use it.
+This method allows to trigger a function whenever a [`tileMap()`](#tilemapoptions) has been moved or scaled. This is useful to redraw things on the canvas only when it is necessary (the map has changed) and not every frame.
 
-## Constructor
+## Usage
 
 ```javascript
-Mappa(provider, ?[key]);
+onChange(function);
 ```
-> Constructor to initialize a new Mappa instance with a defined provider and key. Returns an object.
+> Executes a function only when the map changes (ie: zoom, panned, flyTo or moved). Useful when visualizing lots of data points.
 
-*provider*: A valid map provider.
-
-*key*: Map provider API key.
-
-### Definition
-
-This is the constructor necessary to create a valid instance of Mappa. This will also add the necessary scripts and styles from the defined map provider.
-
-### Options for providers:
-  + Static Maps:
-    - `Google`
-    - `Mapbox`
-    - `Mapquest`
-
-  + Tile Maps:
-    - `Google`
-    - `Mapbox`
-    - `Mapboxgl`
-    - `Leaflet`
+`function`: A function to execute when the map is moved.
 
 ### Examples:
 ```javascript
-// Google API key.
-var key = 'abcd'
-
-// Create a new Mappa instance using Google.
-var mappa = new Mappa('Google', key);
-```
-
-```javascript
-// Create a new Mappa instance with Leaflet. No key is required
-var mappa = new Mappa('Leaflet');
+function setup(){
+  canvas = createCanvas(800, 700);
+  myMap = mappa.tileMap(options);
+  myMap.overlay(canvas);
+  myMap.onChange(myCustomFunction);
+}
 ```

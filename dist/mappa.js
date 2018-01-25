@@ -86,13 +86,16 @@ return /******/ (function(modules) { // webpackBootstrap
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.StaticMap = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); // -----------
 // Static Map
 // -----------
 
 var _parseGeoJSON = __webpack_require__(3);
+
+var _parseGeoJSON2 = _interopRequireDefault(_parseGeoJSON);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -108,8 +111,10 @@ var StaticMap = function () {
     key: 'init',
     value: function init() {
       this.options.pixels = 256;
-      !this.options.scale && (this.options.scale = 1);
-      if (this.options.scale == 2) {
+      if (!this.options.scale) {
+        this.options.scale = 1;
+      }
+      if (this.options.scale === 2) {
         this.options.pixels = 512;
       }
     }
@@ -131,17 +136,17 @@ var StaticMap = function () {
     value: function fromLngToPoint(l) {
       return this.options.pixels / Math.PI * Math.pow(2, this.options.zoom) * (l * Math.PI / 180 + Math.PI);
     }
-  }, {
+  }], [{
     key: 'geoJSON',
     value: function geoJSON() {
-      return (0, _parseGeoJSON.parseGeoJSON)(arguments.length <= 0 ? undefined : arguments[0], arguments.length <= 1 ? undefined : arguments[1]);
+      return (0, _parseGeoJSON2.default)(arguments.length <= 0 ? undefined : arguments[0], arguments.length <= 1 ? undefined : arguments[1]);
     }
   }]);
 
   return StaticMap;
 }();
 
-exports.StaticMap = StaticMap;
+exports.default = StaticMap;
 
 /***/ }),
 /* 1 */
@@ -153,19 +158,151 @@ exports.StaticMap = StaticMap;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Leaflet = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); // -----------
+// Tile Map
+// -----------
+
+var _parseGeoJSON = __webpack_require__(3);
+
+var _parseGeoJSON2 = _interopRequireDefault(_parseGeoJSON);
+
+var _GUID = __webpack_require__(13);
+
+var _GUID2 = _interopRequireDefault(_GUID);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var TileMap = function () {
+  function TileMap(options) {
+    _classCallCheck(this, TileMap);
+
+    this.options = options;
+    this.mappaDiv = null;
+    this.id = (0, _GUID2.default)();
+    this.srcLoaded = false;
+  }
+
+  _createClass(TileMap, [{
+    key: 'loadSrc',
+    value: function loadSrc() {
+      var _this = this;
+
+      var scriptPromise = new Promise(function (resolve, reject) {
+        _this.scriptTag = document.createElement('script');
+        document.body.appendChild(_this.scriptTag);
+        _this.scriptTag.id = _this.options.provider;
+        _this.scriptTag.onload = resolve;
+        _this.scriptTag.onerror = reject;
+        _this.scriptTag.async = true;
+        _this.scriptTag.src = _this.scriptSrc;
+        if (_this.styleSrc) {
+          var styleTag = document.createElement('link');
+          document.head.appendChild(styleTag);
+          styleTag.rel = 'stylesheet';
+          styleTag.href = _this.styleSrc;
+        }
+      });
+      scriptPromise.then(function () {
+        _this.srcLoaded = true;
+      });
+    }
+  }, {
+    key: 'overlay',
+    value: function overlay(canvas, callback) {
+      var _this2 = this;
+
+      if (canvas.elt !== undefined) {
+        this.canvas = canvas.elt;
+      } else {
+        this.canvas = canvas;
+      }
+      this.scriptTag.onload = function () {
+        _this2.mappaDiv = document.createElement('div');
+        if (_this2.canvas.parentElement) {
+          _this2.canvas.parentElement.appendChild(_this2.mappaDiv);
+        } else {
+          document.body.appendChild(_this2.mappaDiv);
+        }
+        _this2.mappaDiv.setAttribute('style', 'width:' + canvas.width + 'px;height:' + canvas.height + 'px;');
+        _this2.mappaDiv.setAttribute('id', _this2.id);
+        _this2.createMap();
+        if (typeof callback === 'function') {
+          callback();
+        }
+      };
+    }
+  }, {
+    key: 'latLngToPixel',
+    value: function latLngToPixel() {
+      var pos = void 0;
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      if (_typeof(args[0]) === 'object') {
+        pos = args[0];
+      } else {
+        pos = {
+          lat: Number(args[0]),
+          lng: Number(args[1])
+        };
+      }
+      return this.fromLatLngToPixel(pos);
+    }
+  }, {
+    key: 'pixelToLatLng',
+    value: function pixelToLatLng() {
+      return this.fromPointToLatLng.apply(this, arguments);
+    }
+  }, {
+    key: 'zoom',
+    value: function zoom() {
+      return Math.floor(this.getZoom());
+    }
+  }, {
+    key: 'geoJSON',
+    value: function geoJSON() {
+      return (0, _parseGeoJSON2.default)(arguments.length <= 0 ? undefined : arguments[0], arguments.length <= 1 ? undefined : arguments[1]);
+    }
+  }]);
+
+  return TileMap;
+}();
+
+exports.default = TileMap;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _TileMap2 = __webpack_require__(2);
+var _TileMap2 = __webpack_require__(1);
+
+var _TileMap3 = _interopRequireDefault(_TileMap2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // ----------- 
-// Leaflet v1.0.3 
-// Reference: http://leafletjs.com/reference-1.0.3.html 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // -----------
+// Leaflet v1.3.0
+// Reference: http://leafletjs.com/reference-1.3.0.html
 //-----------
 
 var Leaflet = function (_TileMap) {
@@ -176,9 +313,12 @@ var Leaflet = function (_TileMap) {
 
     var _this = _possibleConstructorReturn(this, (Leaflet.__proto__ || Object.getPrototypeOf(Leaflet)).call(this, options));
 
-    _this.script = 'https://unpkg.com/leaflet@1.0.3/dist/leaflet.js';
-    _this.style = 'https://unpkg.com/leaflet@1.0.3/dist/leaflet.css';
-    _this.constructor.name == 'Leaflet' && _this.init();
+    _this.scriptSrc = 'https://unpkg.com/leaflet@1.3.0/dist/leaflet.js';
+    _this.styleSrc = 'https://unpkg.com/leaflet@1.3.0/dist/leaflet.css';
+    _this.ready = false;
+    if (_this.constructor.name === 'Leaflet') {
+      _this.loadSrc();
+    }
     return _this;
   }
 
@@ -187,7 +327,7 @@ var Leaflet = function (_TileMap) {
     value: function createMap() {
       var _this2 = this;
 
-      this.map = L.map('mappa', {
+      this.map = L.map(this.id, {
         center: [this.options.lat, this.options.lng],
         zoom: this.options.zoom,
         inertia: false
@@ -212,36 +352,40 @@ var Leaflet = function (_TileMap) {
       if (this.tiles) {
         this.tiles.options.opacity = this.options.opacity;
       }
-
       L.overlay = L.Layer.extend({
         onAdd: function onAdd() {
           var overlayPane = overlay.getPane();
-          var _container = L.DomUtil.create('div', 'leaflet-layer');
-          _container.appendChild(_this3.canvas);
-          overlayPane.appendChild(_container);
+          var container = L.DomUtil.create('div', 'leaflet-layer');
+          container.appendChild(_this3.canvas);
+          overlayPane.appendChild(container);
         },
         drawLayer: function drawLayer() {}
       });
-
       var overlay = new L.overlay();
       this.map.addLayer(overlay);
 
-      var _canvas = this.canvas.getContext('webgl') || this.canvas.getContext('2d');
-
+      var cnvs = this.canvas.getContext('webgl') || this.canvas.getContext('2d');
       this.map.on('move', function () {
         var d = _this3.map.dragging._draggable;
-        d._newPos && (_canvas.canvas.style.transform = 'translate(' + -d._newPos.x + 'px,' + -d._newPos.y + 'px)');
+        if (d._newPos) {
+          cnvs.canvas.style.transform = 'translate(' + -d._newPos.x + 'px, ' + -d._newPos.y + 'px)';
+        };
       });
     }
   }, {
-    key: 'fromLatLngtoPixel',
-    value: function fromLatLngtoPixel(position) {
+    key: 'fromLatLngToPixel',
+    value: function fromLatLngToPixel(position) {
       if (this.ready) {
         var containerPoint = this.map.latLngToContainerPoint(position);
-        return { x: containerPoint.x, y: containerPoint.y };
-      } else {
-        return { x: -100, y: -100 };
+        return {
+          x: containerPoint.x,
+          y: containerPoint.y
+        };
       }
+      return {
+        x: -100,
+        y: -100
+      };
     }
   }, {
     key: 'fromPointToLatLng',
@@ -252,18 +396,19 @@ var Leaflet = function (_TileMap) {
         }
 
         return this.map.containerPointToLatLng(args);
-      } else {
-        return { lat: -100, lng: -100 };
       }
+      return {
+        lat: -100,
+        lng: -100
+      };
     }
   }, {
     key: 'getZoom',
     value: function getZoom() {
       if (this.ready) {
         return this.map.getZoom();
-      } else {
-        return 0;
       }
+      return 0;
     }
   }, {
     key: 'onChange',
@@ -282,7 +427,7 @@ var Leaflet = function (_TileMap) {
   }, {
     key: 'removeOnChange',
     value: function removeOnChange(callback) {
-      this.map.off('move', callback);
+      this.map.on('move', callback);
     }
   }], [{
     key: 'messages',
@@ -296,101 +441,9 @@ var Leaflet = function (_TileMap) {
   }]);
 
   return Leaflet;
-}(_TileMap2.TileMap);
+}(_TileMap3.default);
 
-exports.Leaflet = Leaflet;
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.TileMap = undefined;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); // -----------
-// Tiled Map
-// -----------
-
-var _parseGeoJSON = __webpack_require__(3);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var TileMap = function () {
-  function TileMap(options) {
-    _classCallCheck(this, TileMap);
-
-    this.options = options;
-    this.scriptTag;
-    this.mappaDiv = null;
-  }
-
-  _createClass(TileMap, [{
-    key: 'init',
-    value: function init() {
-      if (!document.getElementById(this.options.provider)) {
-        this.scriptTag = document.createElement('script');
-        this.scriptTag.type = 'text/javascript';
-        this.scriptTag.src = this.script;
-        this.scriptTag.id = this.options.provider;
-        document.head.appendChild(this.scriptTag);
-        if (this.style) {
-          var styleTag = document.createElement('link');
-          styleTag.rel = 'stylesheet';
-          styleTag.href = this.style;
-          document.head.appendChild(styleTag);
-        }
-      }
-    }
-  }, {
-    key: 'overlay',
-    value: function overlay(canvas, callback) {
-      var _this = this;
-
-      this.scriptTag.onload = function () {
-        _this.mappaDiv = document.createElement('div');
-        document.body.appendChild(_this.mappaDiv);
-        _this.mappaDiv.setAttribute('style', 'position:relative;width:' + canvas.width + 'px;height:' + canvas.height + 'px;top:0;left:0;z-index:10');
-        _this.mappaDiv.setAttribute('id', 'mappa');
-        canvas.elt != undefined ? _this.canvas = canvas.elt : _this.canvas = canvas;
-        _this.createMap();
-        callback && callback();
-      };
-    }
-  }, {
-    key: 'latLngToPixel',
-    value: function latLngToPixel() {
-      var pos = void 0;
-      _typeof(arguments.length <= 0 ? undefined : arguments[0]) == 'object' ? pos = arguments.length <= 0 ? undefined : arguments[0] : pos = { lat: Number(arguments.length <= 0 ? undefined : arguments[0]), lng: Number(arguments.length <= 1 ? undefined : arguments[1]) };
-      return this.fromLatLngtoPixel(pos);
-    }
-  }, {
-    key: 'pixelToLatLng',
-    value: function pixelToLatLng() {
-      return this.fromPointToLatLng.apply(this, arguments);
-    }
-  }, {
-    key: 'geoJSON',
-    value: function geoJSON() {
-      return (0, _parseGeoJSON.parseGeoJSON)(arguments.length <= 0 ? undefined : arguments[0], arguments.length <= 1 ? undefined : arguments[1]);
-    }
-  }, {
-    key: 'zoom',
-    value: function zoom() {
-      return Math.floor(this.getZoom());
-    }
-  }]);
-
-  return TileMap;
-}();
-
-exports.TileMap = TileMap;
+exports.default = Leaflet;
 
 /***/ }),
 /* 3 */
@@ -406,6 +459,20 @@ Object.defineProperty(exports, "__esModule", {
 // Parse a GeoJSON file.
 // -----------
 
+var eachFeature = function eachFeature(feature, type) {
+  if (feature.hasOwnProperty('geometry') && feature.geometry.type === type) {
+    return feature.geometry.coordinates;
+  } else if (feature.hasOwnProperty('geometries') && feature.geometries instanceof Array && feature.geometry.type === type) {
+    feature.geometries.forEach(function (geometry) {
+      return feature.geometry.coordinates;
+    });
+  } else if (feature.hasOwnProperty('coordinates') && feature.geometry.type === type) {
+    return feature.geometry.coordinates;
+  } else {
+    return null;
+  }
+};
+
 var parseGeoJSON = function parseGeoJSON(data, type) {
   var result = [];
 
@@ -413,7 +480,9 @@ var parseGeoJSON = function parseGeoJSON(data, type) {
     if (data.features instanceof Array) {
       data.features.forEach(function (feature) {
         var f = eachFeature(feature, type);
-        f != undefined && result.push(f);
+        if (f != undefined) {
+          result.push(f);
+        }
       });
     }
   } else {
@@ -422,19 +491,7 @@ var parseGeoJSON = function parseGeoJSON(data, type) {
   return result;
 };
 
-var eachFeature = function eachFeature(feature, type) {
-  if (feature.hasOwnProperty('geometry') && feature.geometry.type == type) {
-    return feature.geometry.coordinates;
-  } else if (feature.hasOwnProperty('geometries') && feature.geometries instanceof Array && feature.geometry.type == type) {
-    feature.geometries.forEach(function (geometry) {
-      return feature.geometry.coordinates;
-    });
-  } else if (feature.hasOwnProperty('coordinates') && feature.geometry.type == type) {
-    return feature.geometry.coordinates;
-  }
-};
-
-exports.parseGeoJSON = parseGeoJSON;
+exports.default = parseGeoJSON;
 
 /***/ }),
 /* 4 */
@@ -446,54 +503,34 @@ exports.parseGeoJSON = parseGeoJSON;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.StaticMap = exports.Mapquest = exports.Google = exports.Mapbox = undefined;
 
 var _Mapbox = __webpack_require__(8);
 
-Object.keys(_Mapbox).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Mapbox[key];
-    }
-  });
-});
+var _Mapbox2 = _interopRequireDefault(_Mapbox);
 
 var _Google = __webpack_require__(7);
 
-Object.keys(_Google).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Google[key];
-    }
-  });
-});
+var _Google2 = _interopRequireDefault(_Google);
 
 var _Mapquest = __webpack_require__(9);
 
-Object.keys(_Mapquest).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Mapquest[key];
-    }
-  });
-});
+var _Mapquest2 = _interopRequireDefault(_Mapquest);
 
 var _StaticMap = __webpack_require__(0);
 
-Object.keys(_StaticMap).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _StaticMap[key];
-    }
-  });
-});
+var _StaticMap2 = _interopRequireDefault(_StaticMap);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// -----------
+// Static Map Providers
+// -----------
+
+exports.Mapbox = _Mapbox2.default;
+exports.Google = _Google2.default;
+exports.Mapquest = _Mapquest2.default;
+exports.StaticMap = _StaticMap2.default;
 
 /***/ }),
 /* 5 */
@@ -505,93 +542,40 @@ Object.keys(_StaticMap).forEach(function (key) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.Mapbox = exports.Leaflet = exports.Google = exports.MapboxGL = undefined;
 
-var _Mapboxgl = __webpack_require__(12);
+var _MapboxGL = __webpack_require__(12);
 
-Object.keys(_Mapboxgl).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Mapboxgl[key];
-    }
-  });
-});
+var _MapboxGL2 = _interopRequireDefault(_MapboxGL);
 
 var _Google = __webpack_require__(10);
 
-Object.keys(_Google).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Google[key];
-    }
-  });
-});
+var _Google2 = _interopRequireDefault(_Google);
 
-var _Leaflet = __webpack_require__(1);
+var _Leaflet = __webpack_require__(2);
 
-Object.keys(_Leaflet).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Leaflet[key];
-    }
-  });
-});
+var _Leaflet2 = _interopRequireDefault(_Leaflet);
 
 var _Mapbox = __webpack_require__(11);
 
-Object.keys(_Mapbox).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Mapbox[key];
-    }
-  });
-});
+var _Mapbox2 = _interopRequireDefault(_Mapbox);
 
-var _Mapzen = __webpack_require__(13);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-Object.keys(_Mapzen).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Mapzen[key];
-    }
-  });
-});
+// -----------
+// Tile Map Providers
+// -----------
 
-var _Tangram = __webpack_require__(14);
-
-Object.keys(_Tangram).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Tangram[key];
-    }
-  });
-});
+exports.MapboxGL = _MapboxGL2.default;
+exports.Google = _Google2.default;
+exports.Leaflet = _Leaflet2.default;
+exports.Mapbox = _Mapbox2.default;
 
 /***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/*
-* Mappa: A library to work with maps and p5.js
-* https://github.com/cvalenzuela/mappa
-*
-* Cristóbal Valenzuela
-* cv965@nyu.edu
-* Google Summer of Code 2017
-*/
-
 
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -610,8 +594,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-console.log('%c p5.maps Loaded ✓', 'color:white; background:green;');
-
 var Mappa = function () {
   function Mappa(provider, key) {
     _classCallCheck(this, Mappa);
@@ -629,17 +611,19 @@ var Mappa = function () {
         args[_key] = arguments[_key];
       }
 
-      if (_typeof(args[0]) == 'object') {
+      if (_typeof(args[0]) === 'object') {
         options = Object.assign({}, args[0]);
       } else {
-        var _options = _staticMap[this.provider].options().userInput;
+        var opts = _staticMap[this.provider].options().userInput;
         args.forEach(function (el, i) {
-          var option = _options[i];
+          var option = opts[i];
           options[option] = el;
         });
-      };
+      }
       options.key = this.key;
-      this.provider == undefined && (this.provider = 'StaticMap');
+      if (this.provider === undefined) {
+        this.provider = 'StaticMap';
+      }
       return new _staticMap[this.provider](options);
     }
   }, {
@@ -651,13 +635,13 @@ var Mappa = function () {
 
       var options = {};
 
-      if (_typeof(args[0]) == 'object') {
+      if (_typeof(args[0]) === 'object') {
         options = Object.assign({}, args[0]);
       } else {
         ['lat', 'lng', 'zoom'].forEach(function (el, i) {
           options[el] = args[i];
         });
-      };
+      }
       options.key = this.key;
       options.provider = this.provider;
       return new _tileMap[this.provider](options);
@@ -667,6 +651,7 @@ var Mappa = function () {
   return Mappa;
 }();
 
+console.log('Mappa loaded!');
 module.exports = Mappa;
 
 /***/ }),
@@ -679,11 +664,14 @@ module.exports = Mappa;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Google = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _StaticMap2 = __webpack_require__(0);
+
+var _StaticMap3 = _interopRequireDefault(_StaticMap2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -710,10 +698,10 @@ var Google = function (_StaticMap) {
   _createClass(Google, [{
     key: 'init',
     value: function init() {
-      if (this.options.scale == 1 || this.options.scale == undefined) {
+      if (this.options.scale === 1 || this.options.scale === undefined) {
         this.options.pixels = 128;
         this.options.scale = 1;
-      } else if (this.options.scale == 2) {
+      } else if (this.options.scale === 2) {
         this.options.pixels = 256;
       }
       if (this.options.width > 640) {
@@ -728,16 +716,25 @@ var Google = function (_StaticMap) {
   }, {
     key: 'createImage',
     value: function createImage() {
-      !this.options.key && delete this.options.key && Google.messages().key();
+      var _this2 = this;
 
-      this.options.size = this.options.width + 'x' + this.options.height;
-      !this.options.center && (this.options.center = this.options.lat + ',' + this.options.lng);
-      !this.options.scale && (this.options.scale = 1);
-
-      for (var option in this.options) {
-        Google.options().valid.indexOf(option) > -1 && (this.imgUrl += '&' + option + '=' + this.options[option]);
+      if (!this.options.key) {
+        delete this.options.key;
+        Google.messages().key();
       }
+      if (!this.options.center) {
+        this.options.center = this.options.lat + ',' + this.options.lng;
+      }
+      if (!this.options.scale) {
+        this.options.scale = 1;
+      }
+      this.options.size = this.options.width + 'x' + this.options.height;
 
+      Object.keys(this.options).forEach(function (option) {
+        if (Google.options().valid.indexOf(option) > -1) {
+          _this2.imgUrl += '&' + option + '=' + _this2.options[option];
+        }
+      });
       return this.imgUrl;
     }
   }], [{
@@ -756,16 +753,16 @@ var Google = function (_StaticMap) {
           console.warn('You requested an image with a ' + s + ' of ' + m + 'px. Google Maps Static API max ' + s + ' value is 640px. For larger images, change the scale to 2 and keep the ' + s + ' between 1-640px. i.e: if you want an image 800x800px, set the width and height to 400x400 and the scale to 2.');
         },
         key: function key() {
-          console.warn('For large requests please provide an API key for your Google Maps Static API.');
+          console.warn('For better results please provide an API key for your Google Maps Static API.');
         }
       };
     }
   }]);
 
   return Google;
-}(_StaticMap2.StaticMap);
+}(_StaticMap3.default);
 
-exports.Google = Google;
+exports.default = Google;
 
 /***/ }),
 /* 8 */
@@ -777,11 +774,14 @@ exports.Google = Google;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Mapbox = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _StaticMap2 = __webpack_require__(0);
+
+var _StaticMap3 = _interopRequireDefault(_StaticMap2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -809,8 +809,10 @@ var Mapbox = function (_StaticMap) {
     key: 'init',
     value: function init() {
       this.options.pixels = 256;
-      !this.options.scale && (this.options.scale = 1);
-      if (this.options.scale == 2) {
+      if (this.options.scale) {
+        this.options.scale = 1;
+      }
+      if (this.options.scale === 2) {
         this.options.pixels = 512;
       } else {
         if (this.options.width > 1280) {
@@ -830,23 +832,63 @@ var Mapbox = function (_StaticMap) {
 
       if (!this.options.key) {
         Mapbox.messages().key();
-        return;
+        return null;
       }
-      this.options.username != undefined ? this.imgUrl += this.options.username + '/' : this.imgUrl += 'mapbox/';
-      this.options.style != undefined ? this.imgUrl += this.options.style + '/' : this.imgUrl += 'streets-v10/';
+      if (this.options.username !== undefined) {
+        this.imgUrl += this.options.username + '/';
+      } else {
+        this.imgUrl += 'mapbox/';
+      }
+      if (this.options.style !== undefined) {
+        this.imgUrl += this.options.style + '/';
+      } else {
+        this.imgUrl += 'streets-v10/';
+      }
+
       this.imgUrl += 'static/';
-      this.options.overlay != undefined && (this.imgUrl += this.options.overlay + '/');
+
+      if (this.options.overlay !== undefined) {
+        this.imgUrl += this.options.overlay + '/';
+      }
+
       this.imgUrl += this.options.lng + ',' + this.options.lat + ',';
-      this.options.auto == false || this.options.auto == undefined ? ['zoom', 'bearing', 'pitch'].forEach(function (e, i) {
-        _this2.options[e] != undefined ? _this2.imgUrl += _this2.options[e] : _this2.imgUrl += 0;
-        i < 2 && (_this2.imgUrl += ',');
-      }) : this.imgUrl += 'auto';
+
+      if (this.options.auto === false || this.options.auto === undefined) {
+        ['zoom', 'bearing', 'pitch'].forEach(function (e, i) {
+          if (_this2.options[e] !== undefined) {
+            _this2.imgUrl += _this2.options[e];
+          } else {
+            _this2.imgUrl += 0;
+          }
+          if (i < 2) {
+            _this2.imgUrl += ',';
+          }
+        });
+      } else {
+        this.imgUrl += 'auto';
+      }
+
       this.imgUrl += '/' + this.options.width + 'x' + this.options.height;
-      this.options.scale == 2 && (this.imgUrl += '@2x');
+
+      if (this.options.scale === 2) {
+        this.imgUrl += '@2x';
+      }
       this.imgUrl += '?access_token=' + this.options.key;
-      this.options.attribution ? this.imgUrl += '&attribution=' + this.options.attribution : this.imgUrl += '&attribution=false';
-      this.options.logo ? this.imgUrl += '&logo=' + this.options.logo : this.imgUrl += '&logo=false';
-      this.options.before_layer ? this.imgUrl += '&before_layer=' + this.options.before_layer : this.imgUrl += '&before_layer=false';
+      if (this.options.attribution) {
+        this.imgUrl += '&attribution=' + this.options.attribution;
+      } else {
+        this.imgUrl += '&attribution=false';
+      }
+      if (this.options.logo) {
+        this.imgUrl += '&logo=' + this.options.logo;
+      } else {
+        this.imgUrl += '&logo=false';
+      }
+      if (this.options.before_layer) {
+        this.imgUrl += '&before_layer=' + this.options.before_layer;
+      } else {
+        this.imgUrl += '&before_layer=false';
+      }
       return this.imgUrl;
     }
   }], [{
@@ -872,9 +914,9 @@ var Mapbox = function (_StaticMap) {
   }]);
 
   return Mapbox;
-}(_StaticMap2.StaticMap);
+}(_StaticMap3.default);
 
-exports.Mapbox = Mapbox;
+exports.default = Mapbox;
 
 /***/ }),
 /* 9 */
@@ -886,11 +928,14 @@ exports.Mapbox = Mapbox;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Mapquest = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _StaticMap2 = __webpack_require__(0);
+
+var _StaticMap3 = _interopRequireDefault(_StaticMap2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -917,10 +962,10 @@ var Mapquest = function (_StaticMap) {
   _createClass(Mapquest, [{
     key: 'init',
     value: function init() {
-      if (this.options.scale == 1 || this.options.scale == undefined) {
+      if (this.options.scale === 1 || this.options.scale === undefined) {
         this.options.pixels = 128;
         this.options.scale = 1;
-      } else if (this.options.scale == 2) {
+      } else if (this.options.scale === 2) {
         this.options.pixels = 256;
       }
       if (this.options.width > 1920) {
@@ -935,19 +980,25 @@ var Mapquest = function (_StaticMap) {
   }, {
     key: 'createImage',
     value: function createImage() {
+      var _this2 = this;
+
       if (!this.options.key) {
         Mapquest.messages().key();
-        return;
+        return null;
       }
 
       this.options.size = this.options.width + ',' + this.options.height;
-      this.options.scale == 2 && (this.options.size += '@2x');
-      !this.options.center && (this.options.center = this.options.lat + ',' + this.options.lng);
-
-      for (var option in this.options) {
-        Mapquest.options().valid.indexOf(option) > -1 && (this.imgUrl += '&' + option + '=' + this.options[option]);
+      if (this.options.scale === 2) {
+        this.options.size += '@2x';
       }
-
+      if (!this.options.center) {
+        this.options.center = this.options.lat + ',' + this.options.lng;
+      }
+      Object.keys(this.options).forEach(function (opt) {
+        if (Mapquest.options().valid.indexOf(opt) > -1) {
+          _this2.imgUrl += '&' + opt + '=' + _this2.options[opt];
+        }
+      });
       return this.imgUrl;
     }
   }], [{
@@ -973,9 +1024,9 @@ var Mapquest = function (_StaticMap) {
   }]);
 
   return Mapquest;
-}(_StaticMap2.StaticMap);
+}(_StaticMap3.default);
 
-exports.Mapquest = Mapquest;
+exports.default = Mapquest;
 
 /***/ }),
 /* 10 */
@@ -987,11 +1038,14 @@ exports.Mapquest = Mapquest;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Google = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _TileMap2 = __webpack_require__(2);
+var _TileMap2 = __webpack_require__(1);
+
+var _TileMap3 = _interopRequireDefault(_TileMap2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1010,12 +1064,18 @@ var Google = function (_TileMap) {
 
     var _this = _possibleConstructorReturn(this, (Google.__proto__ || Object.getPrototypeOf(Google)).call(this, options));
 
-    _this.script = 'https://maps.googleapis.com/maps/api/js';
-    _this.options.key && (_this.script += '?key=' + _this.options.key);
-    _this.options.language && (_this.script += '&language=' + _this.options.language);
-    _this.options.region && (_this.script += '&region=' + _this.options.region);
-    _this.onChangeMetods = {};
-    _this.init();
+    _this.scriptSrc = 'https://maps.googleapis.com/maps/api/js';
+    if (_this.options.key) {
+      _this.scriptSrc += '?key=' + _this.options.key;
+    }
+    if (_this.options.language) {
+      _this.scriptSrc += '&language=' + _this.options.language;
+    }
+    if (_this.options.region) {
+      _this.scriptSrc += '&region=' + _this.options.region;
+    }
+    _this.onChangeMethods = {};
+    _this.loadSrc();
     return _this;
   }
 
@@ -1024,9 +1084,11 @@ var Google = function (_TileMap) {
     value: function createMap() {
       var _this2 = this;
 
-      !this.options.key && Google.messages().key();
+      if (!this.options.key) {
+        Google.messages().key();
+      }
 
-      this.map = new google.maps.Map(document.getElementById('mappa'), {
+      this.map = new google.maps.Map(document.getElementById(this.id), {
         center: { lat: this.options.lat, lng: this.options.lng },
         zoom: this.options.zoom || 6,
         mapTypeId: this.options.maptype || 'terrain',
@@ -1043,31 +1105,34 @@ var Google = function (_TileMap) {
 
       google.maps.event.addListener(this.map, 'bounds_changed', function () {
         var center = overlay.getProjection().fromLatLngToDivPixel(_this2.map.getCenter());
-        var pixels = void 0;
-        window.devicePixelRatio >= 2 ? pixels = 4 : pixels = 2;
+        var pixels = 2;
+        if (window.devicePixelRatio >= 2) {
+          pixels = 4;
+        }
         var offsetX = -Math.round(_this2.canvas.width / pixels - center.x);
         var offsetY = -Math.round(_this2.canvas.height / pixels - center.y);
-        var _canvas = _this2.canvas.getContext('webgl') || _this2.canvas.getContext('2d');
-        _canvas.canvas.style.transform = 'translate(' + offsetX + 'px,' + offsetY + 'px)';
+        var cvs = _this2.canvas.getContext('webgl') || _this2.canvas.getContext('2d');
+        cvs.canvas.style.transform = 'translate(' + offsetX + 'px,' + offsetY + 'px)';
       });
-
       google.maps.event.addListenerOnce(this.map, 'tilesloaded', function () {
         _this2.ready = true;
       });
     }
   }, {
-    key: 'fromLatLngtoPixel',
-    value: function fromLatLngtoPixel(position) {
+    key: 'fromLatLngToPixel',
+    value: function fromLatLngToPixel(inputPos) {
       if (this.ready) {
-        position = new google.maps.LatLng(position);
+        var position = new google.maps.LatLng(inputPos);
         var topRight = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getNorthEast());
         var bottomLeft = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getSouthWest());
         var scale = Math.pow(2, this.map.getZoom());
         var point = this.map.getProjection().fromLatLngToPoint(position);
         return new google.maps.Point((point.x - bottomLeft.x) * scale, (point.y - topRight.y) * scale);
-      } else {
-        return { x: -100, y: -100 };
       }
+      return {
+        x: -100,
+        y: -100
+      };
     }
   }, {
     key: 'fromPointToLatLng',
@@ -1078,19 +1143,23 @@ var Google = function (_TileMap) {
         var scale = Math.pow(2, this.map.getZoom());
         var point = new google.maps.Point((arguments.length <= 0 ? undefined : arguments[0]) / scale + bottomLeft.x, (arguments.length <= 1 ? undefined : arguments[1]) / scale + topRight.y);
         var latlng = this.map.getProjection().fromPointToLatLng(point);
-        return { lat: latlng.lat(), lng: latlng.lng() };
-      } else {
-        return { lat: -100, lng: -100 };
+        return {
+          lat: latlng.lat(),
+          lng: latlng.lng()
+        };
       }
+      return {
+        lat: -100,
+        lng: -100
+      };
     }
   }, {
     key: 'getZoom',
     value: function getZoom() {
       if (this.ready) {
         return this.map.getZoom();
-      } else {
-        return 0;
       }
+      return 0;
     }
   }, {
     key: 'onChange',
@@ -1099,7 +1168,7 @@ var Google = function (_TileMap) {
 
       if (this.ready) {
         callback();
-        this.onChangeMetods[callback] = google.maps.event.addListener(this.map, 'bounds_changed', callback);
+        this.onChangeMethods[callback] = google.maps.event.addListener(this.map, 'bounds_changed', callback);
       } else {
         setTimeout(function () {
           _this3.onChange(callback);
@@ -1109,7 +1178,7 @@ var Google = function (_TileMap) {
   }, {
     key: 'removeOnChange',
     value: function removeOnChange(callback) {
-      google.maps.event.removeListener(this.onChangeMetods[callback]);
+      google.maps.event.removeListener(this.onChangeMethods[callback]);
     }
   }], [{
     key: 'messages',
@@ -1123,9 +1192,9 @@ var Google = function (_TileMap) {
   }]);
 
   return Google;
-}(_TileMap2.TileMap);
+}(_TileMap3.default);
 
-exports.Google = Google;
+exports.default = Google;
 
 /***/ }),
 /* 11 */
@@ -1137,11 +1206,14 @@ exports.Google = Google;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Mapbox = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Leaflet2 = __webpack_require__(1);
+var _Leaflet2 = __webpack_require__(2);
+
+var _Leaflet3 = _interopRequireDefault(_Leaflet2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1160,9 +1232,9 @@ var Mapbox = function (_Leaflet) {
 
     var _this = _possibleConstructorReturn(this, (Mapbox.__proto__ || Object.getPrototypeOf(Mapbox)).call(this, options));
 
-    _this.script = 'https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js';
-    _this.style = 'https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css';
-    _this.init();
+    _this.scriptSrc = 'https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js';
+    _this.styleSrc = 'https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css';
+    _this.loadSrc();
     return _this;
   }
 
@@ -1175,18 +1247,18 @@ var Mapbox = function (_Leaflet) {
         L.mapbox.accessToken = this.options.key;
       } else {
         Mapbox.messages().key();
-        return;
       }
+      this.map = L.mapbox.map(this.id).setView([this.options.lat, this.options.lng], this.options.zoom);
 
-      // Create a Mapbox Map
-      this.map = L.mapbox.map('mappa').setView([this.options.lat, this.options.lng], this.options.zoom);
-
-      this.options.studio ? this.tiles = L.mapbox.styleLayer(this.options.style || 'mapbox://styles/mapbox/emerald-v8').addTo(this.map) : this.tiles = L.mapbox.tileLayer(this.options.style || 'mapbox.streets').addTo(this.map);
+      if (this.options.studio) {
+        this.tiles = L.mapbox.styleLayer(this.options.style || 'mapbox://styles/mapbox/emerald-v8').addTo(this.map);
+      } else {
+        this.tiles = L.mapbox.tileLayer(this.options.style || 'mapbox.streets').addTo(this.map);
+      }
 
       this.tiles.on('ready', function () {
         _this2.ready = true;
       });
-
       this.canvasOverlay();
     }
   }], [{
@@ -1201,9 +1273,9 @@ var Mapbox = function (_Leaflet) {
   }]);
 
   return Mapbox;
-}(_Leaflet2.Leaflet);
+}(_Leaflet3.default);
 
-exports.Mapbox = Mapbox;
+exports.default = Mapbox;
 
 /***/ }),
 /* 12 */
@@ -1215,43 +1287,51 @@ exports.Mapbox = Mapbox;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Mapboxgl = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _TileMap2 = __webpack_require__(2);
+var _TileMap2 = __webpack_require__(1);
+
+var _TileMap3 = _interopRequireDefault(_TileMap2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // -----------
-// Mapbox-gl v0.37.0
+// Mapbox-gl v0.43.0
 // Reference: https://www.mapbox.com/mapbox-gl-js/api/
 // -----------
 
-var Mapboxgl = function (_TileMap) {
-  _inherits(Mapboxgl, _TileMap);
+var MapboxGL = function (_TileMap) {
+  _inherits(MapboxGL, _TileMap);
 
-  function Mapboxgl(options) {
-    _classCallCheck(this, Mapboxgl);
+  function MapboxGL(options) {
+    _classCallCheck(this, MapboxGL);
 
-    var _this = _possibleConstructorReturn(this, (Mapboxgl.__proto__ || Object.getPrototypeOf(Mapboxgl)).call(this, options));
+    var _this = _possibleConstructorReturn(this, (MapboxGL.__proto__ || Object.getPrototypeOf(MapboxGL)).call(this, options));
 
-    _this.script = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js';
-    _this.style = 'https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css';
-    !_this.options.key ? Mapboxgl.messages().key() : _this.init();
+    _this.scriptSrc = 'https://api.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js';
+    _this.styleSrc = 'https://api.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css';
+    _this.ready = false;
+    if (!_this.options.key) {
+      MapboxGL.messages().key();
+    } else {
+      _this.loadSrc();
+    }
     return _this;
   }
 
-  _createClass(Mapboxgl, [{
+  _createClass(MapboxGL, [{
     key: 'createMap',
     value: function createMap() {
       var _this2 = this;
 
       mapboxgl.accessToken = this.options.key;
       this.map = new mapboxgl.Map({
-        container: 'mappa',
+        container: this.id,
         style: this.options.style || 'mapbox://styles/mapbox/satellite-streets-v10',
         center: [this.options.lng, this.options.lat],
         zoom: this.options.zoom,
@@ -1265,19 +1345,23 @@ var Mapboxgl = function (_TileMap) {
 
       this.map.getCanvasContainer().appendChild(this.canvas);
       this.canvas.style.position = 'relative';
-      this.options.opacity && (document.getElementsByClassName('mapboxgl-canvas')[0].style.opacity = this.options.opacity);
+      if (this.options.opacity) {
+        document.getElementsByClassName('mapboxgl-canvas')[0].style.opacity = this.options.opacity;
+      }
       this.map.on('load', function () {
         _this2.ready = true;
       });
     }
   }, {
-    key: 'fromLatLngtoPixel',
-    value: function fromLatLngtoPixel(latLng) {
+    key: 'fromLatLngToPixel',
+    value: function fromLatLngToPixel(latLng) {
       if (this.ready) {
         return this.map.project(latLng);
-      } else {
-        return { x: -100, y: -100 };
       }
+      return {
+        x: -100,
+        y: -100
+      };
     }
   }, {
     key: 'fromPointToLatLng',
@@ -1288,18 +1372,19 @@ var Mapboxgl = function (_TileMap) {
         }
 
         return this.map.unproject(args);
-      } else {
-        return { lat: -100, lng: -100 };
       }
+      return {
+        lat: -100,
+        lng: -100
+      };
     }
   }, {
     key: 'getZoom',
     value: function getZoom() {
       if (this.ready) {
         return this.map.getZoom();
-      } else {
-        return 0;
       }
+      return 0;
     }
   }, {
     key: 'onChange',
@@ -1331,10 +1416,10 @@ var Mapboxgl = function (_TileMap) {
     }
   }]);
 
-  return Mapboxgl;
-}(_TileMap2.TileMap);
+  return MapboxGL;
+}(_TileMap3.default);
 
-exports.Mapboxgl = Mapboxgl;
+exports.default = MapboxGL;
 
 /***/ }),
 /* 13 */
@@ -1346,151 +1431,15 @@ exports.Mapboxgl = Mapboxgl;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Mapzen = undefined;
+// GUID Generator
+var s4 = function s4() {
+  return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+};
+var GUID = function GUID() {
+  return "" + s4() + s4() + "-" + s4() + "-" + s4() + "-" + s4() + "-" + s4() + s4() + s4();
+};
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Leaflet2 = __webpack_require__(1);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // -----------
-// Mapzen v0.12.5
-// Reference: https://mapzen.com/documentation/mapzen-js/
-// -----------
-
-var Mapzen = function (_Leaflet) {
-  _inherits(Mapzen, _Leaflet);
-
-  function Mapzen(options) {
-    _classCallCheck(this, Mapzen);
-
-    var _this = _possibleConstructorReturn(this, (Mapzen.__proto__ || Object.getPrototypeOf(Mapzen)).call(this, options));
-
-    _this.script = 'https://mapzen.com/js/mapzen.min.js';
-    _this.style = 'https://mapzen.com/js/mapzen.css';
-    _this.init();
-    return _this;
-  }
-
-  _createClass(Mapzen, [{
-    key: 'createMap',
-    value: function createMap() {
-      var _this2 = this;
-
-      if (this.options.key) {
-        L.Mapzen.apiKey = this.options.key;
-      } else {
-        Mapzen.messages().key();
-        return;
-      }
-
-      // Create a Mapzen Map
-      this.map = L.Mapzen.map('mappa', {
-        center: [this.options.lat, this.options.lng],
-        zoom: this.options.zoom,
-        tangramOptions: {
-          scene: this.options.BasemapStyles ? L.Mapzen.BasemapStyles[this.options.scene] : this.options.scene
-        }
-      });
-      this.map.on('tangramloaded', function () {
-        _this2.ready = true;
-      });
-
-      this.canvasOverlay();
-    }
-  }], [{
-    key: 'messages',
-    value: function messages() {
-      return {
-        key: function key() {
-          console.warn('Please provide a API key for your Mapzen map.');
-        }
-      };
-    }
-  }]);
-
-  return Mapzen;
-}(_Leaflet2.Leaflet);
-
-exports.Mapzen = Mapzen;
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Tangram = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Leaflet2 = __webpack_require__(1);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // -----------
-// Tangram v0.12.5
-// Reference: https://mapzen.com/documentation/tangram/
-// -----------
-
-var Tangram = function (_Leaflet) {
-  _inherits(Tangram, _Leaflet);
-
-  function Tangram(options) {
-    _classCallCheck(this, Tangram);
-
-    var _this = _possibleConstructorReturn(this, (Tangram.__proto__ || Object.getPrototypeOf(Tangram)).call(this, options));
-
-    _this.options.provider = 'Leaflet';
-    _this.init();
-    _this.options.provider = 'Tangram';
-    _this.script = 'https://mapzen.com/tangram/tangram.min.js';
-    _this.init();
-    return _this;
-  }
-
-  _createClass(Tangram, [{
-    key: 'createMap',
-    value: function createMap() {
-      var _this2 = this;
-
-      // Create a Tangram Map
-      this.map = L.map('mappa');
-      this.tangramScene = window.Tangram.leafletLayer({
-        scene: this.options.scene,
-        attribution: '<a href="https://mapzen.com/tangram" target="_blank">Tangram</a> | &copy; OSM contributors | <a href="https://mapzen.com/" target="_blank">Mapzen</a>'
-      });
-      this.tangramScene.addTo(this.map);
-      this.map.setView([this.options.lat, this.options.lng], this.options.zoom);
-      this.tangramScene.scene.subscribe({ load: function load() {
-          _this2.ready = true;
-        } });
-      this.canvasOverlay();
-    }
-  }], [{
-    key: 'messages',
-    value: function messages() {
-      return {
-        key: function key() {
-          console.warn('Please provide a API key for your Mapzen map.');
-        }
-      };
-    }
-  }]);
-
-  return Tangram;
-}(_Leaflet2.Leaflet);
-
-exports.Tangram = Tangram;
+exports.default = GUID;
 
 /***/ })
 /******/ ]);

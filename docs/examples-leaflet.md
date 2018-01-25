@@ -4,16 +4,17 @@ sidebar_label: Leaflet
 title: Leaflet Example
 ---
 
-Visualizing the 5000 largest meteorite landings in the world. 
+Visualizing the 5000 largest recorded meteorite landings in the world using [Mappa](tutorials-getting-started.md), <a href="https://p5js.org/"><img src="assets/img/p5js.svg" class="p5logo"/></a> and [Leaflet](http://leafletjs.com/).
 
-Data from [NASA's Open Data Portal.](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh)
+Using tiles from [OSM](https://www.openstreetmap.org).
 
-Using tiles from OSM.
+*Data: [NASA Open Data Portal](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh).*
 
-## [Demo](https://cvalenzuela.github.io/Mappa/examples/tile/Leaflet/)
+## Demo
 
 <div class="example">
   <div id="canvasContainer"></div>
+  <script src="assets/scripts/tile-leaflet.js"></script>
 </div>
 
 ## Code
@@ -22,7 +23,7 @@ Get it from [here](https://github.com/cvalenzuela/Mappa/tree/master/examples/til
 
 ```javascript
 // Options for map
-var options = {
+const options = {
   lat: 0,
   lng: 0,
   zoom: 4,
@@ -30,21 +31,21 @@ var options = {
 }
 
 // Create an instance of Leaflet
-var mappa = new Mappa('Leaflet');
-var myMap;
+const mappa = new Mappa('Leaflet');
+let myMap;
 
-var canvas;
-var meteorites;
+let canvas;
+let meteorites;
 
 function setup() {
-  canvas = createCanvas(800, 700);
+  canvas = createCanvas(640, 580).parent('canvasContainer');
 
   // Create a tile map and overlay the canvas on top.
   myMap = mappa.tileMap(options);
   myMap.overlay(canvas);
 
   // Load the data
-  meteorites = loadTable('../../data/Meteorite_Landings.csv', 'csv', 'header');
+  meteorites = loadTable('assets/data/Meteorite_Landings.csv', 'csv', 'header');
 
   // Only redraw the meteorites when the map change and not every frame.
   myMap.onChange(drawMeteorites);
@@ -60,10 +61,10 @@ function drawMeteorites() {
   // Clear the canvas
   clear();
 
-  for (var i = 0; i < meteorites.getRowCount(); i++) {
+  for (let i = 0; i < meteorites.getRowCount(); i++) {
     // Get the lat/lng of each meteorite 
-    var latitude = Number(meteorites.getString(i, 'reclat'));
-    var longitude = Number(meteorites.getString(i, 'reclong'));
+    const latitude = Number(meteorites.getString(i, 'reclat'));
+    const longitude = Number(meteorites.getString(i, 'reclong'));
 
     // Only draw them if the position is inside the current map bounds. We use a
     // Leaflet method to check if the lat and lng are contain inside the current
@@ -71,10 +72,10 @@ function drawMeteorites() {
     // getBounds() in http://leafletjs.com/reference-1.1.0.html
     if (myMap.map.getBounds().contains({lat: latitude, lng: longitude})) {
       // Transform lat/lng to pixel position
-      var pos = myMap.latLngToPixel(latitude, longitude);
+      const pos = myMap.latLngToPixel(latitude, longitude);
       // Get the size of the meteorite and map it. 60000000 is the mass of the largest
       // meteorite (https://en.wikipedia.org/wiki/Hoba_meteorite)
-      var size = meteorites.getString(i, 'mass (g)');
+      let size = meteorites.getString(i, 'mass (g)');
       size = map(size, 558, 60000000, 1, 25) + myMap.zoom();
       ellipse(pos.x, pos.y, size, size);
     }

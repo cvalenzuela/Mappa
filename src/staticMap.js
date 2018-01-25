@@ -2,7 +2,15 @@
 // Static Map Providers
 // -----------
 
-export * from './providers/static/Mapbox';
-export * from './providers/static/Google';
-export * from './providers/static/Mapquest';
-export * from './providers/static/StaticMap';
+import Mapbox from './providers/static/Mapbox';
+import Google from './providers/static/Google';
+import Mapquest from './providers/static/Mapquest';
+import StaticMap from './providers/static/StaticMap';
+
+export {
+  Mapbox,
+  Google,
+  Mapquest,
+  StaticMap,
+};
+

@@ -1,62 +1,83 @@
 // -----------
-// Tiled Map
+// Tile Map
 // -----------
 
-import { parseGeoJSON } from '../../utils/parseGeoJSON';
+import parseGeoJSON from '../../utils/parseGeoJSON';
+import GUID from './../../utils/GUID';
 
 class TileMap {
-  constructor(options){
+  constructor(options) {
     this.options = options;
-    this.scriptTag;
     this.mappaDiv = null;
+    this.id = GUID();
+    this.srcLoaded = false;
   }
 
-  init() {
-    if(!document.getElementById(this.options.provider)) {
+  loadSrc() {
+    const scriptPromise = new Promise((resolve, reject) => {
       this.scriptTag = document.createElement('script');
-      this.scriptTag.type = 'text/javascript';
-      this.scriptTag.src = this.script;
+      document.body.appendChild(this.scriptTag);
       this.scriptTag.id = this.options.provider;
-      document.head.appendChild(this.scriptTag);
-      if(this.style) {
-        let styleTag = document.createElement('link');
-        styleTag.rel = 'stylesheet';
-        styleTag.href = this.style;
+      this.scriptTag.onload = resolve;
+      this.scriptTag.onerror = reject;
+      this.scriptTag.async = true;
+      this.scriptTag.src = this.scriptSrc;
+      if (this.styleSrc) {
+        const styleTag = document.createElement('link');
         document.head.appendChild(styleTag);
+        styleTag.rel = 'stylesheet';
+        styleTag.href = this.styleSrc;
       }
-    }
+    });
+    scriptPromise.then(() => { this.srcLoaded = true; });
   }
 
-  overlay(canvas, callback){
+  overlay(canvas, callback) {
+    if (canvas.elt !== undefined) {
+      this.canvas = canvas.elt;
+    } else {
+      this.canvas = canvas;
+    }
     this.scriptTag.onload = () => {
       this.mappaDiv = document.createElement('div');
-      document.body.appendChild(this.mappaDiv);
-      this.mappaDiv.setAttribute('style', 'position:relative;width:'+ canvas.width + 'px;height:' + canvas.height + 'px;top:0;left:0;z-index:10');
-      this.mappaDiv.setAttribute('id', 'mappa');
-      canvas.elt != undefined ? this.canvas = canvas.elt : this.canvas = canvas;
+      if (this.canvas.parentElement) {
+        this.canvas.parentElement.appendChild(this.mappaDiv);
+      } else {
+        document.body.appendChild(this.mappaDiv);
+      }
+      this.mappaDiv.setAttribute('style', `width:${canvas.width}px;height:${canvas.height}px;`);
+      this.mappaDiv.setAttribute('id', this.id);
       this.createMap();
-      callback && callback();
+      if (typeof callback === 'function') {
+        callback();
+      }
     };
   }
 
-  latLngToPixel(...args){
+  latLngToPixel(...args) {
     let pos;
-    (typeof args[0] == 'object') ? pos = args[0] : pos = {lat: Number(args[0]), lng: Number(args[1])};
-    return this.fromLatLngtoPixel(pos);
+    if (typeof args[0] === 'object') {
+      [pos] = args;
+    } else {
+      pos = {
+        lat: Number(args[0]),
+        lng: Number(args[1]),
+      };
+    }
+    return this.fromLatLngToPixel(pos);
   }
 
-  pixelToLatLng(...args){
+  pixelToLatLng(...args) {
     return this.fromPointToLatLng(...args);
   }
 
-  geoJSON(...args){
-    return parseGeoJSON(args[0], args[1]);
-  }
-
-  zoom(){
+  zoom() {
     return Math.floor(this.getZoom());
   }
 
+  geoJSON(...args) {
+    return parseGeoJSON(args[0], args[1]);
+  }
 }
 
-export { TileMap };
+export default TileMap;

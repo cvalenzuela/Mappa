@@ -2,9 +2,14 @@
 // Tile Map Providers
 // -----------
 
-export * from './providers/tile/Mapboxgl';
-export * from './providers/tile/Google';
-export * from './providers/tile/Leaflet';
-export * from './providers/tile/Mapbox';
-export * from './providers/tile/Mapzen';
-export * from './providers/tile/Tangram';
+import MapboxGL from './providers/tile/MapboxGL';
+import Google from './providers/tile/Google';
+import Leaflet from './providers/tile/Leaflet';
+import Mapbox from './providers/tile/Mapbox';
+
+export {
+  MapboxGL,
+  Google,
+  Leaflet,
+  Mapbox,
+};

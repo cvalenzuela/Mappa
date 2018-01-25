@@ -7,13 +7,13 @@ Quick reference:
 
 ```javascript
 
-// Your Mapboxgl API Key
-var key = 'abcd'
+// Your MapboxGL API Key
+const key = 'abcd'
 
 // Create a new Mappa instance using Mapboxgl.
-var mappa = new Mappa('Mapboxgl', key);
-var myMap;
-var canvas;
+const mappa = new Mappa('Mapboxgl', key);
+let myMap;
+let canvas;
 
 function setup(){
   canvas = createCanvas(640,640);

@@ -39,7 +39,7 @@ const siteConfig = {
     'https://buttons.github.io/buttons.js',
     'https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/p5.min.js',
     'https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/addons/p5.dom.min.js',
-    'https://unpkg.com/mappa-mundi/dist/mappa.min.js',
+    '/Mappa/js/mappa.min.js',
   ],
   // You may provide arbitrary config keys to be used as needed by your template.
   repoUrl: 'https://github.com/cvalenzuela/Mappa',

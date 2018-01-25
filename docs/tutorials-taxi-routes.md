@@ -6,11 +6,11 @@ title: "Tutorial: Taxi Routes"
 
 This tutorial is based on the [taxitracker](https://github.com/chriswhong/nyctaxi) data visualization. The idea is to create a sketch that will show the route of a taxi during a day in New York. I will try to keep things as simple as possible in order to show how to use maps and p5.js to create visualizations.
 
+The complete code is [here](https://github.com/cvalenzuela/Mappa/tree/master/tutorials/taxiroutes).
+
 ## Final Result
 
-You can see the final result [here](https://cvalenzuela.github.io/Mappa/tutorials/taxiroutes/).
-
-The code is [here](https://github.com/cvalenzuela/Mappa/tree/master/tutorials/taxiroutes).
+<div id="finalIntro"></div>
 
 ## Setup
 
@@ -149,7 +149,7 @@ function setup(){
 
 If it is not already running, run your local server and open the page (something like `localhost:3000` or `localhost:8080`). You should see this:
 
-![black map](assets/img/taxi-routes/01.png)
+<div id="plainMap"></div>
 
 A black map centered in New York.
 
@@ -280,7 +280,6 @@ Now `allCoordinates` holds 5530 pairs of latitudes and longitudes describing the
 (5530) [[-74.00232, 40.73447], [-74.0024, 40.73433], (...) ]
 ```
 
-
 Lets display the data! In your `draw` function draw a circle for every location in the `allCoordinates` array. Use the `latLngtoPixel` method to transform latitude and longitude positions into pixel positions.
 
 ```javascript
@@ -343,7 +342,7 @@ function draw(){
 
 This will show a map where you can move and zoom and see all of the taxi's registered positions overlay on the map:
 
-![02](assets/img/taxi-routes/02.png)
+<div id="trail"></div>
 
 One thing you can notice is that this may get a little bit slow after a while. This is because the sketch is computing 5530 arrays every frame, 60FPS. Since we still want to keep the dots synchronized to the map, we can just compute them every time the map moves and not every frame. For that we can use the `onChange` method.
 
@@ -586,7 +585,7 @@ function drawPoints(){
 
 And the output should look like this:
 
-![03](assets/img/taxi-routes/03.gif)
+<div id="moving"></div>
 
 Now lets add a trail for the taxi.
 
@@ -698,4 +697,6 @@ function drawRoute(){
 
 And you should get something like this:
 
-![04](assets/img/taxi-routes/04.gif)
+<div id="final"></div>
+
+<script src="assets/scripts/tutorials-taxi-routes.js"></script>

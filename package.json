@@ -19,6 +19,7 @@
     "build": "npm-run-all build:*",
     "build:main": "webpack --output-filename mappa.js",
     "build:min": "uglifyjs dist/mappa.js -o dist/mappa.min.js",
+    "build:copy2website": "rm website/static/js/mappa.min.js && mv dist/mappa.min.js website/static/js/",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {

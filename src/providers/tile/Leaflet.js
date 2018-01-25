@@ -1,25 +1,28 @@
-// ----------- 
-// Leaflet v1.0.3 
-// Reference: http://leafletjs.com/reference-1.0.3.html 
+// -----------
+// Leaflet v1.3.0
+// Reference: http://leafletjs.com/reference-1.3.0.html
 //-----------
 
-import { TileMap } from './TileMap';
+import TileMap from './TileMap';
 
 class Leaflet extends TileMap {
   constructor(options) {
     super(options);
-    this.script = 'https://unpkg.com/leaflet@1.0.3/dist/leaflet.js';
-    this.style = 'https://unpkg.com/leaflet@1.0.3/dist/leaflet.css';
-    this.constructor.name == 'Leaflet' && this.init();
+    this.scriptSrc = 'https://unpkg.com/leaflet@1.3.0/dist/leaflet.js';
+    this.styleSrc = 'https://unpkg.com/leaflet@1.3.0/dist/leaflet.css';
+    this.ready = false;
+    if (this.constructor.name === 'Leaflet') {
+      this.loadSrc();
+    }
   }
 
   createMap() {
-    this.map = L.map('mappa', {
+    this.map = L.map(this.id, {
       center: [
-        this.options.lat, this.options.lng
+        this.options.lat, this.options.lng,
       ],
       zoom: this.options.zoom,
-      inertia: false
+      inertia: false,
     });
 
     if (!this.options.style) {
@@ -38,51 +41,57 @@ class Leaflet extends TileMap {
     if (this.tiles) {
       this.tiles.options.opacity = this.options.opacity;
     }
-
     L.overlay = L.Layer.extend({
       onAdd: () => {
-        let overlayPane = overlay.getPane();
-        let _container = L.DomUtil.create('div', 'leaflet-layer');
-        _container.appendChild(this.canvas);
-        overlayPane.appendChild(_container);
+        const overlayPane = overlay.getPane();
+        const container = L.DomUtil.create('div', 'leaflet-layer');
+        container.appendChild(this.canvas);
+        overlayPane.appendChild(container);
       },
-      drawLayer: () => {}
-    })
-
-    let overlay = new L.overlay();
+      drawLayer: () => {},
+    });
+    const overlay = new L.overlay();
     this.map.addLayer(overlay);
+    
 
-    let _canvas = this.canvas.getContext('webgl') || this.canvas.getContext('2d');
-
+    const cnvs = this.canvas.getContext('webgl') || this.canvas.getContext('2d');
     this.map.on('move', () => {
-      var d = this.map.dragging._draggable;
-      d._newPos && (_canvas.canvas.style.transform = 'translate(' + -d._newPos.x + 'px,' + -d._newPos.y + 'px)');
+      const d = this.map.dragging._draggable;
+      if (d._newPos) {
+        cnvs.canvas.style.transform = `translate(${-d._newPos.x}px, ${-d._newPos.y}px)`;
+      };
     })
   }
 
-  fromLatLngtoPixel(position) {
+  fromLatLngToPixel(position) {
     if (this.ready) {
-      let containerPoint = this.map.latLngToContainerPoint(position);
-      return { x: containerPoint.x, y: containerPoint.y };
-    } else {
-      return { x: -100, y: -100 };
+      const containerPoint = this.map.latLngToContainerPoint(position);
+      return {
+        x: containerPoint.x,
+        y: containerPoint.y,
+      };
     }
+    return {
+      x: -100,
+      y: -100, 
+    };
   }
 
   fromPointToLatLng(...args) {
     if (this.ready) {
       return this.map.containerPointToLatLng(args);
-    } else {
-      return { lat: -100, lng: -100 };
     }
+    return {
+      lat: -100,
+      lng: -100,
+    };
   }
 
   getZoom() {
     if (this.ready) {
-      return this.map.getZoom()
-    } else {
-      return 0
+      return this.map.getZoom();
     }
+    return 0;
   }
 
   onChange(callback) {
@@ -96,18 +105,18 @@ class Leaflet extends TileMap {
     }
   }
 
-  removeOnChange(callback){
-    this.map.off('move', callback);
+  removeOnChange(callback) {
+    this.map.on('move', callback);
   }
 
   static messages() {
     return {
       tiles: () => {
         console.warn('You are not using any tiles for your map. Try with: http://{s}.tile.osm.org/{z}/' +
-          '{x}/{y}.png')
-      }
-    }
+          '{x}/{y}.png');
+      },
+    };
   }
 }
 
-export { Leaflet };
+export default Leaflet;

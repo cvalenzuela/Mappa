@@ -4,29 +4,30 @@ sidebar_label: Static Mapbox
 title: Static Mapbox Example
 ---
 
-Visualizing the 5000 largest meteorite landings in the world. 
+Visualizing the 5000 largest recorded meteorite landings in the world using [Mappa](tutorials-getting-started.md), <a href="https://p5js.org/"><img src="assets/img/p5js.svg" class="p5logo"/></a> and [Mapbox](https://www.mapbox.com/mapbox.js/api/v3.1.1/).
 
-Data from [NASA's Open Data Portal.](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh)
+*Data: [NASA Open Data Portal](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh).*
 
-## [Demo](https://cvalenzuela.github.io/Mappa/examples/static/Mapbox/)
+## Demo
 
 <div class="example">
   <div id="canvasContainer"></div>
+  <script src="assets/scripts/static-mapbox.js"></script>
 </div>
 
 ## Code
 
-Get it from [here](https://github.com/cvalenzuela/Mappa/tree/master/examples/static/Mapbox)
+Get it from [here](https://github.com/cvalenzuela/Mappa/tree/master/examples/static/Google)
 
 ```javascript
 // API key for Mapbox. Get one here: https://www.mapbox.com/studio/account/tokens/
-var key = 'xyz'
+const key = 'xyz';
 
-// Create an instance of Mapbox
-var mappa = new Mappa('Mapbox', key);
+// Create an instance of Mapbox.
+const mappa = new Mappa('Mapbox', key); 
 
 // Options for map
-var options = {
+const options = {
   lat: 0,
   lng: 0,
   zoom: 1,
@@ -35,34 +36,34 @@ var options = {
   scale: 1,
   pitch: 0,
   style: 'dark-v9'
-}
+};
 
 // Create the static map reference.
-var myMap = mappa.staticMap(options);
+const myMap = mappa.staticMap(options);
 
-var img;
-var meteorites;
+let img;
+let meteorites;
 
-function preload(){
+function preload() {
   // Load the image
   img = loadImage(myMap.imgUrl);
   // Load the data
-  meteorites = loadTable('../../data/Meteorite_Landings.csv', 'csv', 'header');
+  meteorites = loadTable('assets/data/Meteorite_Landings.csv', 'csv', 'header');
 }
 
-function setup(){
-  createCanvas(640,500);
+function setup() {
+  createCanvas(640,500).parent('canvasContainer');
   noStroke();
 
   // Display the image
   image(img, 0, 0);
 
   // Show the Meteorites Landings
-  for (var i = 0; i < meteorites.getRowCount(); i++) {
+  for (let i = 0; i < meteorites.getRowCount(); i++) {
     // Get the lat/lng of each meteorite
-    var pos = myMap.latLngToPixel(meteorites.getString(i, 'reclat'), meteorites.getString(i, 'reclong'));
+    const pos = myMap.latLngToPixel(meteorites.getString(i, 'reclat'), meteorites.getString(i, 'reclong'));
     // Get the size of the meteorite and map it. 60000000 is the mass of the largest meteorite (https://en.wikipedia.org/wiki/Hoba_meteorite)
-    var size = meteorites.getString(i, 'mass (g)');
+    let size = meteorites.getString(i, 'mass (g)');
     size = map(size, 0, 60000000, 3, 25);
     fill(random(0,255), random(0,255),random(0,255));
     ellipse(pos.x, pos.y, size, size);

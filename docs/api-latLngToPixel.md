@@ -4,45 +4,23 @@ sidebar_label: latLngToPixel
 title: latLngToPixel Method
 ---
 
-Mappa consists of only one class that has multiple methods and attributes. You first need to create a `Mappa` instance in order to use it.
+This method allows to get the pixel position of a latitude and longitude coordinates in relationship to a [`staticMap()`](#staticmapoptions) or a [`tileMap()`](#tilemapoptions).
 
-## Constructor
+## Usage
 
 ```javascript
-Mappa(provider, ?[key]);
+latLngToPixel(lat, lng)
 ```
-> Constructor to initialize a new Mappa instance with a defined provider and key. Returns an object.
+> Get pixel position (x,y) for latitude and longitude coordinates. Returns an object with x and y position.
 
-*provider*: A valid map provider.
+*lat*: Latitude.
 
-*key*: Map provider API key.
-
-### Definition
-
-This is the constructor necessary to create a valid instance of Mappa. This will also add the necessary scripts and styles from the defined map provider.
-
-### Options for providers:
-  + Static Maps:
-    - `Google`
-    - `Mapbox`
-    - `Mapquest`
-
-  + Tile Maps:
-    - `Google`
-    - `Mapbox`
-    - `Mapboxgl`
-    - `Leaflet`
+*lng*: Longitude.
 
 ### Examples:
 ```javascript
-// Google API key.
-var key = 'abcd'
-
-// Create a new Mappa instance using Google.
-var mappa = new Mappa('Google', key);
-```
-
-```javascript
-// Create a new Mappa instance with Leaflet. No key is required
-var mappa = new Mappa('Leaflet');
+// Get the pixel position for Central Park.
+const pos = myMap.latLngToPixel(40.782, -73.967);
+// Draw an ellipse using pos
+ellipse(pos.x, pos.y, 10, 10);
 ```
