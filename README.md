@@ -1,4 +1,5 @@
 ![mappa](website/static/img/logo_small.png)
+
 [Mappa](https://cvalenzuela.github.io/Mappa/)
 ========
 
@@ -12,10 +13,10 @@ Mappa was originally designed for [p5.js](https://github.com/processing/p5.js), 
 
 ## Reference
 
-- [Getting Started]()
-- [API Reference]()
-- [Examples]()
-- [Tutorials]()
+- [Getting Started](https://cvalenzuela.github.io/Mappa/docs/getting-started.html)
+- [API Reference](https://cvalenzuela.github.io/Mappa/docs/api-mappa.html)
+- [Examples](https://cvalenzuela.github.io/Mappa/docs/examples-google-maps.html)
+- [Tutorials](https://cvalenzuela.github.io/Mappa/docs/introduction-to-web-maps.html)
 
 ## Usage
 
