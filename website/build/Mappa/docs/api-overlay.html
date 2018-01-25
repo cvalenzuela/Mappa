@@ -1,44 +1,68 @@
-<html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>overlay Method · Mappa.js</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="overlay Method · Mappa.js"/><meta property="og:type" content="website"/><meta property="og:url" content="https://cvalenzuela.github.io/Mappa/index.html"/><meta property="og:description" content="Mappa consists of only one class that has multiple methods and attributes. You first need to create a `Mappa` instance in order to use it."/><link rel="shortcut icon" href="/Mappa/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/dracula.min.css"/><script type="text/javascript" src="/Mappa/js/stars.js"></script><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/p5.min.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/addons/p5.dom.min.js"></script><script type="text/javascript" src="https://unpkg.com/mappa-mundi/dist/mappa.min.js"></script><link rel="stylesheet" href="/Mappa/css/main.css"/></head><body class="sideNavVisible"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/Mappa/"><img class="logo" src="/Mappa/img/logo.png"/><h2 class="headerTitle">Mappa.js</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li><a href="/Mappa/docs/getting-started.html" target="_self">Getting Started</a></li><li><a href="/Mappa/docs/api-mappa.html" target="_self">API Reference</a></li><li><a href="/Mappa/docs/examples-google-maps.html" target="_self">Examples</a></li><li><a href="/Mappa/docs/introduction-to-web-maps.html" target="_self">Tutorials</a></li><li><a href="https://github.com/cvalenzuela/Mappa" target="_self">Star</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Methods</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>Constructor</h3><ul><li class="navListItem"><a class="navItem" href="/Mappa/docs/api-mappa.html">Mappa</a></li></ul></div><div class="navGroup navGroupActive"><h3>Methods</h3><ul><li class="navListItem"><a class="navItem" href="/Mappa/docs/api-staticMap.html">staticMap</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/api-tileMap.html">tileMap</a></li><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/Mappa/docs/api-overlay.html">overlay</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/api-latLngToPixel.html">latLngToPixel</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/api-pixelToLatlng.html">pixelToLatlng</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/api-zoom.html">zoom</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/api-onChange.html">onChange</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/api-geoJSON.html">geoJSON</a></li></ul></div><div class="navGroup navGroupActive"><h3>Properties</h3><ul><li class="navListItem"><a class="navItem" href="/Mappa/docs/api-provider.html">provider</a></li></ul></div></div></section></div><script>
+<html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>overlay Method · Mappa.js</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="overlay Method · Mappa.js"/><meta property="og:type" content="website"/><meta property="og:url" content="https://cvalenzuela.github.io/Mappa/index.html"/><meta property="og:description" content="This method will actually create the tile map referenced in [`tileMap()`](#tilemapoptions) and overlay the selected canvas on top of it, allowing to control and move the map while maintaining the canvas position and relationship. The tile map generated is a separate DOM element that is displayed behind the canvas and is the same size of the canvas."/><link rel="shortcut icon" href="/Mappa/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/dracula.min.css"/><script type="text/javascript" src="/Mappa/js/stars.js"></script><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/p5.min.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/addons/p5.dom.min.js"></script><script type="text/javascript" src="/Mappa/js/mappa.min.js"></script><link rel="stylesheet" href="/Mappa/css/main.css"/></head><body class="sideNavVisible"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/Mappa/"><img class="logo" src="/Mappa/img/logo.png"/><h2 class="headerTitle">Mappa.js</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li><a href="/Mappa/docs/getting-started.html" target="_self">Getting Started</a></li><li><a href="/Mappa/docs/api-mappa.html" target="_self">API Reference</a></li><li><a href="/Mappa/docs/examples-google-maps.html" target="_self">Examples</a></li><li><a href="/Mappa/docs/introduction-to-web-maps.html" target="_self">Tutorials</a></li><li><a href="https://github.com/cvalenzuela/Mappa" target="_self">Star</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Methods</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>Constructor</h3><ul><li class="navListItem"><a class="navItem" href="/Mappa/docs/api-mappa.html">Mappa</a></li></ul></div><div class="navGroup navGroupActive"><h3>Methods</h3><ul><li class="navListItem"><a class="navItem" href="/Mappa/docs/api-staticMap.html">staticMap</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/api-tileMap.html">tileMap</a></li><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/Mappa/docs/api-overlay.html">overlay</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/api-latLngToPixel.html">latLngToPixel</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/api-pixelToLatlng.html">pixelToLatlng</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/api-zoom.html">zoom</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/api-onChange.html">onChange</a></li><li class="navListItem"><a class="navItem" href="/Mappa/docs/api-geoJSON.html">geoJSON</a></li></ul></div><div class="navGroup navGroupActive"><h3>Properties</h3><ul><li class="navListItem"><a class="navItem" href="/Mappa/docs/api-provider.html">provider</a></li></ul></div></div></section></div><script>
           var toggler = document.getElementById('navToggler');
           var nav = document.getElementById('docsNav');
           toggler.onclick = function() {
             nav.classList.toggle('docsSliderActive');
           };
-        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>overlay Method</h1></header><article><div><span><p>Mappa consists of only one class that has multiple methods and attributes. You first need to create a <code>Mappa</code> instance in order to use it.</p>
-<h2><a class="anchor" aria-hidden="true" name="constructor"></a><a href="#constructor" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Constructor</h2>
-<pre><code class="hljs css javascript">Mappa(provider, ?[key]);
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>overlay Method</h1></header><article><div><span><p>This method will actually create the tile map referenced in <a href="#tilemapoptions"><code>tileMap()</code></a> and overlay the selected canvas on top of it, allowing to control and move the map while maintaining the canvas position and relationship. The tile map generated is a separate DOM element that is displayed behind the canvas and is the same size of the canvas.</p>
+<h3><a class="anchor" aria-hidden="true" name="in-p5js"></a><a href="#in-p5js" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>In p5.js:</h3>
+<p>This method needs to be called inside <a href="https://p5js.org/reference/#/p5/setup"><code>setup()</code></a> .</p>
+<p>Since this map has no relationship with the elements drawn on the canvas, no background color needs to be used in the sketch in order to see the map. Alternatively, using p5 <a href="https://p5js.org/reference/#/p5/clear">clear()</a> function in the <a href="https://p5js.org/reference/#/p5/draw"><code>draw()</code></a> method will allow to clear the canvas each frame. This is useful when displaying geolocated elements and moving the map.</p>
+<h2><a class="anchor" aria-hidden="true" name="usage"></a><a href="#usage" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
+<pre><code class="hljs css javascript">overlay(canvas, ?[callback])
 </code></pre>
 <blockquote>
-<p>Constructor to initialize a new Mappa instance with a defined provider and key. Returns an object.</p>
+<p>Overlays a canvas on top of a tile map. It needs to be used together with <a href="#tilemapoptions"><code>tileMap()</code></a> to display a map. A callback function can be passed that will run when the map and the canvas are ready. This is useful when you want to start listening to events from the map.</p>
 </blockquote>
-<p><em>provider</em>: A valid map provider.</p>
-<p><em>key</em>: Map provider API key.</p>
-<h3><a class="anchor" aria-hidden="true" name="definition"></a><a href="#definition" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Definition</h3>
-<p>This is the constructor necessary to create a valid instance of Mappa. This will also add the necessary scripts and styles from the defined map provider.</p>
-<h3><a class="anchor" aria-hidden="true" name="options-for-providers"></a><a href="#options-for-providers" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Options for providers:</h3>
-<ul>
-<li><p>Static Maps:</p>
-<ul>
-<li><code>Google</code></li>
-<li><code>Mapbox</code></li>
-<li><code>Mapquest</code></li>
-</ul></li>
-<li><p>Tile Maps:</p>
-<ul>
-<li><code>Google</code></li>
-<li><code>Mapbox</code></li>
-<li><code>Mapboxgl</code></li>
-<li><code>Leaflet</code></li>
-</ul></li>
-</ul>
+<p><code>canvas</code>: The canvas element to overlay.</p>
+<p><code>callback</code>: A callback to call once the overlay is done. Optional.</p>
 <h3><a class="anchor" aria-hidden="true" name="examples"></a><a href="#examples" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples:</h3>
-<pre><code class="hljs css javascript"><span class="hljs-comment">// Google API key.</span>
-<span class="hljs-keyword">var</span> key = <span class="hljs-string">'abcd'</span>
+<pre><code class="hljs css javascript"><span class="hljs-keyword">let</span> canvas;
+<span class="hljs-keyword">let</span> myMap;
 
-<span class="hljs-comment">// Create a new Mappa instance using Google.</span>
-<span class="hljs-keyword">var</span> mappa = <span class="hljs-keyword">new</span> Mappa(<span class="hljs-string">'Google'</span>, key);
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setup</span>(<span class="hljs-params"></span>)</span>{
+  canvas = createCanvas(<span class="hljs-number">800</span>, <span class="hljs-number">700</span>);
+  <span class="hljs-comment">// Create a tile map center in New York with an initial zoom level of 10.</span>
+  myMap = mappa.tileMap(<span class="hljs-number">40.782</span>, <span class="hljs-number">-73.967</span>, <span class="hljs-number">10</span>);
+  <span class="hljs-comment">// Overlay the canvas to the new tile map created.</span>
+  myMap.overlay(canvas);
+}
 </code></pre>
-<pre><code class="hljs css javascript"><span class="hljs-comment">// Create a new Mappa instance with Leaflet. No key is required</span>
-<span class="hljs-keyword">var</span> mappa = <span class="hljs-keyword">new</span> Mappa(<span class="hljs-string">'Leaflet'</span>);
+<p>Once <code>overlay()</code> is used, a complete access to the base map library and its original properties and methods can be found in the <code>map</code> method. This allows to call any of the maps original properties or methods.</p>
+<p>For example, calling <a href="http://leafletjs.com/reference-1.0.0.html#flyToBounds">flyTo</a> in a Leaflet Map:</p>
+<pre><code class="hljs css javascript">myMap.map.flyTo([<span class="hljs-number">-33.448890</span>, <span class="hljs-number">-70.669265</span>], <span class="hljs-number">9</span>)
 </code></pre>
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="api-tileMap.html">← tileMap Method</a><a class="docs-next button" href="api-latLngToPixel.html">latLngToPixel Method →</a></div></div></div></div></div></body></html>
+<p>A more complete example can be:</p>
+<pre><code class="hljs css javascript"><span class="hljs-comment">// Your Mapboxgl API Key</span>
+<span class="hljs-keyword">const</span> key = <span class="hljs-string">'abcd'</span>
+
+<span class="hljs-comment">// Create a new Mappa instance using Mapboxgl.</span>
+<span class="hljs-keyword">const</span> mappa = <span class="hljs-keyword">new</span> Mappa(<span class="hljs-string">'Mapboxgl'</span>, key);
+<span class="hljs-keyword">let</span> myMap;
+<span class="hljs-keyword">let</span> canvas;
+
+<span class="hljs-comment">// Map options</span>
+<span class="hljs-keyword">const</span> options = {
+  <span class="hljs-attr">lat</span>: <span class="hljs-number">40.782</span>,
+  <span class="hljs-attr">lng</span>: <span class="hljs-number">-73.967</span>,
+  <span class="hljs-attr">zoom</span>: <span class="hljs-number">4</span>,
+  <span class="hljs-attr">style</span>: <span class="hljs-string">'mapbox://styles/mapbox/dark-v9'</span>
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setup</span>(<span class="hljs-params"></span>)</span>{
+  canvas = createCanvas(<span class="hljs-number">800</span>, <span class="hljs-number">700</span>);
+  <span class="hljs-comment">// Create a tile map centered in New York with an initial zoom level of 4.</span>
+  myMap = mappa.tileMap(options);
+  <span class="hljs-comment">// Overlay the tile map to the p5 canvas. This will display the map.</span>
+  myMap.overlay(canvas);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">draw</span>(<span class="hljs-params"></span>)</span>{
+  <span class="hljs-comment">// Clear the background so the map is clearly seen at each frame.</span>
+  clear();
+  ellipse(mouseX, mouseY, <span class="hljs-number">40</span>, <span class="hljs-number">40</span>);
+}
+</code></pre>
+<p>Will render this:</p>
+<div id="example"></div>
+<script src="assets/scripts/api-overlay.js"></script></span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="api-tileMap.html">← tileMap Method</a><a class="docs-next button" href="api-latLngToPixel.html">latLngToPixel Method →</a></div></div></div></div></div></body></html>
