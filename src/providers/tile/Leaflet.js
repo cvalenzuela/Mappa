@@ -58,7 +58,7 @@ class Leaflet extends TileMap {
 
     this.map.on('move', () => {
       const d = this.map.dragging._draggable._newPos;
-      d && ctx.canvas.style.transform = `translate(${-d.x}px, ${-d.y}px)`;
+      d && (ctx.canvas.style.transform = `translate(${-d.x}px, ${-d.y}px)`);
     });
 
     return this;
