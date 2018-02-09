@@ -13,7 +13,7 @@ class Leaflet extends TileMap {
     this.styleSrc = 'https://unpkg.com/leaflet@1.3/dist/leaflet.css';
     this.ready = false;
 
-    this.constructor.name === 'Leaflet' && this.loadSrc();
+    if (this.constructor.name === 'Leaflet')  this.loadSrc();
   }
 
   createMap() {
@@ -43,20 +43,20 @@ class Leaflet extends TileMap {
         map.off();
         delete this._container;
       },
-      drawLayer() { }
+      drawLayer() {}
     });
 
     L.overlay = () => new L.Layer.Overlay;
 
-    this.tiles && (this.tiles.options.opacity = this.options.opacity);
-    this.map.addLayer(L.overlay());
-
     const { canvas } = this,
           ctx = canvas.getContext('webgl') || canvas.getContext('2d');
 
+    if (this.tiles)  this.tiles.options.opacity = this.options.opacity;
+    this.map.addLayer(L.overlay());
+
     this.map.on('move', () => {
       const d = this.map.dragging._draggable._newPos;
-      d && (ctx.canvas.style.transform = `translate(${-d.x}px, ${-d.y}px)`);
+      if (d)  ctx.canvas.style.transform = `translate(${-d.x}px, ${-d.y}px)`;
     });
 
     return this;
