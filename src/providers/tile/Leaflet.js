@@ -46,9 +46,7 @@ class Leaflet extends TileMap {
       drawLayer() { }
     });
 
-    L.overlay = function () {
-      return new L.Layer.Overlay;
-    };
+    L.overlay = () => new L.Layer.Overlay;
 
     this.tiles && (this.tiles.options.opacity = this.options.opacity);
     this.map.addLayer(L.overlay());
