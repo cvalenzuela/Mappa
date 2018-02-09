@@ -78,7 +78,8 @@ class Leaflet extends TileMap {
   }
 
   getZoom() {
-    return this.ready? this.map.getZoom() : 0;
+    if (this.ready)  return this.map.getZoom();
+    return 0;
   }
 
   onChange(callback) {
