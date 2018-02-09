@@ -1,6 +1,6 @@
 // -----------
-// Leaflet v1.3.0
-// Reference: http://leafletjs.com/reference-1.3.0.html
+// Leaflet v1.3.1
+// Reference: http://LeafletJS.com/reference-1.3.0.html
 //-----------
 
 import TileMap from './TileMap';
@@ -8,90 +8,79 @@ import TileMap from './TileMap';
 class Leaflet extends TileMap {
   constructor(options) {
     super(options);
-    this.scriptSrc = 'https://unpkg.com/leaflet@1.3.0/dist/leaflet.js';
-    this.styleSrc = 'https://unpkg.com/leaflet@1.3.0/dist/leaflet.css';
+
+    this.scriptSrc = 'https://unpkg.com/leaflet@1.3/dist/leaflet.js';
+    this.styleSrc = 'https://unpkg.com/leaflet@1.3/dist/leaflet.css';
     this.ready = false;
-    if (this.constructor.name === 'Leaflet') {
-      this.loadSrc();
-    }
+
+    this.constructor.name === 'Leaflet' && this.loadSrc();
   }
 
   createMap() {
-    this.map = L.map(this.id, {
-      center: [
-        this.options.lat, this.options.lng,
-      ],
-      zoom: this.options.zoom,
-      inertia: false,
-    });
+    const { lat, lng, zoom, style } = this.options;
+    this.map = L.map(this.id, { center: [ lat, lng ], zoom, inertia: false });
 
-    if (!this.options.style) {
+    if (!style) {
       Leaflet.messages().tiles();
       this.ready = true;
     } else {
-      this.tiles = L.tileLayer(this.options.style).addTo(this.map);
-      this.tiles.on('tileload', () => {
-        this.ready = true;
-      });
+      this.tiles = L.tileLayer(style).addTo(this.map);
+      this.tiles.on('tileload', () => this.ready = true);
     }
-    this.canvasOverlay();
+
+    return this.canvasOverlay();
   }
 
   canvasOverlay() {
-    if (this.tiles) {
-      this.tiles.options.opacity = this.options.opacity;
-    }
-    L.overlay = L.Layer.extend({
-      onAdd: () => {
-        const overlayPane = overlay.getPane();
-        const container = L.DomUtil.create('div', 'leaflet-layer');
-        container.appendChild(this.canvas);
-        overlayPane.appendChild(container);
+    L.Layer.Overlay = L.Layer.extend({
+      onAdd(map) {
+        this._container = L.DomUtil.create('div', 'leaflet-layer');
+        this._container.appendChild(canvas);
+        map.getPane(this.options.pane).appendChild(this._container);
       },
-      drawLayer: () => {},
+      onRemove(map) {
+        L.DomUtil.remove(this._container);
+        map.off();
+        delete this._container;
+      },
+      drawLayer() { }
     });
-    const overlay = new L.overlay();
-    this.map.addLayer(overlay);
-    
 
-    const cnvs = this.canvas.getContext('webgl') || this.canvas.getContext('2d');
+    L.overlay = function () {
+      return new L.Layer.Overlay;
+    };
+
+    this.tiles && (this.tiles.options.opacity = this.options.opacity);
+    this.map.addLayer(L.overlay());
+
+    const { canvas } = this,
+          ctx = canvas.getContext('webgl') || canvas.getContext('2d');
+
     this.map.on('move', () => {
-      const d = this.map.dragging._draggable;
-      if (d._newPos) {
-        cnvs.canvas.style.transform = `translate(${-d._newPos.x}px, ${-d._newPos.y}px)`;
-      };
-    })
+      const d = this.map.dragging._draggable._newPos;
+      d && ctx.canvas.style.transform = `translate(${-d.x}px, ${-d.y}px)`;
+    });
+
+    return this;
   }
 
   fromLatLngToPixel(position) {
     if (this.ready) {
-      const containerPoint = this.map.latLngToContainerPoint(position);
-      return {
-        x: containerPoint.x,
-        y: containerPoint.y,
-      };
+      const { x, y } = this.map.latLngToContainerPoint(position);
+      return { x, y };
     }
-    return {
-      x: -100,
-      y: -100, 
-    };
+    return { x: -100, y: -100 };
   }
 
   fromPointToLatLng(...args) {
     if (this.ready) {
       return this.map.containerPointToLatLng(args);
     }
-    return {
-      lat: -100,
-      lng: -100,
-    };
+    return { lat: -100, lng: -100 };
   }
 
   getZoom() {
-    if (this.ready) {
-      return this.map.getZoom();
-    }
-    return 0;
+    return this.ready? this.map.getZoom() : 0;
   }
 
   onChange(callback) {
@@ -99,22 +88,24 @@ class Leaflet extends TileMap {
       callback();
       this.map.on('move', callback);
     } else {
-      setTimeout(() => {
-        this.onChange(callback);
-      }, 200);
+      setTimeout(() => this.onChange(callback), 200);
     }
+    return this;
   }
 
   removeOnChange(callback) {
     this.map.on('move', callback);
+    return this;
   }
 
   static messages() {
     return {
-      tiles: () => {
-        console.warn('You are not using any tiles for your map. Try with: http://{s}.tile.osm.org/{z}/' +
-          '{x}/{y}.png');
-      },
+      tiles() {
+        console.warn(
+          'You are not using any tiles for your map.',
+          'Try out with: http://{s}.tile.osm.org/{z}/' + '{x}/{y}.png'
+        );
+      }
     };
   }
 }
