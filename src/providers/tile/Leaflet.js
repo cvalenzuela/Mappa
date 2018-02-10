@@ -1,5 +1,5 @@
 // -----------
-// Leaflet v1.3.1
+// Leaflet v1.3.1 (1.3.x)
 // Reference: http://LeafletJS.com/reference-1.3.0.html
 //-----------
 
