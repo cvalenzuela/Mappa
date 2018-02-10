@@ -72,7 +72,8 @@ class Leaflet extends TileMap {
 
   fromPointToLatLng(...args) {
     if (this.ready) {
-      return this.map.containerPointToLatLng(args);
+      const { lat, lng } = this.map.containerPointToLatLng(args);
+      return { lat, lng };
     }
     return { lat: -100, lng: -100 };
   }
