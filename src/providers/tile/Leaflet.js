@@ -52,6 +52,7 @@ class Leaflet extends TileMap {
           ctx = canvas.getContext('webgl') || canvas.getContext('2d');
 
     if (this.tiles)  this.tiles.options.opacity = this.options.opacity;
+
     this.map.addLayer(L.overlay());
 
     this.map.on('move', () => {
