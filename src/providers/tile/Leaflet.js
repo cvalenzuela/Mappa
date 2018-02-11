@@ -48,11 +48,13 @@ class Leaflet extends TileMap {
           if (d) ctx.canvas.style.transform = `translate(${-d.x}px, ${-d.y}px)`;
         });
       },
+
       onRemove(map) {
         L.DomUtil.remove(this._container);
         map.off();
         delete this._container;
       },
+
       drawLayer() {}
     });
 
