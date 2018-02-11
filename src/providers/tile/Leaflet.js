@@ -8,6 +8,7 @@ import TileMap from './TileMap';
 class Leaflet extends TileMap {
   constructor(options) {
     super(options);
+    this.map = this.tiles = null;
 
     this.scriptSrc = 'https://unpkg.com/leaflet@1.3/dist/leaflet.js';
     this.styleSrc = 'https://unpkg.com/leaflet@1.3/dist/leaflet.css';
