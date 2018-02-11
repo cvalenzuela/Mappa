@@ -32,11 +32,21 @@ class Leaflet extends TileMap {
   }
 
   canvasOverlay() {
+    const { canvas } = this,
+          ctx = canvas.getContext('webgl') || canvas.getContext('2d');
+
+    if (this.tiles) this.tiles.options.opacity = this.options.opacity;
+
     L.Layer.Overlay = L.Layer.extend({
       onAdd(map) {
         this._container = L.DomUtil.create('div', 'leaflet-layer');
         this._container.appendChild(canvas);
         map.getPane(this.options.pane).appendChild(this._container);
+
+        map.on('move', () => {
+          const d = map.dragging._draggable._newPos;
+          if (d) ctx.canvas.style.transform = `translate(${-d.x}px, ${-d.y}px)`;
+        });
       },
       onRemove(map) {
         L.DomUtil.remove(this._container);
@@ -47,18 +57,7 @@ class Leaflet extends TileMap {
     });
 
     L.overlay = () => new L.Layer.Overlay;
-
-    const { canvas } = this,
-          ctx = canvas.getContext('webgl') || canvas.getContext('2d');
-
-    if (this.tiles)  this.tiles.options.opacity = this.options.opacity;
-
     this.map.addLayer(L.overlay());
-
-    this.map.on('move', () => {
-      const d = this.map.dragging._draggable._newPos;
-      if (d)  ctx.canvas.style.transform = `translate(${-d.x}px, ${-d.y}px)`;
-    });
 
     return this;
   }
