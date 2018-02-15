@@ -181,7 +181,7 @@ let myMap;
 let meteorites;
 
 function setup() {
-  createCanvas(640, 580).parent('canvasContainer');
+  canvas = createCanvas(640, 580).parent('canvasContainer');
 
   // Create a tile map and overlay the canvas on top.
   myMap = mappa.tileMap(options);

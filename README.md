@@ -1,6 +1,6 @@
 ![mappa](website/static/img/logo_small.png)
 
-[Mappa](https://cvalenzuela.github.io/Mappa/)
+[Mappa](https://mappa.js.org/)
 ========
 
 [![travis build](https://img.shields.io/travis/cvalenzuela/Mappa.svg?style=flat-square)](https://travis-ci.org/cvalenzuela/Mappa)
@@ -13,10 +13,10 @@ Mappa was originally designed for [p5.js](https://github.com/processing/p5.js), 
 
 ## Reference
 
-- [Getting Started](https://cvalenzuela.github.io/Mappa/docs/getting-started.html)
-- [API Reference](https://cvalenzuela.github.io/Mappa/docs/api-mappa.html)
-- [Examples](https://cvalenzuela.github.io/Mappa/docs/examples-google-maps.html)
-- [Tutorials](https://cvalenzuela.github.io/Mappa/docs/introduction-to-web-maps.html)
+- [Getting Started](https://mappa.js.org/docs/getting-started.html)
+- [API Reference](https://mappa.js.org/docs/api-mappa.html)
+- [Examples](https://mappa.js.org/docs/examples-google-maps.html)
+- [Tutorials](https://mappa.js.org/docs/introduction-to-web-maps.html)
 
 ## Usage
 
@@ -38,3 +38,7 @@ npm install mappa-mundi
 ## Licence
   MIT
 
+## GSOC
+![gsoc](website/static/img/gsoc.png)
+
+Project developed as part of Google Summer of Code 2017

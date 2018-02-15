@@ -809,7 +809,7 @@ var Mapbox = function (_StaticMap) {
     key: 'init',
     value: function init() {
       this.options.pixels = 256;
-      if (this.options.scale) {
+      if (!this.options.scale) {
         this.options.scale = 1;
       }
       if (this.options.scale === 2) {
@@ -1064,9 +1064,9 @@ var Google = function (_TileMap) {
 
     var _this = _possibleConstructorReturn(this, (Google.__proto__ || Object.getPrototypeOf(Google)).call(this, options));
 
-    _this.scriptSrc = 'https://maps.googleapis.com/maps/api/js';
+    _this.scriptSrc = 'https://maps.googleapis.com/maps/api/js?v=3';
     if (_this.options.key) {
-      _this.scriptSrc += '?key=' + _this.options.key;
+      _this.scriptSrc += '&key=' + _this.options.key;
     }
     if (_this.options.language) {
       _this.scriptSrc += '&language=' + _this.options.language;
@@ -1097,6 +1097,7 @@ var Google = function (_TileMap) {
       });
 
       var overlay = new google.maps.OverlayView();
+
       overlay.onAdd = function () {
         overlay.getPanes().overlayLayer.appendChild(_this2.canvas);
       };

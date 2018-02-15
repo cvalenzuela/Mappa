@@ -8,8 +8,8 @@ const users = [{
 const siteConfig = {
   title: 'Mappa.js',
   tagline: 'A canvas wrapper for Maps ',
-  url: 'https://cvalenzuela.github.io',
-  baseUrl: '/Mappa/',
+  url: 'https://mappa.js.org',
+  baseUrl: '/',
   projectName: 'Mappa',
   headerLinks: [
     { doc: 'getting-started', label: 'Getting Started' },
@@ -35,14 +35,15 @@ const siteConfig = {
     theme: 'dracula',
   },
   scripts: [
-    '/Mappa/js/stars.js',
+    '/js/stars.js',
     'https://buttons.github.io/buttons.js',
     'https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/p5.min.js',
     'https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/addons/p5.dom.min.js',
-    '/Mappa/js/mappa.min.js',
+    '/js/mappa.min.js',
   ],
   // You may provide arbitrary config keys to be used as needed by your template.
-  repoUrl: 'https://github.com/cvalenzuela/Mappa',
+  repoUrl: 'https://mappa.js.org',
+  cname: 'mappa.js.org',
 };
 
 module.exports = siteConfig;

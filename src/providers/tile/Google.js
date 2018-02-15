@@ -8,9 +8,9 @@ import TileMap from './TileMap';
 class Google extends TileMap {
   constructor(options) {
     super(options);
-    this.scriptSrc = 'https://maps.googleapis.com/maps/api/js';
+    this.scriptSrc = 'https://maps.googleapis.com/maps/api/js?v=3';
     if (this.options.key) {
-      this.scriptSrc += `?key=${this.options.key}`;
+      this.scriptSrc += `&key=${this.options.key}`;
     }
     if (this.options.language) {
       this.scriptSrc += `&language=${this.options.language}`;
@@ -36,10 +36,11 @@ class Google extends TileMap {
     });
 
     const overlay = new google.maps.OverlayView();
+
     overlay.onAdd = () => {
       overlay.getPanes().overlayLayer.appendChild(this.canvas);
     };
-    overlay.draw = () => { };
+    overlay.draw = () => {};
     overlay.setMap(this.map);
 
     google.maps.event.addListener(this.map, 'bounds_changed', () => {
@@ -52,6 +53,7 @@ class Google extends TileMap {
       const offsetY = -Math.round((this.canvas.height / pixels) - center.y);
       const cvs = this.canvas.getContext('webgl') || this.canvas.getContext('2d');
       cvs.canvas.style.transform = `translate(${offsetX}px,${offsetY}px)`;
+
     });
     google.maps.event.addListenerOnce(this.map, 'tilesloaded', () => { this.ready = true; });
   }
