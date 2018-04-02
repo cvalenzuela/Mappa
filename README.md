@@ -27,7 +27,7 @@ Download the [full](dist/mappa.js), [minified](dist/mappa.min.js) or use the onl
 ```
 or
 ```html
-<script src="https://unpkg.com/mappa-mundi/dist/mappa.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/mappa-mundi/dist/mappa.min.js" type="text/javascript"></script>
 ```
 
 If you are using npm:
