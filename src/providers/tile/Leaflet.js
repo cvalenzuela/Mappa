@@ -11,9 +11,7 @@ class Leaflet extends TileMap {
     this.scriptSrc = 'https://unpkg.com/leaflet@1.3.0/dist/leaflet.js';
     this.styleSrc = 'https://unpkg.com/leaflet@1.3.0/dist/leaflet.css';
     this.ready = false;
-    if (this.constructor.name === 'Leaflet') {
-      this.loadSrc();
-    }
+    this.loadSrc();
   }
 
   createMap() {
