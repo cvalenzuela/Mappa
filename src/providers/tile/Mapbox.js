@@ -7,10 +7,9 @@ import Leaflet from './Leaflet';
 
 class Mapbox extends Leaflet {
   constructor(options) {
+    options.scriptSrc = 'https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js';
+    options.styleSrc = 'https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css';
     super(options);
-    this.scriptSrc = 'https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js';
-    this.styleSrc = 'https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css';
-    this.loadSrc();
   }
 
   createMap() {
