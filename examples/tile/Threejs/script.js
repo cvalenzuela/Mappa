@@ -66,7 +66,7 @@ var options = {
     //style: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
 }
 
-var mappa = new Mappa('Mapboxgl', key);
+var mappa = new Mappa('MapboxGL', key);
 var myMap = mappa.tileMap(options);
 myMap.overlay(canvas);
 myMap.onChange(update);
