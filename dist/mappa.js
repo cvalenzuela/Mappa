@@ -1314,8 +1314,8 @@ var MapboxGL = function (_TileMap) {
 
     var _this = _possibleConstructorReturn(this, (MapboxGL.__proto__ || Object.getPrototypeOf(MapboxGL)).call(this, options));
 
-    _this.scriptSrc = 'https://api.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js';
-    _this.styleSrc = 'https://api.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css';
+    _this.scriptSrc = 'https://api.mapbox.com/mapbox-gl-js/v1.13.0/mapbox-gl.js';
+    _this.styleSrc = 'https://api.mapbox.com/mapbox-gl-js/v1.13.0/mapbox-gl.css';
     _this.ready = false;
     if (!_this.options.key) {
       MapboxGL.messages().key();
@@ -1333,7 +1333,7 @@ var MapboxGL = function (_TileMap) {
       mapboxgl.accessToken = this.options.key;
       this.map = new mapboxgl.Map({
         container: this.id,
-        style: this.options.style || 'mapbox://styles/mapbox/satellite-streets-v10',
+        style: this.options.style || 'mapbox://styles/mapbox/satellite-streets-v11',
         center: [this.options.lng, this.options.lat],
         zoom: this.options.zoom,
         minZoom: this.options.minZoom || 0,
