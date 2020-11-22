@@ -8,8 +8,8 @@ import TileMap from './TileMap';
 class MapboxGL extends TileMap {
   constructor(options) {
     super(options);
-    this.scriptSrc = 'https://api.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js';
-    this.styleSrc = 'https://api.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css';
+    this.scriptSrc = 'https://api.mapbox.com/mapbox-gl-js/v1.13.0/mapbox-gl.js';
+    this.styleSrc = 'https://api.mapbox.com/mapbox-gl-js/v1.13.0/mapbox-gl.css';
     this.ready = false;
     if (!this.options.key) {
       MapboxGL.messages().key();
@@ -22,7 +22,7 @@ class MapboxGL extends TileMap {
     mapboxgl.accessToken = this.options.key;
     this.map = new mapboxgl.Map({
       container: this.id,
-      style: this.options.style || 'mapbox://styles/mapbox/satellite-streets-v10',
+      style: this.options.style || 'mapbox://styles/mapbox/satellite-streets-v11',
       center: [this.options.lng, this.options.lat],
       zoom: this.options.zoom,
       minZoom: this.options.minZoom || 0,
