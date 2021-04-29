@@ -60,7 +60,7 @@ You should have something like this:
 
 <div id="01"></div>
 
-A grey rectangle. Not that exiting...
+A grey rectangle. Not that exciting...
 
 Now let's add 2 lines of code:
 
